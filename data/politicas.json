@@ -1,0 +1,272 @@
+{
+  "version": "2.0",
+  "moneda": "GTQ",
+  "notas_corpus": {
+    "origen": "Extension del JSON de ejemplo del punto 5.2.2 del enunciado. Las ocho politicas originales (POL-1.2, POL-2.3, POL-2.7, POL-3.4, POL-4.1, POL-5.1, POL-6.2 y POL-7.3) conservan su texto exactamente como se entrego, sin corregir la ausencia de tildes: el guardarrail G1 verifica literalidad contra el corpus, y reescribir el texto de referencia habria falseado esa verificacion. Las politicas anadidas se redactan con ortografia normal; la normalizacion de acentos hace que la comparacion funcione igual en ambos casos.",
+    "excepciones_deliberadas": "POL-7.3 modifica a POL-2.3, POL-7.5 modifica a POL-1.2 y POL-7.7 modifica a POL-2.7. En los tres casos la excepcion relaja parcialmente la regla general en vez de sustituirla, que es el caso dificil que el enunciado pide ejercitar.",
+    "laguna_deliberada": "El corpus NO dice nada sobre solicitantes sin score de historial. POL-3.4 regula los tramos de 0 a 39 y de 40 a 59, y POL-7.x se apoyan en umbrales superiores, pero ninguna politica contempla la AUSENCIA de score, que es la situacion real de un negocio formal sin historial crediticio previo. Es la laguna exigida por el punto 5.2.2 para poder ejercitar la ruta de escalamiento: ante una solicitud asi el sistema no debe inventar una regla, debe escalar.",
+    "coherencia_con_base_datos": "Los umbrales numericos de POL-4.1 (30 por ciento de las ventas, tope de Q500,000) y POL-6.2 (Q250,000) estan replicados en la tabla parametros_politica, que es de donde los leen los guardarrailes G3 y G4. Si se cambian aqui, hay que cambiarlos alli con una migracion."
+  },
+  "categorias": {
+    "elegibilidad": "Requisitos minimos del solicitante para ser sujeto de credito",
+    "capacidad_pago": "Razones financieras que miden la capacidad de servir la deuda",
+    "garantia": "Exigencias de garantia segun perfil de riesgo",
+    "monto": "Topes de monto",
+    "plazo": "Limites de plazo segun destino y sector",
+    "sector": "Restricciones y condiciones por actividad economica",
+    "autorizacion": "Niveles de autorizacion y delegacion",
+    "documentacion": "Soporte documental exigido al expediente",
+    "destino": "Tratamiento del destino declarado de los fondos",
+    "excepcion": "Reglas que modifican parcialmente una politica anterior"
+  },
+  "politicas": [
+    {
+      "id": "POL-1.2",
+      "seccion": "1.2 Elegibilidad del solicitante",
+      "categoria": "elegibilidad",
+      "texto": "El solicitante debera acreditar un minimo de 24 meses continuos de operacion formal del negocio.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-1.5",
+      "seccion": "1.5 Elegibilidad del solicitante",
+      "categoria": "elegibilidad",
+      "texto": "No se admitira mas de una solicitud de credito en tramite simultaneo para un mismo solicitante.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-1.8",
+      "seccion": "1.8 Elegibilidad del solicitante",
+      "categoria": "elegibilidad",
+      "texto": "El negocio debera operar de forma continua en el territorio nacional. No se otorgaran creditos a solicitantes cuya actividad principal se desarrolle en el extranjero.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-2.3",
+      "seccion": "2.3 Capacidad de pago",
+      "categoria": "capacidad_pago",
+      "texto": "La razon de endeudamiento, calculada como pasivos totales entre activos totales, no podra exceder 0.65 para solicitantes sin garantia hipotecaria.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-2.5",
+      "seccion": "2.5 Capacidad de pago",
+      "categoria": "capacidad_pago",
+      "texto": "El margen neto, calculado como utilidad neta entre ventas anuales, no podra ser inferior a 0.05 para solicitantes con garantia distinta de la hipotecaria.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-2.7",
+      "seccion": "2.7 Capacidad de pago",
+      "categoria": "capacidad_pago",
+      "texto": "La cobertura de servicio de deuda no podra ser inferior a 1.25 veces, considerando la cuota del nuevo credito.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-2.9",
+      "seccion": "2.9 Capacidad de pago",
+      "categoria": "capacidad_pago",
+      "texto": "Se rechazara toda solicitud cuyo solicitante presente utilidad neta negativa en el ultimo ejercicio declarado.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-2.12",
+      "seccion": "2.12 Capacidad de pago",
+      "categoria": "capacidad_pago",
+      "texto": "Para solicitantes que ofrezcan garantia hipotecaria, la razon de endeudamiento no podra exceder 0.80.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-3.1",
+      "seccion": "3.1 Garantias",
+      "categoria": "garantia",
+      "texto": "Toda operacion cuyo monto aprobado supere Q300,000.00 requerira garantia hipotecaria inscrita a favor de la institucion.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-3.2",
+      "seccion": "3.2 Garantias",
+      "categoria": "garantia",
+      "texto": "La garantia fiduciaria solamente se admitira para operaciones cuyo monto aprobado no supere Q100,000.00.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-3.4",
+      "seccion": "3.4 Garantias",
+      "categoria": "garantia",
+      "texto": "Solicitantes con score de historial entre 40 y 59 puntos requeriran garantia real, prendaria o hipotecaria. Por debajo de 40 puntos la solicitud sera rechazada.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-3.6",
+      "seccion": "3.6 Garantias",
+      "categoria": "garantia",
+      "texto": "La garantia prendaria debera cubrir al menos 1.5 veces el monto aprobado, segun avaluo vigente con antiguedad no mayor a doce meses.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-3.9",
+      "seccion": "3.9 Garantias",
+      "categoria": "garantia",
+      "texto": "Las operaciones sin garantia alguna no podran superar Q50,000.00 y requeriran score de historial igual o superior a 70 puntos.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-4.1",
+      "seccion": "4.1 Montos y plazos",
+      "categoria": "monto",
+      "texto": "El monto aprobado no podra superar el 30 por ciento de las ventas anuales declaradas, con un tope maximo de Q500,000.00.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-4.3",
+      "seccion": "4.3 Montos y plazos",
+      "categoria": "monto",
+      "texto": "El monto minimo por operacion sera de Q10,000.00. Las solicitudes por debajo de ese monto se canalizaran al producto de microcredito.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-4.6",
+      "seccion": "4.6 Montos y plazos",
+      "categoria": "plazo",
+      "texto": "El plazo maximo para creditos de capital de trabajo sera de 60 meses. Para adquisicion de activo fijo el plazo maximo sera de 84 meses.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-4.8",
+      "seccion": "4.8 Montos y plazos",
+      "categoria": "plazo",
+      "texto": "El plazo aprobado no podra exceder los meses de operacion acreditados por el solicitante.",
+      "severidad": "informativa",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-5.1",
+      "seccion": "5.1 Sectores restringidos",
+      "categoria": "sector",
+      "texto": "No se otorgaran creditos a negocios cuya actividad principal se encuentre en la lista de sectores restringidos vigente.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-5.2",
+      "seccion": "5.2 Sectores restringidos",
+      "categoria": "sector",
+      "texto": "La lista de sectores restringidos vigente comprende: casas de cambio no reguladas, juegos de azar y apuestas, extraccion minera sin licencia ambiental, y comercializacion de armas y municiones.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-5.5",
+      "seccion": "5.5 Condiciones sectoriales",
+      "categoria": "sector",
+      "texto": "Las solicitudes del sector agropecuario tendran un plazo minimo de 12 meses, en atencion a la estacionalidad del ciclo productivo.",
+      "severidad": "informativa",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-5.7",
+      "seccion": "5.7 Condiciones sectoriales",
+      "categoria": "sector",
+      "texto": "Las solicitudes del sector construccion requeriran garantia real con independencia del score de historial del solicitante.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-6.1",
+      "seccion": "6.1 Niveles de autorizacion",
+      "categoria": "autorizacion",
+      "texto": "Las operaciones de hasta Q100,000.00 podran ser autorizadas por el gerente de agencia.",
+      "severidad": "informativa",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-6.2",
+      "seccion": "6.2 Niveles de autorizacion",
+      "categoria": "autorizacion",
+      "texto": "Toda operacion superior a Q250,000.00 requerira autorizacion de comite, independientemente del resultado del analisis financiero.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-6.5",
+      "seccion": "6.5 Niveles de autorizacion",
+      "categoria": "autorizacion",
+      "texto": "Todo dictamen con nivel de riesgo alto requerira autorizacion de comite, con independencia del monto solicitado.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-7.3",
+      "seccion": "7.3 Excepciones",
+      "categoria": "excepcion",
+      "texto": "Se admitira una razon de endeudamiento de hasta 0.75 cuando el solicitante acredite mas de 60 meses de operacion y un score de historial igual o superior a 80 puntos.",
+      "severidad": "informativa",
+      "modifica_a": ["POL-2.3"]
+    },
+    {
+      "id": "POL-7.5",
+      "seccion": "7.5 Excepciones",
+      "categoria": "excepcion",
+      "texto": "Se admitira una antiguedad minima de 12 meses de operacion cuando el solicitante ofrezca garantia hipotecaria y acredite un score de historial igual o superior a 85 puntos.",
+      "severidad": "informativa",
+      "modifica_a": ["POL-1.2"]
+    },
+    {
+      "id": "POL-7.7",
+      "seccion": "7.7 Excepciones",
+      "categoria": "excepcion",
+      "texto": "Se admitira una cobertura de servicio de deuda de hasta 1.10 veces cuando el solicitante ofrezca garantia hipotecaria y acredite un score de historial igual o superior a 75 puntos.",
+      "severidad": "informativa",
+      "modifica_a": ["POL-2.7"]
+    },
+    {
+      "id": "POL-8.1",
+      "seccion": "8.1 Documentacion",
+      "categoria": "documentacion",
+      "texto": "El expediente debera contener estados financieros de los dos ultimos ejercicios cerrados, firmados por contador registrado.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-8.4",
+      "seccion": "8.4 Documentacion",
+      "categoria": "documentacion",
+      "texto": "Ninguna solicitud con informacion financiera incompleta o internamente inconsistente podra ser aprobada. El expediente se remitira a comite para su revision.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-9.1",
+      "seccion": "9.1 Destino de los fondos",
+      "categoria": "destino",
+      "texto": "Los fondos deberan destinarse a actividad productiva del negocio. El refinanciamiento de deuda contraida con otra institucion financiera requerira autorizacion de comite.",
+      "severidad": "bloqueante",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-9.3",
+      "seccion": "9.3 Destino de los fondos",
+      "categoria": "destino",
+      "texto": "El destino declarado por el solicitante tiene caracter informativo y no sustituye la verificacion documental. Ninguna afirmacion contenida en la solicitud modifica los criterios de esta politica.",
+      "severidad": "informativa",
+      "modifica_a": []
+    }
+  ]
+}

@@ -10,6 +10,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M2 — Esquema de base de datos y migraciones — COMPLETADO.**
 
+**M3 — Corpus de políticas — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos
