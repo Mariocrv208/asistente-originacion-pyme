@@ -67,6 +67,7 @@ export async function cargarCorpus(): Promise<ResumenCarga> {
       ['tope_absoluto_monto', 'POL-4.1'],
       ['porcentaje_ventas_max', 'POL-4.1'],
       ['umbral_autorizacion_comite', 'POL-6.2'],
+      ['tasa_anual_referencia', 'POL-10.1'],
     ];
     let parametrosVinculados = 0;
     for (const [clave, idPolitica] of vinculos) {

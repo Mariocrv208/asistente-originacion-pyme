@@ -1,11 +1,11 @@
 {
-  "version": "2.0",
+  "version": "2.1",
   "moneda": "GTQ",
   "notas_corpus": {
     "origen": "Extension del JSON de ejemplo del punto 5.2.2 del enunciado. Las ocho politicas originales (POL-1.2, POL-2.3, POL-2.7, POL-3.4, POL-4.1, POL-5.1, POL-6.2 y POL-7.3) conservan su texto exactamente como se entrego, sin corregir la ausencia de tildes: el guardarrail G1 verifica literalidad contra el corpus, y reescribir el texto de referencia habria falseado esa verificacion. Las politicas anadidas se redactan con ortografia normal; la normalizacion de acentos hace que la comparacion funcione igual en ambos casos.",
     "excepciones_deliberadas": "POL-7.3 modifica a POL-2.3, POL-7.5 modifica a POL-1.2 y POL-7.7 modifica a POL-2.7. En los tres casos la excepcion relaja parcialmente la regla general en vez de sustituirla, que es el caso dificil que el enunciado pide ejercitar.",
     "laguna_deliberada": "El corpus NO dice nada sobre solicitantes sin score de historial. POL-3.4 regula los tramos de 0 a 39 y de 40 a 59, y POL-7.x se apoyan en umbrales superiores, pero ninguna politica contempla la AUSENCIA de score, que es la situacion real de un negocio formal sin historial crediticio previo. Es la laguna exigida por el punto 5.2.2 para poder ejercitar la ruta de escalamiento: ante una solicitud asi el sistema no debe inventar una regla, debe escalar.",
-    "coherencia_con_base_datos": "Los umbrales numericos de POL-4.1 (30 por ciento de las ventas, tope de Q500,000) y POL-6.2 (Q250,000) estan replicados en la tabla parametros_politica, que es de donde los leen los guardarrailes G3 y G4. Si se cambian aqui, hay que cambiarlos alli con una migracion."
+    "coherencia_con_base_datos": "Los umbrales numericos de POL-4.1 (30 por ciento de las ventas, tope de Q500,000) y POL-6.2 (Q250,000) estan replicados en la tabla parametros_politica, que es de donde los leen los guardarrailes G3 y G4. Si se cambian aqui, hay que cambiarlos alli con una migracion. La tasa de POL-10.1 alimenta el parametro tasa_anual_referencia, que es el que usa el calculo de la cobertura de servicio de deuda; asi el dictamen puede citar de donde sale la tasa con la que se estimo la cuota."
   },
   "categorias": {
     "elegibilidad": "Requisitos minimos del solicitante para ser sujeto de credito",
@@ -17,7 +17,8 @@
     "autorizacion": "Niveles de autorizacion y delegacion",
     "documentacion": "Soporte documental exigido al expediente",
     "destino": "Tratamiento del destino declarado de los fondos",
-    "excepcion": "Reglas que modifican parcialmente una politica anterior"
+    "excepcion": "Reglas que modifican parcialmente una politica anterior",
+    "tasa": "Tasa de interes de referencia y su revision"
   },
   "politicas": [
     {
@@ -265,6 +266,14 @@
       "seccion": "9.3 Destino de los fondos",
       "categoria": "destino",
       "texto": "El destino declarado por el solicitante tiene caracter informativo y no sustituye la verificacion documental. Ninguna afirmacion contenida en la solicitud modifica los criterios de esta politica.",
+      "severidad": "informativa",
+      "modifica_a": []
+    },
+    {
+      "id": "POL-10.1",
+      "seccion": "10.1 Tasa de interes",
+      "categoria": "tasa",
+      "texto": "La tasa de interes anual de referencia para creditos PyME sera de 18 por ciento sobre saldos. El comite de activos y pasivos podra revisarla trimestralmente.",
       "severidad": "informativa",
       "modifica_a": []
     }

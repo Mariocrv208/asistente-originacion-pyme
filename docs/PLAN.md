@@ -12,6 +12,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M3 — Corpus de políticas — COMPLETADO.**
 
+**M4 — Núcleo financiero en decimal exacto — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos

@@ -51,21 +51,22 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 ### Comandos útiles
 
-| Comando                 | Qué hace                                              |
-| ----------------------- | ----------------------------------------------------- |
-| `pnpm dev`              | Levanta API y frontend en paralelo                    |
-| `pnpm dev:api`          | Solo la API                                           |
-| `pnpm dev:web`          | Solo el frontend                                      |
-| `pnpm typecheck`        | Comprobación de tipos en todo el monorepo             |
-| `pnpm lint`             | ESLint                                                |
-| `pnpm format`           | Prettier en modo escritura                            |
-| `pnpm db:up`            | Arranca PostgreSQL                                    |
-| `pnpm db:migrate`       | Aplica las migraciones pendientes                     |
-| `pnpm db:verificar`     | Comprueba que las restricciones rechazan lo que deben |
-| `pnpm corpus:cargar`    | Carga el corpus de políticas (idempotente)            |
-| `pnpm corpus:verificar` | Integridad del corpus y verificación de citas         |
-| `pnpm db:psql`          | Abre una sesión `psql` contra el contenedor           |
-| `pnpm db:nuke`          | Destruye el contenedor **y su volumen de datos**      |
+| Comando                   | Qué hace                                              |
+| ------------------------- | ----------------------------------------------------- |
+| `pnpm dev`                | Levanta API y frontend en paralelo                    |
+| `pnpm dev:api`            | Solo la API                                           |
+| `pnpm dev:web`            | Solo el frontend                                      |
+| `pnpm typecheck`          | Comprobación de tipos en todo el monorepo             |
+| `pnpm lint`               | ESLint                                                |
+| `pnpm format`             | Prettier en modo escritura                            |
+| `pnpm db:up`              | Arranca PostgreSQL                                    |
+| `pnpm db:migrate`         | Aplica las migraciones pendientes                     |
+| `pnpm db:verificar`       | Comprueba que las restricciones rechazan lo que deben |
+| `pnpm corpus:cargar`      | Carga el corpus de políticas (idempotente)            |
+| `pnpm corpus:verificar`   | Integridad del corpus y verificación de citas         |
+| `pnpm finanzas:verificar` | Amortización, redondeo e indicadores del punto 5.3.1  |
+| `pnpm db:psql`            | Abre una sesión `psql` contra el contenedor           |
+| `pnpm db:nuke`            | Destruye el contenedor **y su volumen de datos**      |
 
 ### Variables de entorno
 
@@ -203,6 +204,80 @@ Tres decisiones del verificador que conviene conocer:
 Las 24 comprobaciones de `pnpm corpus:verificar` cubren los tres bloques:
 integridad del corpus, aceptación y rechazo de citas, y coherencia entre el
 JSON, la base de datos y los umbrales que aplican G3 y G4.
+
+## Núcleo financiero
+
+Todo el cálculo monetario pasa por `decimal.js`. El driver de PostgreSQL
+devuelve `NUMERIC` como cadena y esa cadena entra directamente a `Decimal`: un
+importe del sistema nunca toca el punto flotante binario en ningún tramo del
+recorrido.
+
+### Las tres decisiones que siempre generan incidentes
+
+El punto 2.6 del cuestionario pregunta exactamente por ellas. Están resueltas en
+`apps/api/src/domain/finanzas/` y explicadas donde se toman.
+
+**Dónde redondear.** En dos puntos y solo dos: la cuota nivelada, una vez al
+final de la fórmula de anualidad, y el interés de cada período, porque es lo que
+se cobra y lo que se contabiliza. La potencia y la división intermedias se hacen
+con 34 dígitos. Redondear dentro de la fórmula arrastraría el error a las 360
+cuotas; no redondear nunca produciría importes que no existen en centavos.
+
+**Cómo se reparte el residuo.** La última cuota amortiza todo el saldo restante y
+su importe se recalcula como capital más interés. Por construcción, entonces: la
+suma de los capitales es exactamente el principal, la suma de las cuotas es
+exactamente capital más intereses, y el saldo final es cero exacto. Se aplica al
+final y no repartido entre las primeras cuotas porque «cuota nivelada» es una
+promesa al cliente: todas las cuotas menos una son idénticas.
+
+**Qué regla de redondeo.** Mitad al par, no mitad hacia arriba. La diferencia es
+irrelevante en una operación y decisiva en cientos de miles. El verificador lo
+mide sobre 100 000 empates exactos: mitad al par acumula **0.00** de sesgo, mitad
+hacia arriba acumula **+500.00** cobrados de más sin ninguna base.
+
+> Un matiz que se descubrió construyendo esa medición: si todos los empates se
+> generan en la posición `.005`, las candidatas son siempre `.00` y `.01`, y como
+> el cero es par, mitad al par los baja **todos**. Esa muestra no mide el sesgo de
+> la regla sino el de la muestra. Los empates tienen que repartirse por toda la
+> escala de centavos, que es la situación real de una cartera.
+
+### Por qué `saldo == 0` es peligroso
+
+Con punto flotante la comparación es una trampa: tras 240 restas el saldo vale
+algo como `3.517`, nunca cero, y el crédito queda vivo devengando intereses sobre
+un residuo que nadie sabe explicar. El verificador lo demuestra con la misma
+tabla calculada en `number`.
+
+Con `decimal.js` el cero exacto sí es alcanzable, y esta implementación lo
+garantiza. Pero la comparación sigue sin poder escribirse como `saldo === 0`,
+porque un `Decimal` es un objeto y esa expresión compara referencias. De ahí que
+exista `estaLiquidado()` y que ningún otro punto del código compare saldos a
+mano.
+
+### El residuo, medido
+
+Redondear la cuota a centavos y mantenerla fija hace que la diferencia se acumule
+período a período, así que el residuo crece con el plazo y con la tasa. Los
+números reales: un céntimo a 24 meses, Q3.53 a 240, Q13.20 a 360.
+
+Lo que importa es el envolvente real del producto — POL-10.1 fija la tasa en 18 %
+y POL-4.6 limita el plazo a 84 meses. Dentro de ese rango el peor ajuste medido
+es de **Q0.58**, que es lo que el cliente verá en su última cuota.
+
+### La tabla es iterativa, no recursiva
+
+Una implementación con una llamada por cuota parece elegante y es una bomba: con
+240 o 360 meses cada crédito abre esa profundidad de pila, y el proceso nocturno
+que recalcula 500 000 créditos en paralelo multiplica el consumo por hilo. V8 no
+aplica optimización de llamada de cola —se especificó en ES2015 y no se
+implementó—, así que en Node la recursión aquí no tiene red de seguridad.
+
+### Verificación
+
+`pnpm finanzas:verificar` ejecuta 82 comprobaciones en cuatro bloques. Los valores
+esperados de la cuota nivelada **no salen de esta implementación**: se calcularon
+aparte con el módulo `decimal` de Python, para que la prueba no sea circular.
+Ambas coinciden al centavo sobre plazos de 24, 36, 240 y 360 meses.
 
 ## Documentación
 
