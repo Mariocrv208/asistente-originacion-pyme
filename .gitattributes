@@ -1,0 +1,23 @@
+# Normalización de fin de línea: LF en el repositorio, nativo en el working copy.
+* text=auto eol=lf
+
+# Binarios: nunca convertir.
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.onnx  binary
+*.bin   binary
+
+# Scripts de shell y SQL siempre con LF, incluso en Windows.
+*.sh    text eol=lf
+*.sql   text eol=lf
+
+# Ficheros generados: no ensuciar los diffs ni contar en las estadísticas.
+pnpm-lock.yaml   linguist-generated=true -diff
+eval-results/*   linguist-generated=true
