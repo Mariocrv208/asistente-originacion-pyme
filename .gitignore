@@ -27,3 +27,6 @@ eval-results/*.json
 
 # Volúmenes locales de Postgres
 .docker-data/
+
+# Config local de Claude Code: launch.json si se versiona, ajustes personales no.
+.claude/settings.local.json

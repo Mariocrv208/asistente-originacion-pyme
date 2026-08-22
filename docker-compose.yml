@@ -1,0 +1,31 @@
+services:
+  db:
+    # Imagen oficial de pgvector: trae la extension ya compilada, sin pasos manuales.
+    image: pgvector/pgvector:pg16
+    container_name: aop-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: originacion
+      POSTGRES_PASSWORD: originacion
+      POSTGRES_DB: originacion
+      # Comparacion e ordenamiento deterministas: el corpus de politicas y los
+      # nombres de empresa llevan acentos, y el verificador de citas de G1
+      # depende de que la normalizacion sea estable.
+      POSTGRES_INITDB_ARGS: '--encoding=UTF8 --locale=C'
+    ports:
+      # 5432, 5433 y 5434 ya estan ocupados por otros Postgres de la maquina.
+      # Con puerto ocupado, Windows deja que ambos escuchen y gana el proceso
+      # local: la conexion parece funcionar pero apunta a la base equivocada.
+      - '5440:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./infra/db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U originacion -d originacion']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  db-data:
