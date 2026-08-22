@@ -19,7 +19,9 @@
     "db:down": "docker compose down",
     "db:logs": "docker compose logs -f db",
     "db:psql": "docker compose exec db psql -U originacion -d originacion",
-    "db:nuke": "docker compose down -v"
+    "db:nuke": "docker compose down -v",
+    "db:migrate": "pnpm --filter @aop/api db:migrate",
+    "db:verificar": "pnpm --filter @aop/api db:verificar"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
