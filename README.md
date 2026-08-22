@@ -51,19 +51,21 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 ### Comandos útiles
 
-| Comando             | Qué hace                                              |
-| ------------------- | ----------------------------------------------------- |
-| `pnpm dev`          | Levanta API y frontend en paralelo                    |
-| `pnpm dev:api`      | Solo la API                                           |
-| `pnpm dev:web`      | Solo el frontend                                      |
-| `pnpm typecheck`    | Comprobación de tipos en todo el monorepo             |
-| `pnpm lint`         | ESLint                                                |
-| `pnpm format`       | Prettier en modo escritura                            |
-| `pnpm db:up`        | Arranca PostgreSQL                                    |
-| `pnpm db:migrate`   | Aplica las migraciones pendientes                     |
-| `pnpm db:verificar` | Comprueba que las restricciones rechazan lo que deben |
-| `pnpm db:psql`      | Abre una sesión `psql` contra el contenedor           |
-| `pnpm db:nuke`      | Destruye el contenedor **y su volumen de datos**      |
+| Comando                 | Qué hace                                              |
+| ----------------------- | ----------------------------------------------------- |
+| `pnpm dev`              | Levanta API y frontend en paralelo                    |
+| `pnpm dev:api`          | Solo la API                                           |
+| `pnpm dev:web`          | Solo el frontend                                      |
+| `pnpm typecheck`        | Comprobación de tipos en todo el monorepo             |
+| `pnpm lint`             | ESLint                                                |
+| `pnpm format`           | Prettier en modo escritura                            |
+| `pnpm db:up`            | Arranca PostgreSQL                                    |
+| `pnpm db:migrate`       | Aplica las migraciones pendientes                     |
+| `pnpm db:verificar`     | Comprueba que las restricciones rechazan lo que deben |
+| `pnpm corpus:cargar`    | Carga el corpus de políticas (idempotente)            |
+| `pnpm corpus:verificar` | Integridad del corpus y verificación de citas         |
+| `pnpm db:psql`          | Abre una sesión `psql` contra el contenedor           |
+| `pnpm db:nuke`          | Destruye el contenedor **y su volumen de datos**      |
 
 ### Variables de entorno
 
@@ -147,6 +149,60 @@ menos cinco solicitudes lleguen con datos incompletos o inconsistentes, así que
 son entrada legítima del sistema y no datos corruptos. Detectarlas es trabajo de
 la capa de dominio, que las reporta como hallazgo del dictamen; rechazarlas en el
 esquema haría imposible ejercitar el caso que el propio examen pide probar.
+
+## Corpus de políticas
+
+`data/politicas.json` extiende el archivo de ejemplo del enunciado de 8 a **31
+políticas** en 10 categorías. Se carga con `pnpm corpus:cargar`, que es
+idempotente, y se comprueba con `pnpm corpus:verificar`.
+
+Las ocho políticas originales conservan su texto **exactamente** como se
+entregó, sin corregirles la falta de tildes. No es descuido: G1 verifica
+literalidad contra el corpus, y reescribir el texto de referencia habría
+falseado esa verificación. Las políticas añadidas usan ortografía normal, y la
+normalización de acentos hace que la comparación funcione igual en ambos casos.
+
+### Lo que el corpus contiene a propósito
+
+**Tres excepciones parciales.** POL-7.3 relaja POL-2.3, POL-7.5 relaja POL-1.2 y
+POL-7.7 relaja POL-2.7. En los tres casos la excepción no sustituye a la regla
+general, la modifica bajo condiciones. Es el caso difícil que el enunciado pide
+ejercitar, y la relación queda explícita en la columna `modifica_a` en vez de
+confiarse a que la búsqueda por similitud traiga ambas juntas por casualidad.
+
+**Una laguna deliberada.** Ninguna política dice nada sobre solicitantes **sin
+score de historial**. POL-3.4 regula los tramos de 0 a 39 y de 40 a 59, y las
+excepciones se apoyan en umbrales superiores, pero la _ausencia_ de score —la
+situación real de un negocio formal sin historial crediticio previo— no está
+cubierta. Ante un caso así el sistema no debe inventar una regla: debe escalar.
+
+Esa laguna es frágil, porque es fácil taparla sin querer al añadir políticas. Por
+eso `pnpm corpus:verificar` incluye una comprobación que falla si alguna política
+llega a regularla: si se tapa, el caso de escalamiento por falta de política
+aplicable que exige el punto 5.3.6 deja de existir.
+
+### Verificación de citas (base de G1)
+
+`normalizar()` es la única autoridad sobre qué significa «el mismo texto». Ignora
+acentos, mayúsculas, espacios y comillas tipográficas —diferencias de forma que
+un modelo introduce al copiar— pero **no** ignora números ni palabras: citar
+«0.75» donde el corpus dice «0.65» es inventar una política, y es exactamente el
+fallo que G1 debe atrapar.
+
+Tres decisiones del verificador que conviene conocer:
+
+- **Se verifica contra la política que la cita declara**, no contra el corpus
+  entero. Un texto puede ser literal de POL-2.3 y estar atribuido a POL-4.1; esa
+  cita sustenta la decisión con la política equivocada, y buscar en todo el
+  corpus la daría por buena.
+- **Se admite citar un fragmento contiguo**, no solo la política completa: un
+  dictamen suele apoyarse en la cláusula concreta.
+- **Hay una longitud mínima de 25 caracteres normalizados.** Sin ella, citar la
+  palabra «el» pasaría la comprobación de literalidad.
+
+Las 24 comprobaciones de `pnpm corpus:verificar` cubren los tres bloques:
+integridad del corpus, aceptación y rechazo de citas, y coherencia entre el
+JSON, la base de datos y los umbrales que aplican G3 y G4.
 
 ## Documentación
 

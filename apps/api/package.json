@@ -8,7 +8,9 @@
     "start": "tsx --env-file-if-exists=../../.env src/index.ts",
     "typecheck": "tsc --noEmit",
     "db:migrate": "tsx --env-file-if-exists=../../.env src/db/migrate.ts",
-    "db:verificar": "tsx --env-file-if-exists=../../.env src/db/verificar-restricciones.ts"
+    "db:verificar": "tsx --env-file-if-exists=../../.env src/db/verificar-restricciones.ts",
+    "corpus:cargar": "tsx --env-file-if-exists=../../.env src/domain/politicas/cargar.ts",
+    "corpus:verificar": "tsx --env-file-if-exists=../../.env src/domain/politicas/verificar-corpus.ts"
   },
   "dependencies": {
     "@aop/shared": "workspace:*",

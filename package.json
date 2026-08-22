@@ -21,7 +21,9 @@
     "db:psql": "docker compose exec db psql -U originacion -d originacion",
     "db:nuke": "docker compose down -v",
     "db:migrate": "pnpm --filter @aop/api db:migrate",
-    "db:verificar": "pnpm --filter @aop/api db:verificar"
+    "db:verificar": "pnpm --filter @aop/api db:verificar",
+    "corpus:cargar": "pnpm --filter @aop/api corpus:cargar",
+    "corpus:verificar": "pnpm --filter @aop/api corpus:verificar"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
