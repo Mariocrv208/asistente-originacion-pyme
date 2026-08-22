@@ -1,0 +1,45 @@
+/*
+ * Estilos minimos del andamiaje (M1).
+ * El sistema de diseno real —tokens, primitivas, tema oscuro especializado—
+ * llega en M13 y reemplaza este archivo. Aqui solo hay lo justo para que la
+ * pantalla de verificacion sea legible.
+ */
+
+:root {
+  --fondo: #0b0f14;
+  --superficie: #121820;
+  --borde: #1f2a36;
+  --texto: #e6edf3;
+  --texto-tenue: #8b98a5;
+  --ok: #3fb950;
+  --error: #f85149;
+  --pendiente: #d29922;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre {
+  font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.86em;
+}
