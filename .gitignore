@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+.turbo/
+coverage/
+
+.env
+.env.*
+!.env.example
+
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+.DS_Store
+Thumbs.db
+
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Artefactos de ejecución
+apps/api/.cache/
+apps/api/models/
+eval-results/*.json
+!eval-results/.gitkeep
+
+# Volúmenes locales de Postgres
+.docker-data/
