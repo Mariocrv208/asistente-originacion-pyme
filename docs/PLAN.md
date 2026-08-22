@@ -8,6 +8,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M1 — Andamiaje del monorepo e infraestructura local — COMPLETADO.**
 
+**M2 — Esquema de base de datos y migraciones — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos

@@ -51,17 +51,19 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 ### Comandos útiles
 
-| Comando          | Qué hace                                         |
-| ---------------- | ------------------------------------------------ |
-| `pnpm dev`       | Levanta API y frontend en paralelo               |
-| `pnpm dev:api`   | Solo la API                                      |
-| `pnpm dev:web`   | Solo el frontend                                 |
-| `pnpm typecheck` | Comprobación de tipos en todo el monorepo        |
-| `pnpm lint`      | ESLint                                           |
-| `pnpm format`    | Prettier en modo escritura                       |
-| `pnpm db:up`     | Arranca PostgreSQL                               |
-| `pnpm db:psql`   | Abre una sesión `psql` contra el contenedor      |
-| `pnpm db:nuke`   | Destruye el contenedor **y su volumen de datos** |
+| Comando             | Qué hace                                              |
+| ------------------- | ----------------------------------------------------- |
+| `pnpm dev`          | Levanta API y frontend en paralelo                    |
+| `pnpm dev:api`      | Solo la API                                           |
+| `pnpm dev:web`      | Solo el frontend                                      |
+| `pnpm typecheck`    | Comprobación de tipos en todo el monorepo             |
+| `pnpm lint`         | ESLint                                                |
+| `pnpm format`       | Prettier en modo escritura                            |
+| `pnpm db:up`        | Arranca PostgreSQL                                    |
+| `pnpm db:migrate`   | Aplica las migraciones pendientes                     |
+| `pnpm db:verificar` | Comprueba que las restricciones rechazan lo que deben |
+| `pnpm db:psql`      | Abre una sesión `psql` contra el contenedor           |
+| `pnpm db:nuke`      | Destruye el contenedor **y su volumen de datos**      |
 
 ### Variables de entorno
 
@@ -70,6 +72,81 @@ manual es `OPENROUTER_API_KEY`, que se obtiene en
 <https://openrouter.ai/keys> y **no se necesita hasta el módulo M7**: toda la
 parte determinista del sistema —cálculo de indicadores, corpus de políticas,
 guardarraíles— se desarrolla y se evalúa sin credenciales.
+
+## Esquema de base de datos
+
+Seis migraciones SQL versionadas en `apps/api/src/db/migrations`, aplicadas por
+un ejecutor propio (`pnpm db:migrate`) que corre cada una en su propia
+transacción, registra un checksum del archivo y se niega a continuar si una
+migración ya aplicada cambió después.
+
+### Estrategia de precálculo de indicadores (punto 5.3.1)
+
+El enunciado ofrece cuatro caminos —vista materializada, columna generada,
+trigger o caché en aplicación— y pide justificar el elegido y su invalidación.
+
+**Elegido: tabla materializada por la aplicación, con invalidación por trigger.**
+
+Cuatro de los cinco indicadores son cocientes de columnas de la misma fila y
+serían columnas generadas `STORED` sin ningún esfuerzo. La opción es tentadora
+porque hace la invalidación imposible de equivocar: PostgreSQL las recalcula
+solo. Aun así se descarta, por dos razones.
+
+La primera es literal: el punto 5.3.1 exige que el cálculo ocurra **en código**
+con el tipo decimal exacto del lenguaje, y una columna generada lo haría en SQL.
+
+La segunda importa más. El guardarraíl G2 rechaza la persistencia cuando un
+indicador del dictamen no coincide con la salida de `calcular_indicadores`.
+Para que esa comparación signifique algo, `calcular_indicadores` tiene que ser
+la única fuente de verdad. Una columna generada sería una segunda
+implementación del mismo cálculo, en otro lenguaje y con otras reglas de
+redondeo, capaz de discrepar en silencio. G2 existe precisamente para impedir
+que haya dos fuentes; introducir una segunda por comodidad vaciaría de
+contenido el guardarraíl.
+
+El quinto indicador cierra el argumento: la cobertura de servicio de deuda
+depende de la cuota anual del crédito nuevo, que sale de la fórmula de
+amortización y de una tasa que no vive en la fila. Ninguna columna generada
+puede calcularla.
+
+**Invalidación: la ausencia de fila es la invalidación.** Un trigger sobre
+`solicitudes` borra la fila de `indicadores_solicitud` en cuanto cambia alguna
+entrada del cálculo. No existe el estado «calculado pero obsoleto», que es donde
+suelen esconderse los errores de un caché. La vista
+`solicitudes_sin_indicadores` muestra de un vistazo qué falta recalcular. Como
+defensa en profundidad, cada fila guarda además una huella de sus entradas y la
+versión del algoritmo, de modo que una carga que se saltara el trigger quedaría
+delatada por la discrepancia.
+
+### Los guardarraíles que vive la base de datos
+
+G3 exige, palabra del enunciado, «una restricción a nivel de base de datos, no
+solo validación en aplicación». Un `CHECK` solo ve columnas de su propia fila,
+así que el monto solicitado y el tope de política se materializan en la fila del
+dictamen. El detalle que hace que la restricción sea real: **esos dos valores
+los escribe un trigger**, derivándolos de la solicitud y de la tabla
+`parametros_politica`. Si los escribiera la aplicación, bastaría con enviar un
+tope inflado para burlar el `CHECK`.
+
+G4 vive en una máquina de estados con triggers: ningún dictamen nace en firme,
+las transiciones válidas son explícitas, y el contenido y las citas de un
+dictamen que salió de `PENDIENTE_AUTORIZACION` dejan de ser modificables. Un
+expediente reescribible después de firmado no sirve como evidencia de auditoría,
+que es justo el hallazgo recurrente que el sistema viene a resolver.
+
+`pnpm db:verificar` demuestra lo anterior atacando la base de datos por SQL
+directo, sin pasar por la aplicación: 23 comprobaciones que verifican tanto que
+lo inválido se rechaza como que lo legítimo pasa.
+
+### Datos deliberadamente laxos
+
+Las columnas financieras de `solicitudes` admiten `NULL` y no hay ninguna
+restricción entre columnas: nada impide que los pasivos superen a los activos o
+que la utilidad supere a las ventas. Es intencional. El punto 5.2.1 exige que al
+menos cinco solicitudes lleguen con datos incompletos o inconsistentes, así que
+son entrada legítima del sistema y no datos corruptos. Detectarlas es trabajo de
+la capa de dominio, que las reporta como hallazgo del dictamen; rechazarlas en el
+esquema haría imposible ejercitar el caso que el propio examen pide probar.
 
 ## Documentación
 
