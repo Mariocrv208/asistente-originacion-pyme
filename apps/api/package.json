@@ -11,7 +11,10 @@
     "db:verificar": "tsx --env-file-if-exists=../../.env src/db/verificar-restricciones.ts",
     "corpus:cargar": "tsx --env-file-if-exists=../../.env src/domain/politicas/cargar.ts",
     "corpus:verificar": "tsx --env-file-if-exists=../../.env src/domain/politicas/verificar-corpus.ts",
-    "finanzas:verificar": "tsx --env-file-if-exists=../../.env src/domain/indicadores/verificar.ts"
+    "finanzas:verificar": "tsx --env-file-if-exists=../../.env src/domain/indicadores/verificar.ts",
+    "datos:generar": "tsx --env-file-if-exists=../../.env src/datos/generar.ts",
+    "datos:sembrar": "tsx --env-file-if-exists=../../.env src/datos/sembrar.ts",
+    "datos:verificar": "tsx --env-file-if-exists=../../.env src/datos/verificar.ts"
   },
   "dependencies": {
     "@aop/shared": "workspace:*",

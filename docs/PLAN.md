@@ -14,6 +14,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M4 — Núcleo financiero en decimal exacto — COMPLETADO.**
 
+**M5 — Generación de datos sintéticos — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos
