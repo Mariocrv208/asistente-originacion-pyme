@@ -14,3 +14,4 @@
 export * from './health.js';
 export * from './politicas.js';
 export * from './indicadores.js';
+export * from './solicitudes.js';

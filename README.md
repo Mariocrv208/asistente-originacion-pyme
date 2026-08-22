@@ -65,6 +65,9 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 | `pnpm corpus:cargar`      | Carga el corpus de políticas (idempotente)            |
 | `pnpm corpus:verificar`   | Integridad del corpus y verificación de citas         |
 | `pnpm finanzas:verificar` | Amortización, redondeo e indicadores del punto 5.3.1  |
+| `pnpm datos:generar`      | Regenera `data/dataset.json` de forma determinista    |
+| `pnpm datos:sembrar`      | Siembra el conjunto en la base de datos               |
+| `pnpm datos:verificar`    | Determinismo, exigencias del 5.2.1 y cobertura        |
 | `pnpm db:psql`            | Abre una sesión `psql` contra el contenedor           |
 | `pnpm db:nuke`            | Destruye el contenedor **y su volumen de datos**      |
 
@@ -278,6 +281,68 @@ implementó—, así que en Node la recursión aquí no tiene red de seguridad.
 esperados de la cuota nivelada **no salen de esta implementación**: se calcularon
 aparte con el módulo `decimal` de Python, para que la prueba no sea circular.
 Ambas coinciden al centavo sobre plazos de 24, 36, 240 y 360 meses.
+
+## Conjunto de datos sintéticos
+
+`data/dataset.json` contiene **210 solicitudes** y **78 dictámenes históricos**.
+Se regenera con `pnpm datos:generar` y se siembra con `pnpm datos:sembrar`.
+
+### Determinismo
+
+Nada aquí usa `Math.random()` ni `new Date()`. Hay una semilla fija, un
+generador `mulberry32` propio y una fecha de referencia constante. Los UUID se
+derivan de un hash en vez de `gen_random_uuid()`.
+
+No es purismo: los diez casos de evaluación de M18 apuntan a solicitudes
+concretas por su identificador. Si los datos cambiaran entre ejecuciones, el
+banco de pruebas dejaría de referirse a los mismos casos y no valdría nada.
+
+`pnpm datos:verificar` comprueba el determinismo de dos formas: generando dos
+veces en memoria, y comparando contra el archivo en disco. La segunda es la que
+importa, porque detecta que alguien editó el JSON a mano.
+
+### Lo que el conjunto contiene a propósito
+
+| Rasgo                                        | Casos | Para qué                                        |
+| -------------------------------------------- | ----- | ----------------------------------------------- |
+| Intentos de manipulación en `destino_fondos` | 4     | Verificar G5 (el mínimo son 3)                  |
+| Datos incompletos o inconsistentes           | 6     | POL-8.4 y casos adversariales (el mínimo son 5) |
+| Endeudamiento sobre 0.65 sin hipoteca        | 32    | Rechazo por POL-2.3                             |
+| Antigüedad bajo 24 meses                     | 14    | Rechazo por POL-1.2                             |
+| Score bajo 40                                | 18    | Rechazo por POL-3.4                             |
+| Monto sobre el 30 % de las ventas            | 34    | Rechazo por POL-4.1                             |
+| Monto sobre Q250 000                         | 19    | Escalamiento por monto (POL-6.2)                |
+| Score ausente                                | 8     | Escalamiento por falta de política aplicable    |
+| Sin ningún rasgo bloqueante                  | 93    | Aprobación clara                                |
+
+El verificador comprueba que cada bucket tenga material suficiente. Es lo que
+garantiza que el punto 5.3.6 —tres rechazos por motivos de política **distintos**
+y dos escalamientos de tipos diferentes— sea construible.
+
+Los cuatro intentos de manipulación se guardan **sin sanear**. Sanearlos al
+escribir destruiría la evidencia con la que se verifica G5: el aislamiento
+ocurre al construir el contexto del agente, no al guardar el dato.
+
+### Una distribución que hubo que corregir
+
+La primera versión del generador derivaba el monto de unas ventas log-uniformes
+de hasta 7,5 millones, y el resultado fue que **120 de 210 solicitudes superaban
+los Q250 000**: el 57 % escalaba a comité y el conjunto perdía capacidad de
+discriminar entre caminos de decisión. Ahora el monto ordinario se topa por
+debajo del umbral y solo los perfiles marcados lo superan, que es la forma de
+una cartera PyME real.
+
+### Los históricos recorren su ciclo de vida
+
+El sembrador no escribe el estado final de golpe: inserta el dictamen en
+`PENDIENTE_AUTORIZACION`, le añade sus citas y solo entonces lo confirma con un
+`UPDATE`.
+
+No es una florituras. El trigger `trg_citas_inmutables` rechaza añadir citas a un
+dictamen que ya salió de `PENDIENTE_AUTORIZACION`, así que insertarlo
+directamente como `EN_FIRME` haría imposible citarlo. Que la siembra tenga que
+respetar el ciclo es una confirmación de que la máquina de estados de G4 funciona
+también contra datos realistas, y no solo contra el script de M2.
 
 ## Documentación
 

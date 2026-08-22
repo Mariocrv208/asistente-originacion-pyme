@@ -24,7 +24,10 @@
     "db:verificar": "pnpm --filter @aop/api db:verificar",
     "corpus:cargar": "pnpm --filter @aop/api corpus:cargar",
     "corpus:verificar": "pnpm --filter @aop/api corpus:verificar",
-    "finanzas:verificar": "pnpm --filter @aop/api finanzas:verificar"
+    "finanzas:verificar": "pnpm --filter @aop/api finanzas:verificar",
+    "datos:generar": "pnpm --filter @aop/api datos:generar",
+    "datos:sembrar": "pnpm --filter @aop/api datos:sembrar",
+    "datos:verificar": "pnpm --filter @aop/api datos:verificar"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
