@@ -118,6 +118,7 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 | `pnpm llm:modelos`                | Lista los modelos gratuitos aptos del catálogo actual     |
 | `pnpm api:verificar`              | Endpoints, errores, confirmación G4 y formato SSE         |
 | `pnpm eval`                       | Ejecuta los diez casos de evaluación y escribe el informe |
+| `pnpm eval:verificar`             | Comprueba la acumulación del informe, sin gastar cuota    |
 | `pnpm db:psql`                    | Abre una sesión `psql` contra el contenedor               |
 | `pnpm db:nuke`                    | Destruye el contenedor **y su volumen de datos**          |
 
@@ -725,8 +726,32 @@ real.
 
 ## Banco de evaluación
 
-`pnpm eval` ejecuta los diez casos del punto 5.3.6 y escribe el informe en
-`eval-results/ultima.json`. `pnpm eval --caso R2` corre uno solo.
+### Cómo ejecutarlo, y por qué se ejecuta por tandas
+
+La capa gratuita de OpenRouter permite **50 peticiones al día** y una ejecución
+del agente consume entre 6 y 12. Los diez casos **no caben en un día**, así que el
+informe **acumula** en `eval-results/ultima.json` en vez de sobrescribirse: de otro
+modo, una evaluación repartida en dos días dejaría dos informes sueltos en lugar
+del entregable único que pide el punto 5.3.6.
+
+```bash
+pnpm eval                  # ejecuta solo los casos que falten
+pnpm eval --caso A1,A2,A3  # ejecuta varios concretos
+pnpm eval --todos          # reejecuta los diez
+```
+
+Por defecto se ejecutan **solo los casos sin resultado**, así que reanudar al día
+siguiente es volver a lanzar `pnpm eval`. Si la cuota se agota a mitad, la tanda
+corta ahí, **conserva lo ya ejecutado** y dice cuántos faltan.
+
+Cada caso guarda cuándo se ejecutó y con qué modelo, porque en una evaluación
+repartida en varios días esas dos cosas pueden cambiar y un resultado sin ellas
+no se puede comparar con otro.
+
+`pnpm eval:verificar` comprueba el mecanismo de acumulación sin gastar cuota. Es
+la única parte que no se puede permitir que falle: si una tanda borrara la
+anterior, el fallo aparecería el último día, con la cuota ya gastada y sin margen
+para repetir.
 
 ### Cómo se eligieron los casos
 

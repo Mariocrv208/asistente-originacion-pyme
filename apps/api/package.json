@@ -18,7 +18,8 @@
     "recuperacion:verificar": "tsx --env-file-if-exists=../../.env src/domain/politicas/verificar-recuperacion.ts",
     "agente:verificar": "tsx --env-file-if-exists=../../.env src/agent/verificar.ts",
     "api:verificar": "tsx --env-file-if-exists=../../.env src/http/verificar.ts",
-    "eval": "tsx --env-file-if-exists=../../.env src/eval/ejecutar.ts"
+    "eval": "tsx --env-file-if-exists=../../.env src/eval/ejecutar.ts",
+    "eval:verificar": "tsx --env-file-if-exists=../../.env src/eval/verificar-informe.ts"
   },
   "dependencies": {
     "@aop/shared": "workspace:*",

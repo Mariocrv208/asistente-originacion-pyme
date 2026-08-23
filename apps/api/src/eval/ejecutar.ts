@@ -1,16 +1,20 @@
 /**
  * Ejecutor del banco de evaluación (punto 5.3.6).
  *
- *   pnpm eval            ejecuta los diez casos y escribe el informe
- *   pnpm eval --caso R2  ejecuta uno solo, útil al depurar
+ *   pnpm eval                  ejecuta los casos que falten
+ *   pnpm eval --todos          reejecuta los diez, incluidos los ya hechos
+ *   pnpm eval --caso R2        ejecuta uno solo
+ *   pnpm eval --caso A1,A2,A3  ejecuta varios
  *
- * Cada caso lanza el agente de verdad contra la solicitud correspondiente. El
- * informe se escribe en eval-results/ con marca de tiempo, modelo y versión de
- * prompt, porque un resultado sin esos tres datos no se puede comparar con otro.
+ * Cada caso lanza el agente de verdad contra su solicitud. El informe se
+ * ACUMULA en eval-results/ultima.json: la capa gratuita de OpenRouter no da
+ * para los diez casos en un dia, asi que hay que correrlos por tandas y el
+ * entregable del punto 5.3.6 tiene que ser uno solo, no cinco sueltos.
+ *
+ * Por defecto se ejecutan solo los casos sin resultado, para que reanudar sea
+ * simplemente volver a lanzarlo al dia siguiente.
  */
-import { mkdir, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { join } from 'node:path';
 import { env } from '../config/env.js';
 import { pool, cerrarPool } from '../db/pool.js';
 import { ejecutarAgente } from '../agent/loop.js';
@@ -18,8 +22,7 @@ import { VERSION_PROMPT } from '../agent/prompts/v1.js';
 import { obtenerIndicadores } from '../domain/indicadores/repositorio.js';
 import { Decimal } from '../domain/finanzas/decimal.js';
 import { CASOS, DECISIONES_ADMITIDAS, type CasoEvaluacion } from './casos.js';
-
-const DIRECTORIO = join(import.meta.dirname, '../../../../eval-results');
+import { casosPendientes, fusionar, type CasoEnInforme, type Tanda } from './informe.js';
 
 /**
  * Cuota diaria agotada.
@@ -176,25 +179,46 @@ async function evaluar(caso: CasoEvaluacion, idSesion: string): Promise<Resultad
 }
 
 async function main() {
-  const filtro = process.argv.includes('--caso')
-    ? process.argv[process.argv.indexOf('--caso') + 1]
-    : undefined;
-  const casos = filtro !== undefined ? CASOS.filter((c) => c.id === filtro) : CASOS;
+  const argv = process.argv;
+  const seleccion = argv.includes('--caso') ? argv[argv.indexOf('--caso') + 1] : undefined;
 
-  if (casos.length === 0) {
+  let ids: string[];
+  if (seleccion !== undefined) {
+    ids = seleccion
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean);
+  } else if (argv.includes('--todos')) {
+    ids = CASOS.map((c) => c.id);
+  } else {
+    // Por defecto solo lo que falta: reanudar es volver a lanzarlo.
+    ids = await casosPendientes();
+  }
+
+  const desconocidos = ids.filter((id) => !CASOS.some((c) => c.id === id));
+  if (desconocidos.length > 0) {
     console.error(
-      `No existe el caso "${filtro}". Disponibles: ${CASOS.map((c) => c.id).join(', ')}`,
+      `No existen los casos: ${desconocidos.join(', ')}. ` +
+        `Disponibles: ${CASOS.map((c) => c.id).join(', ')}`,
     );
     process.exit(1);
   }
 
+  if (ids.length === 0) {
+    console.log('\n  Los diez casos ya tienen resultado. Para reejecutarlos: pnpm eval --todos\n');
+    await cerrarPool();
+    return;
+  }
+
+  const casos = CASOS.filter((c) => ids.includes(c.id));
   const idSesion = randomUUID();
   const inicio = Date.now();
-  const resultados: ResultadoCaso[] = [];
-
-  console.log(`\nBanco de evaluación · ${casos.length} casos · modelo ${env.LLM_MODEL}\n`);
-
+  const nuevos: CasoEnInforme[] = [];
   let cuotaAgotada = false;
+
+  console.log(
+    `\nBanco de evaluacion · ${casos.length} de ${CASOS.length} casos · modelo ${env.LLM_MODEL}\n`,
+  );
 
   for (const caso of casos) {
     process.stdout.write(`  ${caso.id} ${caso.titulo.slice(0, 52).padEnd(54)}`);
@@ -206,65 +230,54 @@ async function main() {
       break;
     }
 
-    resultados.push(r);
+    nuevos.push({ ...r, ejecutado_en: new Date().toISOString() });
     console.log(r.paso ? 'PASA' : 'FALLA');
     for (const c of r.condiciones.filter((x) => !x.ok)) {
-      // El detalle se recorta: los errores del proveedor traen cientos de
-      // caracteres de JSON que no aportan nada en la consola.
       console.log(`       ${c.nombre}: ${c.detalle.slice(0, 150)}`);
     }
   }
 
+  const tanda: Tanda = {
+    ejecutado_en: new Date().toISOString(),
+    modelo_configurado: env.LLM_MODEL,
+    version_prompt: VERSION_PROMPT,
+    id_sesion: idSesion,
+    casos: nuevos.map((c) => c.id),
+    duracion_ms: Date.now() - inicio,
+    interrumpida_por_cuota: cuotaAgotada,
+  };
+
+  // Se fusiona aunque la tanda se haya cortado: lo que si se ejecuto vale, y
+  // perderlo obligaria a gastar cuota otra vez para recuperarlo.
+  const informe = nuevos.length > 0 || !cuotaAgotada ? await fusionar(nuevos, tanda) : null;
+
+  if (informe !== null) {
+    console.log(
+      `\n  ${informe.resumen.pasan}/${informe.casos_con_resultado} casos pasan ` +
+        `(${informe.casos_con_resultado} de ${informe.casos_totales} con resultado)`,
+    );
+    for (const [cat, marca] of Object.entries(informe.resumen.por_categoria)) {
+      console.log(`    ${cat.padEnd(14)} ${marca}`);
+    }
+    if (informe.pendientes.length > 0) {
+      console.log(`\n  Pendientes: ${informe.pendientes.join(', ')}`);
+    }
+    console.log('\n  Informe: eval-results/ultima.json');
+  }
+
   if (cuotaAgotada) {
     console.log(
-      '\n  Se agoto la cuota diaria gratuita de OpenRouter (50 peticiones/dia).\n' +
-        '  Se reinicia a medianoche UTC. No se escribe informe: no habria nada que informar.\n' +
-        `\n  Casos completados antes de agotarla: ${resultados.length} de ${casos.length}.\n` +
-        '  Cada ejecucion del agente consume entre 6 y 12 peticiones, asi que los diez\n' +
-        '  casos no caben en un solo dia sin credito. Se pueden correr por tandas con\n' +
-        '  "pnpm eval --caso A1".\n',
+      '\n  Se agoto la cuota diaria gratuita de OpenRouter (50 peticiones al dia).\n' +
+        '  Se reinicia a medianoche UTC, las 18:00 en Guatemala.\n' +
+        `  Ejecutados en esta tanda: ${nuevos.length}. Lo ya hecho queda guardado.\n` +
+        '  Manana, "pnpm eval" retoma solo los que falten.\n',
     );
     await cerrarPool();
     process.exit(2);
   }
 
-  const pasan = resultados.filter((r) => r.paso).length;
-  const informe = {
-    generado_en: new Date().toISOString(),
-    modelo: env.LLM_MODEL,
-    modelos_reserva: env.LLM_FALLBACK_MODELS,
-    version_prompt: VERSION_PROMPT,
-    id_sesion: idSesion,
-    duracion_ms: Date.now() - inicio,
-    resumen: {
-      total: resultados.length,
-      pasan,
-      fallan: resultados.length - pasan,
-      por_categoria: Object.fromEntries(
-        ['aprobacion', 'rechazo', 'escalamiento', 'adversarial'].map((cat) => {
-          const de = resultados.filter((r) => r.categoria === cat);
-          return [cat, `${de.filter((r) => r.paso).length}/${de.length}`];
-        }),
-      ),
-    },
-    casos: resultados,
-  };
-
-  await mkdir(DIRECTORIO, { recursive: true });
-  const archivo = join(DIRECTORIO, `evaluacion-${informe.generado_en.replace(/[:.]/g, '-')}.json`);
-  await writeFile(archivo, `${JSON.stringify(informe, null, 2)}\n`, 'utf8');
-  await writeFile(join(DIRECTORIO, 'ultima.json'), `${JSON.stringify(informe, null, 2)}\n`, 'utf8');
-
-  console.log(`\n  ${pasan}/${resultados.length} casos pasan`);
-  for (const [cat, marca] of Object.entries(informe.resumen.por_categoria)) {
-    console.log(`    ${cat.padEnd(14)} ${marca}`);
-  }
-  console.log(`\n  Informe: eval-results/${archivo.split(/[\\/]/).pop()}\n`);
-
+  console.log('');
   await cerrarPool();
-  // No se sale con error si algún caso falla: el enunciado admite entregar un
-  // caso fallando siempre que se indique y se explique. Lo que no puede pasar
-  // es que el informe no quede escrito.
 }
 
 await main();
