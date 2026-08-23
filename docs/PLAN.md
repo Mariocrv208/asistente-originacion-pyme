@@ -22,6 +22,10 @@ El avance se dispara con el comando **`continua`**.
 
 **M9 — Salida estructurada y camino de fallo — COMPLETADO** (se adelantó al resolver el fallo real detectado en M7).
 
+**M11 — Persistencia idempotente y observabilidad — COMPLETADO** (junto con M7).
+
+**M12 — API HTTP y streaming — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos

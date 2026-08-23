@@ -16,7 +16,8 @@
     "datos:sembrar": "tsx --env-file-if-exists=../../.env src/datos/sembrar.ts",
     "datos:verificar": "tsx --env-file-if-exists=../../.env src/datos/verificar.ts",
     "recuperacion:verificar": "tsx --env-file-if-exists=../../.env src/domain/politicas/verificar-recuperacion.ts",
-    "agente:verificar": "tsx --env-file-if-exists=../../.env src/agent/verificar.ts"
+    "agente:verificar": "tsx --env-file-if-exists=../../.env src/agent/verificar.ts",
+    "api:verificar": "tsx --env-file-if-exists=../../.env src/http/verificar.ts"
   },
   "dependencies": {
     "@aop/shared": "workspace:*",
