@@ -72,6 +72,7 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 | `pnpm agente:verificar`           | Herramientas, guardarraíles y ejecución real del agente |
 | `pnpm agente:verificar --sin-llm` | Igual, sin gastar cuota del proveedor                   |
 | `pnpm llm:modelos`                | Lista los modelos gratuitos aptos del catálogo actual   |
+| `pnpm api:verificar`              | Endpoints, errores, confirmación G4 y formato SSE       |
 | `pnpm db:psql`                    | Abre una sesión `psql` contra el contenedor             |
 | `pnpm db:nuke`                    | Destruye el contenedor **y su volumen de datos**        |
 
@@ -516,6 +517,62 @@ verificador distingue «cuota agotada» de fallo real y lo reporta como omisión
 acepta `--sin-llm` para correr solo lo que no depende del proveedor.
 
 Conviene tenerlo en cuenta **antes de grabar el video**: hay que llegar con cuota.
+
+## API
+
+Endpoints de lectura (bandeja, detalle, dictamen, métricas, traza de ejecución),
+confirmación y anulación de dictámenes, y análisis por streaming.
+
+**Ninguna lectura toca el LLM.** Es intencional: la interfaz tiene que ser
+navegable y útil sin gastar una sola petición del proveedor, y el analista pasa
+mucho más tiempo revisando expedientes que lanzando análisis.
+
+### SSE frente a WebSockets (pregunta 3.1)
+
+El flujo es unidireccional: el servidor cuenta qué va haciendo y el cliente
+escucha. Un WebSocket daría un canal bidireccional que no se usa, a cambio de un
+protocolo aparte, otro camino de autenticación y un estado de conexión que
+mantener. SSE viaja sobre HTTP normal y hereda proxies, cabeceras y cancelación.
+
+**Por qué POST y no `EventSource`.** `EventSource` es la API estándar de SSE en el
+navegador y aquí es justo la equivocada: solo hace `GET`, no admite cuerpo ni
+cabeceras, y —lo grave— **reconecta sola**. Cada reconexión relanzaría una
+ejecución completa del agente, gastando cuota y escribiendo dictámenes
+duplicados. La idempotencia los atraparía, pero estaríamos pagando llamadas al
+modelo para descartarlas después.
+
+El cliente usa `fetch` con `ReadableStream`, que además da lo que el punto 5.3.8
+exige: **cancelación real desde el cliente** con `AbortController`, propagada
+hasta el proveedor. Si el analista cancela, el socket se cierra, la señal llega a
+la llamada en curso y la generación se corta.
+
+**Qué cambiaría con un segundo espectador.** SSE seguiría sirviendo, pero la
+ejecución dejaría de estar atada a una petición HTTP: publicaría sus pasos en un
+canal por sesión y cada espectador se suscribiría con su propio SSE. Lo que
+obliga a cambiar no es el transporte, es la propiedad de la ejecución.
+
+### Qué se emite y qué no
+
+Los eventos dicen **qué** se hizo —herramienta invocada, fuente consultada,
+resultado parcial— y nunca el contenido del prompt ni los mensajes intermedios
+del modelo. El enunciado pide comunicar que hay un sistema trabajando «sin
+exponer razonamientos internos sensibles», y esa frontera se decide aquí, en el
+servidor, no en el frontend.
+
+Hay latido cada 15 segundos: una ejecución puede durar más de lo que aguanta un
+proxy sin tráfico, y un comentario SSE mantiene viva la conexión sin ensuciar el
+flujo de eventos.
+
+### La confirmación no duplica la regla
+
+Los endpoints de confirmación y anulación **no comprueban G4 por su cuenta**: se
+limitan a intentar la transición y a traducir el rechazo de la base de datos a un
+mensaje útil. Duplicar la regla en la capa HTTP crearía una segunda versión de la
+verdad que podría separarse de la primera sin que nadie se entere.
+
+Se comprueba con un caso que lo demuestra: tras confirmar un dictamen, el
+verificador intenta devolverlo a pendiente **por SQL directo** y el trigger lo
+impide.
 
 ## Documentación
 

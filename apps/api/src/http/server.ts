@@ -5,6 +5,9 @@ import { saludSchema, type Salud } from '@aop/shared';
 import { env, hayClaveLlm, modelosLlm } from '../config/env.js';
 import { verificarModelos } from '../config/modelos.js';
 import { comprobarBaseDatos, extensionesInstaladas } from '../db/pool.js';
+import { rutasAnalizar } from './rutas/analizar.js';
+import { rutasDictamenes } from './rutas/dictamenes.js';
+import { rutasLectura } from './rutas/lectura.js';
 
 const VERSION = '0.1.0';
 const arrancadoEn = Date.now();
@@ -112,6 +115,34 @@ export async function construirServidor(): Promise<FastifyInstance> {
       },
     };
   });
+
+  // Los errores de validacion de Zod son culpa del cliente, no del servidor.
+  // Sin esto Fastify los devolveria como 500 y el frontend no podria
+  // distinguir "mandaste mal los parametros" de "el servidor se rompio".
+  app.setErrorHandler((error, _peticion, respuesta) => {
+    const zod = error as {
+      name?: string;
+      issues?: Array<{ path: (string | number)[]; message: string }>;
+    };
+    if (zod.name === 'ZodError' && Array.isArray(zod.issues)) {
+      return respuesta.code(400).send({
+        error: 'Parametros invalidos',
+        detalles: zod.issues!.map((i) => ({
+          campo: i.path.join('.') || '(raiz)',
+          mensaje: i.message,
+        })),
+      });
+    }
+    app.log.error({ error }, 'error no controlado');
+    const e = error as { statusCode?: number; message?: string };
+    return respuesta
+      .code(e.statusCode ?? 500)
+      .send({ error: e.message ?? 'Error interno del servidor' });
+  });
+
+  await app.register(rutasLectura);
+  await app.register(rutasDictamenes);
+  await app.register(rutasAnalizar);
 
   return app;
 }
