@@ -34,6 +34,10 @@ El avance se dispara con el comando **`continua`**.
 
 **M18 — Banco de evaluación — CONSTRUIDO.** Pendiente de ejecutar contra el proveedor: la cuota diaria gratuita de OpenRouter está agotada y se reinicia a medianoche UTC.
 
+**M20 — README de decisiones y bitácora — COMPLETADO.**
+
+**M21 — Cuestionario, secciones 1 a 3 — COMPLETADO.**
+
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).

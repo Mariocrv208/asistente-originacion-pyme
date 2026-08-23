@@ -779,6 +779,7 @@ cuál. Lo que no se admite es aprobar.
 ## Documentación
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.
+- [`docs/CUESTIONARIO.md`](docs/CUESTIONARIO.md) — cuestionario técnico contestado (entregable 3).
 - [`docs/BITACORA.md`](docs/BITACORA.md) — bitácora de aprendizaje (entregable 7).
 - [`docs/GITFLOW.md`](docs/GITFLOW.md) — modelo de ramas y convención de commits.
 - [`docs/PLAN.md`](docs/PLAN.md) — plan de desarrollo por módulos.
@@ -787,7 +788,7 @@ cuál. Lo que no se admite es aprobar.
 
 1. Repositorio (este).
 2. Video de demostración.
-3. Cuestionario técnico contestado — `docs/CUESTIONARIO.md`.
+3. Cuestionario técnico contestado — [`docs/CUESTIONARIO.md`](docs/CUESTIONARIO.md).
 4. README de decisiones — **este archivo**.
 5. JSON de políticas extendido — `data/politicas.json` (32 políticas).
 6. Script y resultados de los 10 casos de evaluación — `apps/api/src/eval/` y
