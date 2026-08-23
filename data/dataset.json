@@ -38,7 +38,9 @@
       "score_historial": 76,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-02-28",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "44d4fb0c-2e3c-4c2d-b78e-7407078a8452",
@@ -56,7 +58,9 @@
       "score_historial": 45,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-07",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "a51ac0df-8e40-47d5-9605-c5bdccbc1833",
@@ -74,7 +78,9 @@
       "score_historial": 80,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-27",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "37d2d9eb-eac4-4a63-b8e4-7fabf35d941f",
@@ -92,7 +98,9 @@
       "score_historial": 94,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-19",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "a3ed4c91-f43a-4af2-8743-3953a0cfd3bc",
@@ -110,7 +118,9 @@
       "score_historial": 24,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-28",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "3d700cc0-3a4b-47f2-b5ff-3970dedd653d",
@@ -128,7 +138,9 @@
       "score_historial": 80,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-07-04",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "d32eac0a-c41d-428a-a3d8-1f63bd3c5c48",
@@ -146,7 +158,9 @@
       "score_historial": 51,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-04-27",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "335602a1-fa32-44ba-a117-36f9f957408f",
@@ -164,7 +178,9 @@
       "score_historial": 84,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-04-30",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "5585ea09-26d3-4a59-b7b3-7df7db93df0a",
@@ -182,7 +198,9 @@
       "score_historial": 86,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-04-22",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "74916948-b381-4a4b-bc85-bbec74f368e9",
@@ -200,7 +218,9 @@
       "score_historial": 92,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-02",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "f25eec13-d4e0-4518-9b26-6dcd6b6ad298",
@@ -218,7 +238,9 @@
       "score_historial": 69,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-17",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "999e4a15-460e-48a0-89de-85ca27ed047f",
@@ -254,7 +276,9 @@
       "score_historial": 79,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-03-12",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "a901e677-ba3c-4ae2-848f-51909ffb4931",
@@ -344,7 +368,9 @@
       "score_historial": 24,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-25",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "d3481e55-a4cd-459a-8c06-93033b3bb85d",
@@ -362,7 +388,9 @@
       "score_historial": null,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-06-25",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "6cee68ad-952b-42ac-b95d-2b638e8b942f",
@@ -380,7 +408,9 @@
       "score_historial": 16,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-28",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "a2136b70-51a5-4cf0-b2e1-e5e06602732d",
@@ -398,7 +428,9 @@
       "score_historial": null,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-05-22",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "5cd41c5c-9d9b-4b14-a604-edcdc892d714",
@@ -434,7 +466,9 @@
       "score_historial": 67,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-05-28",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "4bcf6fab-52e9-4185-ba26-fb5df6ce4258",
@@ -488,7 +522,9 @@
       "score_historial": 18,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-03-12",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "bd82dbe5-2d77-462f-a83b-f152e827a213",
@@ -506,7 +542,9 @@
       "score_historial": 60,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-07-05",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "abc480fc-b717-408e-bf27-75d3c4ef7c1a",
@@ -524,7 +562,9 @@
       "score_historial": 91,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-27",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "e3704a49-a67b-4319-8bd6-784ba7cd9565",
@@ -560,7 +600,9 @@
       "score_historial": 70,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-20",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "b342ff21-d4c9-4768-b491-0b4a994fac08",
@@ -578,7 +620,9 @@
       "score_historial": null,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-03-07",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "56b71b17-57ce-49a5-b56b-7aa667b547d1",
@@ -614,7 +658,9 @@
       "score_historial": 46,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-11",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "b0fbee57-c7e9-45f1-893f-0beda99003f7",
@@ -632,7 +678,9 @@
       "score_historial": 65,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-02",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "026f27dd-3ce1-4f8b-a43b-40f8d7101ed2",
@@ -650,7 +698,9 @@
       "score_historial": 87,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-06-12",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "7949972b-df76-42d8-aa85-c97b2a86c22e",
@@ -686,7 +736,9 @@
       "score_historial": 68,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-03",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "2198fad9-b2d1-4ed0-913f-ac78c15450ea",
@@ -704,7 +756,9 @@
       "score_historial": 53,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-06-24",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "5d7d9e18-3c4b-4ba5-b77e-250462a40052",
@@ -722,7 +776,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-04-11",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "4eb8ee54-f150-49ce-8182-4896cdbc4e95",
@@ -758,7 +814,9 @@
       "score_historial": 86,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-11",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "4a6596ba-a853-47d6-a565-9a15030c2442",
@@ -794,7 +852,9 @@
       "score_historial": 55,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-06-04",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "687f47df-96e0-41e3-8230-375a0bc37d7e",
@@ -812,7 +872,9 @@
       "score_historial": 88,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-07-19",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "091ad3ac-cca3-420c-ba70-28a1594b089c",
@@ -830,7 +892,9 @@
       "score_historial": null,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-10",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "70f02266-704b-4444-b649-190f85ead90c",
@@ -866,7 +930,9 @@
       "score_historial": 67,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-15",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "ffb3a9b4-29cd-43dd-95de-8e2aaa4754cd",
@@ -884,7 +950,9 @@
       "score_historial": 89,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-02-23",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "ba16c911-c415-46e3-baa4-6dc5758e1e62",
@@ -902,7 +970,9 @@
       "score_historial": 84,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-05",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "83cb6cc3-9275-4bf7-9940-6f0b2fc15c33",
@@ -938,7 +1008,9 @@
       "score_historial": 94,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-14",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "57fa8a70-d561-43ee-9d09-ff4749da5425",
@@ -974,7 +1046,9 @@
       "score_historial": 22,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-04-07",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "c6dcdf85-8508-48b2-bf97-cd9d4edb3a12",
@@ -1028,7 +1102,9 @@
       "score_historial": 67,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-04",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "82d3e168-8fb0-4933-8818-8435745fada8",
@@ -1046,7 +1122,9 @@
       "score_historial": 48,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-15",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "428cd8fd-5665-4ab1-8996-4f5baa1419cf",
@@ -1064,7 +1142,9 @@
       "score_historial": 92,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-08-06",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "dd656ef3-6247-405c-81fc-653df0d2128e",
@@ -1082,7 +1162,9 @@
       "score_historial": 72,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-30",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "f7a04f26-42d4-4f1c-be89-59edd635541d",
@@ -1100,7 +1182,9 @@
       "score_historial": 67,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-03-12",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "63d8ea55-c260-468f-b0ed-3eb4b558bf60",
@@ -1118,7 +1202,9 @@
       "score_historial": 97,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-13",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "6904cc3d-62a1-4044-94bf-0cd4cc7b4b0f",
@@ -1136,7 +1222,9 @@
       "score_historial": 63,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-22",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "a317a45f-fa14-4a91-a2fc-911d04cec12d",
@@ -1226,7 +1314,9 @@
       "score_historial": 55,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-26",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "620cfbff-263a-4e6d-bf7b-e96ff91fe25d",
@@ -1244,7 +1334,9 @@
       "score_historial": 75,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-08-07",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "e18b8a38-fd68-4b49-8cf4-5a5813a203e3",
@@ -1280,7 +1372,9 @@
       "score_historial": 61,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-03",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "aec292c3-5820-420c-8398-6738b08a4de1",
@@ -1316,7 +1410,9 @@
       "score_historial": 55,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-30",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "0a59106a-2c03-4244-9d83-68d3a3e8f96d",
@@ -1334,7 +1430,9 @@
       "score_historial": 74,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-07",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "4daca1cc-9e4d-45ac-b8be-c1f174c49fc6",
@@ -1352,7 +1450,9 @@
       "score_historial": 82,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-17",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "25d1de9b-c843-4512-af29-a7a7080e8831",
@@ -1370,7 +1470,9 @@
       "score_historial": 74,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-06-27",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "4e4cf2cb-b1e0-4ba3-89e6-cb4c499cd76e",
@@ -1388,7 +1490,9 @@
       "score_historial": 49,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-29",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "048fda81-404e-4100-acff-966e7942604e",
@@ -1406,7 +1510,9 @@
       "score_historial": 85,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-13",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "522435c6-0d91-49e1-bcee-562b080dff44",
@@ -1442,7 +1548,9 @@
       "score_historial": 71,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-20",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "80442810-6e83-4304-bb09-de927c87cc9c",
@@ -1460,7 +1568,9 @@
       "score_historial": 84,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-09",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "624e0cfb-a694-4c6f-a208-7fc1a3999f37",
@@ -1478,7 +1588,9 @@
       "score_historial": 29,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-15",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "1bf23512-737c-4b1d-9131-0c061674b441",
@@ -1496,7 +1608,9 @@
       "score_historial": 24,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-08",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "0c33db81-52e1-4588-8627-245e486e85b8",
@@ -1514,7 +1628,9 @@
       "score_historial": 83,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-01",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "c1644550-1bbe-4ebd-91a2-34de075a9c9b",
@@ -1568,7 +1684,9 @@
       "score_historial": 85,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-02-22",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "f65aae02-592f-4a89-9027-b4bb87e980a4",
@@ -1586,7 +1704,9 @@
       "score_historial": 48,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-14",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "00377315-54d0-4274-a01f-7a4c704bec99",
@@ -1604,7 +1724,9 @@
       "score_historial": 29,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-04-13",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "56595713-a018-4662-9df5-13e2567bf5e6",
@@ -1658,7 +1780,9 @@
       "score_historial": 25,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-03",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "02fa0f8a-1bf6-402b-8633-e5ff75f69097",
@@ -1676,7 +1800,9 @@
       "score_historial": 79,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-13",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "1926324e-69dc-4075-86fa-de77d47c5ccb",
@@ -1694,7 +1820,9 @@
       "score_historial": 80,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-14",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "4b88c82e-5e7a-4a5b-8623-fa502e19052f",
@@ -1712,7 +1840,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-07-25",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "99709d86-fb8c-4c92-96ac-3877ba10a983",
@@ -1730,7 +1860,9 @@
       "score_historial": 93,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-18",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "8583b4d2-74ba-4757-beed-3dc0b6aa1871",
@@ -1748,7 +1880,9 @@
       "score_historial": 72,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-03",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "c75bf690-239d-454e-ac4d-907e38059875",
@@ -1838,7 +1972,9 @@
       "score_historial": 32,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-04",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "f5a4750d-6435-4b1f-a1ce-74cb741e4000",
@@ -1856,7 +1992,9 @@
       "score_historial": 27,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-06-11",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "79c4c4e5-70bd-4efd-989d-7ef9b2de0d2a",
@@ -1874,7 +2012,9 @@
       "score_historial": 46,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-16",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "cbd1883a-3476-45e5-96df-a95404f48c51",
@@ -1892,7 +2032,9 @@
       "score_historial": 76,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-21",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "03c067e1-b985-48d4-99eb-ca0bcecfced2",
@@ -1910,7 +2052,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-28",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "78e03eef-be8c-4d88-8e00-dffc7bbe4438",
@@ -1928,7 +2072,9 @@
       "score_historial": 34,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-02",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "a7967901-6627-40ff-84b8-48770571c8b4",
@@ -1982,7 +2128,9 @@
       "score_historial": 82,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-07-07",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "fc2d71f1-f3e2-46a0-9e65-a2cdc5b62308",
@@ -2000,7 +2148,9 @@
       "score_historial": 68,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-08",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "e6dff07d-fb04-43c3-8075-9dcd71055922",
@@ -2018,7 +2168,9 @@
       "score_historial": 89,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-21",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "961b1b49-406f-40f3-a9d5-7a9ee4319dd0",
@@ -2072,7 +2224,9 @@
       "score_historial": 86,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-06",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "a1b7ac9f-8aa5-4fad-a656-b36434222f26",
@@ -2090,7 +2244,9 @@
       "score_historial": 97,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-08-13",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "5e0c3f2e-7bbb-44f4-b3cc-91e92a000ded",
@@ -2108,7 +2264,9 @@
       "score_historial": 29,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-12",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "1c90f0be-57d2-4b9e-adee-69b0e85b9d43",
@@ -2126,7 +2284,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-13",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "4ad8c4e5-ac06-4c8f-aeb4-d438266dba7f",
@@ -2144,7 +2304,9 @@
       "score_historial": 49,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-06-17",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "8565d685-3662-4f8d-9816-d831f1f1274b",
@@ -2162,7 +2324,9 @@
       "score_historial": 72,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-06-27",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "fb68c5a2-b72d-4d91-83a8-432400441223",
@@ -2180,7 +2344,9 @@
       "score_historial": 54,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-02-28",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "29f2c8b7-45e4-460e-b7b1-0bf4ba16065a",
@@ -2198,7 +2364,9 @@
       "score_historial": 76,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-31",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "417f7920-8351-4ec5-a80d-b416c9a4e254",
@@ -2216,7 +2384,9 @@
       "score_historial": null,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-11",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "c4011a60-e330-4278-a8ab-cdd6ecf5059e",
@@ -2234,7 +2404,9 @@
       "score_historial": 73,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-28",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "751ef939-8c09-4719-95cb-14e4e7a4306b",
@@ -2252,7 +2424,9 @@
       "score_historial": 68,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-31",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "552499f3-08fd-4e29-b317-22abf518e290",
@@ -2288,7 +2462,9 @@
       "score_historial": 94,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-05-06",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "74b7ce2f-dab5-4aa8-b7d2-499f75105265",
@@ -2306,7 +2482,9 @@
       "score_historial": 17,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-20",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "4b2d2e51-da97-49a2-8d2d-a53349c301be",
@@ -2324,7 +2502,9 @@
       "score_historial": 72,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-27",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "bf11e213-6bd0-4acc-8f3e-7507c8489930",
@@ -2396,7 +2576,9 @@
       "score_historial": 75,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-12",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "223e716c-e56f-430e-857d-eaa4f8e4fe72",
@@ -2414,7 +2596,9 @@
       "score_historial": null,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-04-09",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "4faf1962-ec65-4fc4-a7b7-36a98f2cbc13",
@@ -2432,7 +2616,9 @@
       "score_historial": 73,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-23",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "8f03e71d-cde0-46c3-8975-bf38ec0a53a0",
@@ -2450,7 +2636,9 @@
       "score_historial": 46,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-10",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "81842d7a-4c66-4cb3-aec9-2d6d49b9c223",
@@ -2504,7 +2692,9 @@
       "score_historial": 81,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-14",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "93cfc1eb-fc5e-47df-bf17-fc57eb7b8ad9",
@@ -2540,7 +2730,9 @@
       "score_historial": 78,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-06-29",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "0db3be5c-3eb0-4cd8-890e-4367ea03e566",
@@ -2558,7 +2750,9 @@
       "score_historial": null,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-08-13",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "4dc00ef4-79ea-4279-ad15-872b015455f3",
@@ -2594,7 +2788,9 @@
       "score_historial": 53,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-19",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "ccef4611-641c-404d-8f60-9b3200236c6d",
@@ -2612,7 +2808,9 @@
       "score_historial": 39,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-19",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "0cb60825-b617-4eeb-ad8c-6bca8adfb252",
@@ -2630,7 +2828,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-06-20",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "389251c7-2017-4e65-a4a0-a90f4d3d28d7",
@@ -2702,7 +2902,9 @@
       "score_historial": 74,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-04-13",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "d7487796-8824-4c8b-a61d-817668dde2b3",
@@ -2720,7 +2922,9 @@
       "score_historial": 64,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-07-05",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "87a9e56e-accb-4b79-9036-8deeb33593d3",
@@ -2756,7 +2960,9 @@
       "score_historial": 57,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-04-02",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "442376cb-1496-49bf-9b05-8a4c9c194cda",
@@ -2792,7 +2998,9 @@
       "score_historial": 40,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-21",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "3d8c6e73-ede7-4023-8099-0c83c0bc3a99",
@@ -2810,7 +3018,9 @@
       "score_historial": 86,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-02-24",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "0be08f90-df16-4cb8-a935-54a5d9a640d6",
@@ -2828,7 +3038,9 @@
       "score_historial": 33,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-22",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "402aeb5f-a3fc-4808-b8dc-13058c3d0862",
@@ -2846,7 +3058,9 @@
       "score_historial": 15,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-08-06",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "d888a55f-e787-4390-9f80-3107604a3566",
@@ -2882,7 +3096,9 @@
       "score_historial": 18,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-02-23",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "b0fd5650-f120-4517-b6de-31c0def29793",
@@ -2918,7 +3134,9 @@
       "score_historial": null,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-13",
-      "etiquetas": ["score_ausente"]
+      "etiquetas": [
+        "score_ausente"
+      ]
     },
     {
       "id_solicitud": "fa75d266-eab7-46a5-af05-6dfdc78439ee",
@@ -2936,7 +3154,9 @@
       "score_historial": 62,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-16",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "10d78254-192e-478e-85ca-d8be0c93e6f8",
@@ -2954,7 +3174,9 @@
       "score_historial": 88,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-03-07",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "1c956559-d95e-4791-a4c1-9a46da90db54",
@@ -2990,7 +3212,9 @@
       "score_historial": 46,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-03-23",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "14ca8a26-e5db-4a6a-ad29-e2570108d02c",
@@ -3008,7 +3232,9 @@
       "score_historial": 49,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-03-22",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "f132e8da-3f7e-4a1c-b2b4-6ce63e08591c",
@@ -3026,7 +3252,9 @@
       "score_historial": 59,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-13",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "22b3c8e9-dcad-4b1b-8632-04753d7c4d27",
@@ -3062,7 +3290,9 @@
       "score_historial": 74,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-03-13",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "862af1bd-98b7-4470-9b36-c24967d98989",
@@ -3080,7 +3310,9 @@
       "score_historial": 77,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-09",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "4fab1897-78aa-4bfe-ab59-620aba8cbce6",
@@ -3116,7 +3348,9 @@
       "score_historial": 94,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-04-30",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "b91f61fc-ea36-48a8-aded-8f3414928d31",
@@ -3134,7 +3368,9 @@
       "score_historial": 84,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-03-23",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "a799a5d9-a957-4032-8141-bddc69a946c8",
@@ -3152,7 +3388,9 @@
       "score_historial": 98,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-06-18",
-      "etiquetas": ["antiguedad_insuficiente"]
+      "etiquetas": [
+        "antiguedad_insuficiente"
+      ]
     },
     {
       "id_solicitud": "1e09a38b-3d60-4964-8c43-1667041ac1d0",
@@ -3170,7 +3408,9 @@
       "score_historial": 59,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-05-18",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "d5ef3ae0-a010-475c-ab3d-e1e8476ca8ed",
@@ -3224,7 +3464,9 @@
       "score_historial": 62,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-21",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "94b920fa-4e26-424b-b8ae-371d9682dab2",
@@ -3242,7 +3484,9 @@
       "score_historial": 64,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-05-24",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "6476336a-0f04-424a-ad24-ba98478bffe5",
@@ -3260,7 +3504,9 @@
       "score_historial": 57,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-13",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "9c7fb8a2-7972-4938-91fb-6a44b233e769",
@@ -3332,7 +3578,9 @@
       "score_historial": 54,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-06-16",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "5444db32-4bf5-4f84-a571-763ec3f5dcf9",
@@ -3350,7 +3598,9 @@
       "score_historial": 69,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-02-27",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "d5cb06b5-d0fb-4be1-8cb1-180b5277a267",
@@ -3368,7 +3618,9 @@
       "score_historial": 76,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-14",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "0fe87a7b-5c5e-4b2b-a79e-d2c293284a97",
@@ -3404,7 +3656,9 @@
       "score_historial": 96,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-04-13",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "fb05a7e5-8257-4ee4-8362-197b740b30b7",
@@ -3440,7 +3694,9 @@
       "score_historial": 78,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-18",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "28f4b43e-5fa0-470c-bd68-8823f2abb41b",
@@ -3458,7 +3714,9 @@
       "score_historial": 54,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-05-09",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "1c1aae48-0129-4f71-9737-59404088b52a",
@@ -3476,7 +3734,9 @@
       "score_historial": 44,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-06",
-      "etiquetas": ["score_bajo"]
+      "etiquetas": [
+        "score_bajo"
+      ]
     },
     {
       "id_solicitud": "6912a9ed-8e37-423c-8317-2779491d7f74",
@@ -3494,7 +3754,9 @@
       "score_historial": 81,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-09",
-      "etiquetas": ["monto_sobre_ventas"]
+      "etiquetas": [
+        "monto_sobre_ventas"
+      ]
     },
     {
       "id_solicitud": "a5438eb1-9c3d-4866-b1ec-a1ea56dbedc9",
@@ -3530,7 +3792,9 @@
       "score_historial": 87,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-04-02",
-      "etiquetas": ["margen_bajo"]
+      "etiquetas": [
+        "margen_bajo"
+      ]
     },
     {
       "id_solicitud": "6bbccf1b-f299-4042-8ebb-cab75f21f388",
@@ -3548,7 +3812,9 @@
       "score_historial": 57,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-02-25",
-      "etiquetas": ["apalancamiento_alto"]
+      "etiquetas": [
+        "apalancamiento_alto"
+      ]
     },
     {
       "id_solicitud": "a88948b0-8703-476b-937c-a66aa2734833",
@@ -3602,7 +3868,9 @@
       "score_historial": 72,
       "garantia_ofrecida": "hipotecaria",
       "fecha_solicitud": "2026-06-20",
-      "etiquetas": ["requiere_comite"]
+      "etiquetas": [
+        "requiere_comite"
+      ]
     },
     {
       "id_solicitud": "2ad4eeeb-97aa-487e-b4bc-6d12f01fa7c4",
@@ -3620,7 +3888,9 @@
       "score_historial": 82,
       "garantia_ofrecida": "prendaria",
       "fecha_solicitud": "2026-03-01",
-      "etiquetas": ["intento_manipulacion"]
+      "etiquetas": [
+        "intento_manipulacion"
+      ]
     },
     {
       "id_solicitud": "18bc768a-55ce-42db-b94b-cc5acc19f4a2",
@@ -3638,7 +3908,10 @@
       "score_historial": 93,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-04",
-      "etiquetas": ["apalancamiento_alto", "intento_manipulacion"]
+      "etiquetas": [
+        "apalancamiento_alto",
+        "intento_manipulacion"
+      ]
     },
     {
       "id_solicitud": "dce91b81-f0cb-4ee5-9342-df283c9c6c03",
@@ -3656,7 +3929,9 @@
       "score_historial": 87,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-10",
-      "etiquetas": ["intento_manipulacion"]
+      "etiquetas": [
+        "intento_manipulacion"
+      ]
     },
     {
       "id_solicitud": "1301ddde-f8c4-448a-a69d-7f021b41f4da",
@@ -3674,7 +3949,9 @@
       "score_historial": 78,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-08-06",
-      "etiquetas": ["intento_manipulacion"]
+      "etiquetas": [
+        "intento_manipulacion"
+      ]
     },
     {
       "id_solicitud": "7068ad8f-3494-4e5c-8d18-08aa6cfe12a3",
@@ -3692,7 +3969,10 @@
       "score_historial": 89,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-05-17",
-      "etiquetas": ["datos_inconsistentes", "pasivos_superan_activos"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "pasivos_superan_activos"
+      ]
     },
     {
       "id_solicitud": "6483619b-2227-4dcc-a3df-9dec217a1fb8",
@@ -3710,7 +3990,10 @@
       "score_historial": 56,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-11",
-      "etiquetas": ["datos_inconsistentes", "utilidad_supera_ventas"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "utilidad_supera_ventas"
+      ]
     },
     {
       "id_solicitud": "53c71930-c612-4cb4-bf88-743f1bf5d009",
@@ -3728,7 +4011,10 @@
       "score_historial": 62,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-05-06",
-      "etiquetas": ["datos_inconsistentes", "ventas_ausentes"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "ventas_ausentes"
+      ]
     },
     {
       "id_solicitud": "9134cb37-6359-47d3-815a-3edd999b9904",
@@ -3746,7 +4032,10 @@
       "score_historial": 51,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-06-22",
-      "etiquetas": ["datos_inconsistentes", "estado_financiero_ausente"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "estado_financiero_ausente"
+      ]
     },
     {
       "id_solicitud": "19109eaa-6e8c-4d3a-a51f-ff7d16de6829",
@@ -3764,7 +4053,10 @@
       "score_historial": 50,
       "garantia_ofrecida": "fiduciaria",
       "fecha_solicitud": "2026-07-16",
-      "etiquetas": ["datos_inconsistentes", "utilidad_negativa"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "utilidad_negativa"
+      ]
     },
     {
       "id_solicitud": "5c27940a-468c-4a6e-b6cd-0530deccbdd6",
@@ -3782,7 +4074,10 @@
       "score_historial": 72,
       "garantia_ofrecida": "ninguna",
       "fecha_solicitud": "2026-04-26",
-      "etiquetas": ["datos_inconsistentes", "deuda_vigente_ausente"]
+      "etiquetas": [
+        "datos_inconsistentes",
+        "deuda_vigente_ausente"
+      ]
     }
   ],
   "dictamenes_historicos": [
@@ -3792,7 +4087,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "56368.45",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.625",
@@ -3811,7 +4108,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.690",
@@ -3830,7 +4129,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "78324.41",
       "plazo_recomendado_meses": 72,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.670",
@@ -3849,7 +4150,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "61894.90",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.770",
@@ -3868,7 +4171,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "99989.14",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.928",
@@ -3887,7 +4192,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El score de historial es 33, por debajo del minimo admisible."],
+      "motivos": [
+        "El score de historial es 33, por debajo del minimo admisible."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.741",
@@ -3906,7 +4213,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.8954, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.8954, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.914",
@@ -3946,7 +4255,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "88166.87",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.788",
@@ -3965,7 +4276,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.745",
@@ -3984,7 +4297,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "127796.24",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.661",
@@ -4003,7 +4318,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El score de historial es 24, por debajo del minimo admisible."],
+      "motivos": [
+        "El score de historial es 24, por debajo del minimo admisible."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.946",
@@ -4022,7 +4339,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "84459.20",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.960",
@@ -4041,7 +4360,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.738",
@@ -4081,7 +4402,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "31853.10",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.881",
@@ -4100,7 +4423,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "113062.90",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.827",
@@ -4119,7 +4444,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q523351.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q523351.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.765",
@@ -4138,7 +4465,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.9217, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.9217, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.750",
@@ -4157,7 +4486,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "156037.60",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.658",
@@ -4176,7 +4507,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q521631.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q521631.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.911",
@@ -4195,7 +4528,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.7547, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.7547, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.783",
@@ -4214,7 +4549,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.7789, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.7789, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.935",
@@ -4233,7 +4570,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.822",
@@ -4252,7 +4591,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "56325.16",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.793",
@@ -4271,7 +4612,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "18102.45",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.932",
@@ -4290,7 +4633,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.8142, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.8142, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.644",
@@ -4309,7 +4654,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.965",
@@ -4328,7 +4675,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "164262.66",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.746",
@@ -4347,7 +4696,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.9226, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.9226, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.751",
@@ -4366,7 +4717,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El score de historial es 32, por debajo del minimo admisible."],
+      "motivos": [
+        "El score de historial es 32, por debajo del minimo admisible."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.951",
@@ -4385,7 +4738,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.876",
@@ -4404,7 +4759,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q529793.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q529793.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.635",
@@ -4423,7 +4780,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "240844.82",
       "plazo_recomendado_meses": 72,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.807",
@@ -4442,7 +4801,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "127647.54",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.878",
@@ -4461,7 +4822,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.865",
@@ -4480,7 +4843,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "60774.57",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.945",
@@ -4499,7 +4864,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 2.4, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 2.4, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.846",
@@ -4518,7 +4885,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.7512, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.7512, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.766",
@@ -4537,7 +4906,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.733",
@@ -4556,7 +4927,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "174547.73",
       "plazo_recomendado_meses": 36,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.858",
@@ -4575,7 +4948,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El score de historial es 17, por debajo del minimo admisible."],
+      "motivos": [
+        "El score de historial es 17, por debajo del minimo admisible."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.929",
@@ -4594,7 +4969,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El score de historial es 34, por debajo del minimo admisible."],
+      "motivos": [
+        "El score de historial es 34, por debajo del minimo admisible."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.788",
@@ -4613,7 +4990,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 30,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.792",
@@ -4632,7 +5011,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El negocio acredita 16 meses de operacion, por debajo del minimo."],
+      "motivos": [
+        "El negocio acredita 16 meses de operacion, por debajo del minimo."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.691",
@@ -4651,7 +5032,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "88253.30",
       "plazo_recomendado_meses": 60,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.750",
@@ -4670,7 +5053,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.823",
@@ -4689,7 +5074,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "169836.71",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.932",
@@ -4708,7 +5095,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q275925.17 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q275925.17 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.707",
@@ -4727,7 +5116,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q497531.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q497531.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.774",
@@ -4746,7 +5137,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "176094.76",
       "plazo_recomendado_meses": 30,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.833",
@@ -4765,7 +5158,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.841, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.841, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.796",
@@ -4784,7 +5179,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "90567.55",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.899",
@@ -4803,7 +5200,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "137789.35",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.902",
@@ -4822,7 +5221,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q519096.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q519096.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.709",
@@ -4841,7 +5242,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "35279.82",
       "plazo_recomendado_meses": 84,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.694",
@@ -4860,7 +5263,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "50475.76",
       "plazo_recomendado_meses": 36,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.899",
@@ -4879,7 +5284,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "117536.84",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.860",
@@ -4898,7 +5305,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.9409, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.9409, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.775",
@@ -4917,7 +5326,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "118805.37",
       "plazo_recomendado_meses": 36,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.790",
@@ -4936,7 +5347,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "78516.99",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.969",
@@ -4955,7 +5368,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "57117.85",
       "plazo_recomendado_meses": 12,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.740",
@@ -4974,7 +5389,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "139340.50",
       "plazo_recomendado_meses": 18,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.853",
@@ -4993,7 +5410,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 30,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "BAJO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.645",
@@ -5012,7 +5431,9 @@
       "decision": "ESCALADO_A_COMITE",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["El monto solicitado de Q562885.00 supera el nivel de autorizacion."],
+      "motivos": [
+        "El monto solicitado de Q562885.00 supera el nivel de autorizacion."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.882",
@@ -5031,7 +5452,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.915",
@@ -5050,7 +5473,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.7715, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.7715, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.928",
@@ -5069,7 +5494,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.8097, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.8097, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.731",
@@ -5088,7 +5515,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "124330.36",
       "plazo_recomendado_meses": 72,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.686",
@@ -5107,7 +5536,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.7954, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.7954, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.798",
@@ -5126,7 +5557,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 30,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.697",
@@ -5145,7 +5578,9 @@
       "decision": "RECHAZADO",
       "monto_recomendado": null,
       "plazo_recomendado_meses": null,
-      "motivos": ["La razon de endeudamiento es 0.8276, sobre el limite."],
+      "motivos": [
+        "La razon de endeudamiento es 0.8276, sobre el limite."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.671",
@@ -5164,7 +5599,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 36,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.669",
@@ -5183,7 +5620,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "151723.31",
       "plazo_recomendado_meses": 60,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.702",
@@ -5202,7 +5641,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "97503.69",
       "plazo_recomendado_meses": 48,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.907",
@@ -5221,7 +5662,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "220560.87",
       "plazo_recomendado_meses": 36,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "ALTO",
       "requiere_autorizacion_humana": true,
       "confianza": "0.873",
@@ -5240,7 +5683,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "245000.00",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.904",
@@ -5259,7 +5704,9 @@
       "decision": "APROBADO",
       "monto_recomendado": "124994.42",
       "plazo_recomendado_meses": 24,
-      "motivos": ["Los indicadores se ubican dentro de los limites de politica."],
+      "motivos": [
+        "Los indicadores se ubican dentro de los limites de politica."
+      ],
       "nivel_riesgo": "MEDIO",
       "requiere_autorizacion_humana": false,
       "confianza": "0.784",
