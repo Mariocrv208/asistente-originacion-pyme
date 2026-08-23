@@ -63,12 +63,24 @@ export async function rutasAnalizar(app: FastifyInstance): Promise<void> {
     });
 
     const controlador = new AbortController();
+    let terminado = false;
 
-    // Cancelacion real: si el cliente aborta su fetch, el socket se cierra y la
-    // senal se propaga hasta la llamada al proveedor, que corta la generacion
-    // en curso en vez de dejarla terminar contra un cliente que ya no existe.
-    peticion.raw.on('close', () => {
-      if (!controlador.signal.aborted) controlador.abort();
+    /**
+     * Cancelacion real: si el cliente aborta su fetch, el socket se cierra y la
+     * senal se propaga hasta la llamada al proveedor, que corta la generacion
+     * en curso en vez de dejarla terminar contra un cliente que ya no existe.
+     *
+     * Se escucha en la RESPUESTA, no en la peticion. En Node, el evento 'close'
+     * de IncomingMessage se dispara cuando termina de leerse el cuerpo, no
+     * cuando el cliente se desconecta; en un POST eso ocurre de inmediato, y
+     * escucharlo ahi hacia que toda ejecucion se abortara a si misma antes de
+     * la primera llamada al modelo. El socket de respuesta si refleja la
+     * desconexion real.
+     *
+     * La bandera evita abortar cuando el cierre es el nuestro, al terminar bien.
+     */
+    respuesta.raw.on('close', () => {
+      if (!terminado && !controlador.signal.aborted) controlador.abort();
     });
 
     // Latido cada 15 segundos. Una ejecucion del agente puede tardar mas de lo
@@ -96,8 +108,10 @@ export async function rutasAnalizar(app: FastifyInstance): Promise<void> {
         },
       });
 
+      terminado = true;
       emitir(respuesta, 'fin', resultado);
     } catch (error) {
+      terminado = true;
       emitir(respuesta, 'error', {
         mensaje: error instanceof Error ? error.message : String(error),
       });

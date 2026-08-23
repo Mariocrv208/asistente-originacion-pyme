@@ -28,6 +28,10 @@ El avance se dispara con el comando **`continua`**.
 
 **M13 — Sistema de diseño y shell responsive — COMPLETADO.**
 
+**M14 — Chat en streaming con actividad del agente — COMPLETADO.**
+
+**M15 — Panel de dictamen en vivo y confirmación G4 — COMPLETADO.**
+
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).

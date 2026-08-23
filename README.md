@@ -622,6 +622,62 @@ En un solo sitio: la función de formato, en el último paso antes de pintar. En
 todo el trayecto anterior —base de datos, API, cliente— el importe viaja como
 cadena exacta.
 
+## Chat, actividad del agente y dictamen en vivo
+
+### Propuesta reversible frente a efecto confirmado (pregunta 3.3)
+
+Es la distinción que gobierna todo el estado del cliente, que tiene tres capas
+que nunca se mezclan:
+
+- **`pasos`** — lo que el agente ha ido haciendo. Es narración: se puede perder
+  sin consecuencias.
+- **`propuesta`** — el dictamen que el modelo está intentando registrar. Es
+  **reversible**: puede cambiar, puede ser tumbada por un guardarraíl, puede no
+  llegar a existir. El panel la marca como tentativa, con franja de actividad y
+  la palabra «propuesta».
+- **`idDictamen`** — llega solo cuando el servidor confirma la escritura. A
+  partir de ahí hay un **efecto confirmado**, y la verdad deja de estar en el
+  cliente: está en la base de datos.
+
+Por eso, al terminar, la interfaz **recarga el expediente desde la API** en vez
+de pintar lo que tiene en memoria. El cliente nunca trata su vista local como
+autoridad.
+
+**Qué pasa al reconectar:** nada que reconstruir. Si la conexión se cae o el
+analista cancela, el dictamen o se escribió o no, y eso se consulta. No se
+reanuda el flujo. Reanudar exigiría que el servidor guardara el flujo a medias, y
+no hay nada que ganar guardándolo: el único resultado que importa ya es
+transaccional.
+
+### Qué se muestra y qué no
+
+Se muestra lo que el agente **hace**: herramienta invocada, consulta lanzada al
+corpus, políticas recuperadas, dictamen propuesto, nivel de confianza. No se
+muestra el prompt, ni los mensajes intermedios del modelo, ni nada que parezca
+razonamiento interno — la frontera la decide el servidor, que solo emite
+argumentos de herramienta y resultados.
+
+La propuesta se pinta **en cuanto el modelo la intenta**, no cuando lo consigue.
+Si un guardarraíl la tumba, el analista ve qué se propuso y por qué se rechazó.
+
+### Dos fallos que encontró la verificación en navegador
+
+**La ejecución se cancelaba sola.** La desconexión se detectaba con
+`peticion.raw.on('close')`, pero en Node ese evento se dispara cuando termina de
+leerse el **cuerpo de la petición**, no cuando el cliente se va. En un POST eso
+ocurre de inmediato, así que toda ejecución se abortaba antes de la primera
+llamada al modelo — con `iteraciones: 0` y ningún modelo intentado. Se escucha
+ahora en el socket de **respuesta**, que sí refleja la desconexión real.
+
+**La interfaz mentía sobre el resultado.** Al recibir el evento `fin` se daba la
+ejecución por completada sin mirar el estado que devuelve el servidor. Una
+ejecución `FALLIDA` también emite `fin`, así que el analista leía «ejecución
+terminada» cuando el análisis no se había hecho. Ahora la fase la decide el
+servidor y la interfaz solo la traduce.
+
+Ninguno de los dos se habría visto sin ejecutar la interfaz contra el sistema
+real.
+
 ## Documentación
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.

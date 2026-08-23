@@ -73,6 +73,19 @@ export interface OpcionesEjecucion {
 export interface EventoPaso {
   tipo: 'herramienta_inicio' | 'herramienta_fin' | 'modelo_turno' | 'fin';
   nombre?: string;
+  /**
+   * Argumentos con los que se invoco la herramienta.
+   *
+   * Se emiten porque la interfaz los necesita para renderizar el dictamen
+   * MIENTRAS se construye: la propuesta del modelo viaja en los argumentos de
+   * registrar_dictamen, y sin ellos el panel no tendria nada que mostrar hasta
+   * el final.
+   *
+   * Son argumentos de herramienta, no razonamiento interno: que politica se
+   * consulta y que dictamen se propone es justo lo que el analista debe ver.
+   * El prompt y los mensajes intermedios del modelo no salen de aqui.
+   */
+  argumentos?: unknown;
   detalle?: unknown;
 }
 
@@ -331,7 +344,13 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
       for (const llamada of llamadas) {
         const nombre = llamada.function.name;
         invocadas.push(nombre);
-        opciones.alPaso?.({ tipo: 'herramienta_inicio', nombre });
+        let argumentos: unknown;
+        try {
+          argumentos = JSON.parse(llamada.function.arguments || '{}');
+        } catch {
+          argumentos = { crudo: llamada.function.arguments };
+        }
+        opciones.alPaso?.({ tipo: 'herramienta_inicio', nombre, argumentos });
 
         const t0 = performance.now();
         const resultado = await despachar(nombre, llamada.function.arguments, contextoHerramientas);
@@ -346,7 +365,7 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
           latenciaMs,
         });
 
-        opciones.alPaso?.({ tipo: 'herramienta_fin', nombre, detalle: resultado });
+        opciones.alPaso?.({ tipo: 'herramienta_fin', nombre, argumentos, detalle: resultado });
 
         // El resultado vuelve al modelo como mensaje de herramienta, tanto si
         // fue bien como si no. Un error es informacion, no una interrupcion.
@@ -429,6 +448,12 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
     estado = 'COMPLETADA';
     return await cerrar();
   } catch (error) {
+    // Los modelos que se llegaron a intentar viajan en el error. Sin esto, una
+    // ejecucion fallida no dejaria constancia de contra que modelos se probo, y
+    // el registro diria "sin modelos" justo cuando mas importa saberlo.
+    if (error instanceof ErrorProveedor) {
+      intentados = [...intentados, ...error.intentados];
+    }
     if (error instanceof ErrorProveedor && opciones.senal?.aborted) {
       estado = 'CANCELADA';
     } else {
