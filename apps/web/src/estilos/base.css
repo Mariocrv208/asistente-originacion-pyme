@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: var(--color-borde);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Foco visible y consistente. La navegación por teclado no es opcional en
+     una herramienta que se usa ocho horas al día. */
+  :focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-borde-fuerte);
+    border-radius: 999px;
+    border: 3px solid var(--color-fondo);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-texto-tenue);
+  }
+
+  code,
+  pre,
+  .mono {
+    font-family: var(--font-mono);
+  }
+}
