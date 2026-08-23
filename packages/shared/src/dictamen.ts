@@ -23,23 +23,43 @@ import { citaPoliticaSchema } from './politicas.js';
 export const decisionSchema = z.enum(['APROBADO', 'RECHAZADO', 'ESCALADO_A_COMITE']);
 export const nivelRiesgoSchema = z.enum(['BAJO', 'MEDIO', 'ALTO']);
 
-/** Monto en texto decimal. Se admite entero para no pelear con el modelo. */
+/**
+ * Monto en texto decimal.
+ *
+ * La representacion canonica es la cadena, porque un number de JSON pasa por
+ * punto flotante binario. Aun asi se ACEPTA un numero en la frontera y se
+ * convierte a texto, por una razon medida: los modelos escriben 150000 con
+ * mucha insistencia, y rechazarlo quemaba iteraciones enteras en discutir el
+ * formato en vez de en analizar el credito.
+ *
+ * Es seguro a esta magnitud: los montos tienen como mucho nueve digitos
+ * significativos y JSON.parse mas String() los reconstruye exactamente por
+ * debajo de los quince que garantiza el formato. No seria seguro con importes
+ * mayores, y por eso la cadena sigue siendo lo canonico y lo unico que se
+ * escribe en la base de datos.
+ */
 const montoSchema = z
-  .string()
-  .regex(/^\d+(\.\d{1,2})?$/, 'el monto debe ser un decimal en texto, por ejemplo "150000.00"');
+  .union([z.string(), z.number()])
+  .transform((v) => (typeof v === 'number' ? v.toFixed(2) : v.trim()))
+  .pipe(
+    z.string().regex(/^\d+(\.\d{1,2})?$/, 'el monto debe ser un decimal, por ejemplo "150000.00"'),
+  );
+
+/** El plazo llega a veces como "24" en vez de 24. */
+const plazoSchema = z.coerce.number().int().min(1).max(360);
 
 export const dictamenSchema = z.object({
   id_solicitud: z.string().uuid(),
   decision: decisionSchema,
   monto_recomendado: montoSchema.nullable(),
-  plazo_recomendado_meses: z.number().int().min(1).max(360).nullable(),
+  plazo_recomendado_meses: plazoSchema.nullable(),
   indicadores: indicadoresSchema,
   /** El enunciado exige al menos un elemento. */
   politicas_citadas: z.array(citaPoliticaSchema).min(1, 'toda decision necesita al menos una cita'),
   motivos: z.array(z.string().min(1)).min(1),
   nivel_riesgo: nivelRiesgoSchema,
   requiere_autorizacion_humana: z.boolean(),
-  confianza: z.number().min(0).max(1),
+  confianza: z.coerce.number().min(0).max(1),
 });
 
 export type Decision = z.infer<typeof decisionSchema>;

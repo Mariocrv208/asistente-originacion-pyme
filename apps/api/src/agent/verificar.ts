@@ -8,12 +8,14 @@
  */
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
+import { env } from '../config/env.js';
 import { pool, cerrarPool } from '../db/pool.js';
 import { persistirDictamen, claveIdempotencia } from '../domain/dictamenes/persistir.js';
 import { obtenerIndicadores } from '../domain/indicadores/repositorio.js';
 import { RecuperadorPoliticas } from '../domain/politicas/recuperacion.js';
 import { RUTA_DATASET } from '../datos/generar.js';
 import { despachar, HERRAMIENTAS } from './herramientas.js';
+import { construirDictamenDegradado } from './degradacion.js';
 import { ejecutarAgente } from './loop.js';
 import { Bitacora } from './observabilidad.js';
 import { envolverEntradaNoConfiable, PROMPT_SISTEMA } from './prompts/v1.js';
@@ -22,12 +24,52 @@ import type { Dictamen } from '@aop/shared';
 interface Comprobacion {
   bloque: string;
   nombre: string;
-  ok: boolean;
+  ok: boolean | null; // null = omitida
   detalle: string;
 }
 const comprobaciones: Comprobacion[] = [];
-const afirmar = (bloque: string, nombre: string, ok: boolean, detalle: string) =>
+const afirmar = (bloque: string, nombre: string, ok: boolean | null, detalle: string) =>
   comprobaciones.push({ bloque, nombre, ok, detalle });
+
+/**
+ * La capa gratuita de OpenRouter permite 50 peticiones al dia. Una ejecucion
+ * del agente consume varias, asi que verificar un par de veces seguidas la
+ * agota. Quedarse sin cuota NO es un fallo del sistema y no debe contarse como
+ * tal: se distingue del error real y se reporta como omision.
+ */
+const esCuotaAgotada = (mensaje?: string) =>
+  mensaje !== undefined &&
+  (mensaje.includes('free-models-per-day') || mensaje.includes('Rate limit exceeded'));
+
+async function informar(): Promise<void> {
+  const ancho = Math.max(...comprobaciones.map((c) => c.nombre.length));
+  let bloque = '';
+  console.log('\nVerificacion del ciclo del agente y sus herramientas (M7 y M8)');
+  for (const c of comprobaciones) {
+    if (c.bloque !== bloque) {
+      bloque = c.bloque;
+      console.log(`\n  ${bloque}`);
+    }
+    const marca = c.ok === null ? 'OMIT ' : c.ok ? 'OK   ' : 'FALLA';
+    console.log(`    ${marca} ${c.nombre.padEnd(ancho)}  ${c.detalle}`);
+  }
+
+  const fallos = comprobaciones.filter((c) => c.ok === false).length;
+  const omitidas = comprobaciones.filter((c) => c.ok === null).length;
+  const correctas = comprobaciones.filter((c) => c.ok === true).length;
+
+  console.log(`\n  ${correctas}/${correctas + fallos} comprobaciones correctas`);
+  if (omitidas > 0) {
+    console.log(
+      '  Bloque de ejecucion real omitido: cuota diaria gratuita de OpenRouter agotada\n' +
+        '  (50 peticiones al dia). Se reinicia a medianoche UTC.',
+    );
+  }
+  console.log('');
+
+  await cerrarPool();
+  if (fallos > 0) process.exit(1);
+}
 
 async function main() {
   const dataset = JSON.parse(await readFile(RUTA_DATASET, 'utf8')) as {
@@ -251,11 +293,84 @@ async function main() {
   );
 
   // =========================================================================
+  // El punto 5.3.4 exige un camino explicito de fallo y dice que reintentar a
+  // ciegas no vale. Se ejercita sin gastar tokens: se construye la degradacion
+  // directamente y se comprueba que produce un dictamen realmente persistible.
+  const F = 'D. Camino de fallo de la salida estructurada';
+
+  const fragmentos = recuperador.buscar('limite de endeudamiento');
+  const degradado = await construirDictamenDegradado(limpia.id_solicitud, fragmentos, {
+    intentos: 3,
+    ultimoError: 'dictamen.politicas_citadas: Expected object, received string',
+  });
+
+  afirmar(
+    F,
+    'La degradacion produce un dictamen',
+    degradado !== null,
+    degradado ? `decision=${degradado.decision} confianza=${degradado.confianza}` : 'null',
+  );
+
+  afirmar(
+    F,
+    'Degrada a ESCALADO_A_COMITE, nunca a una decision de credito',
+    degradado?.decision === 'ESCALADO_A_COMITE',
+    degradado?.decision ?? 'n/d',
+  );
+
+  afirmar(
+    F,
+    'La confianza baja senala que la salida es degradada',
+    (degradado?.confianza ?? 1) <= 0.2,
+    `confianza=${degradado?.confianza}`,
+  );
+
+  afirmar(
+    F,
+    'Los motivos explican que fallo y quien calculo los numeros',
+    (degradado?.motivos ?? []).some((m) => m.includes('FALLO DEL ASISTENTE')),
+    degradado?.motivos[0]?.slice(0, 78) ?? 'n/d',
+  );
+
+  // Lo importante: el dictamen degradado tiene que ser persistible de verdad.
+  // Si sus citas no pasaran G1, el camino de fallo no serviria de nada.
+  const persistidoDeg = await persistirDictamen(degradado!, await ejecucionDe());
+  afirmar(
+    F,
+    'El dictamen degradado supera G1 y G2 y se persiste',
+    persistidoDeg.ok,
+    persistidoDeg.ok
+      ? `estado=${persistidoDeg.confirmacion.estado}`
+      : persistidoDeg.error.slice(0, 78),
+  );
+
+  const sinPoliticas = await construirDictamenDegradado(limpia.id_solicitud, [], {
+    intentos: 3,
+    ultimoError: 'cualquiera',
+  });
+  afirmar(
+    F,
+    'Sin politicas recuperadas NO se fabrica una cita',
+    sinPoliticas === null,
+    'devuelve null y el fallo se reporta tal cual, en vez de inventar una cita para cumplir',
+  );
+
+  // =========================================================================
   const D = 'D. Ejecucion real contra OpenRouter';
   const idSesion = randomUUID();
 
+  if (process.argv.includes('--sin-llm')) {
+    afirmar(D, 'Ejecucion real del agente', null, 'omitida a peticion, con --sin-llm');
+    return informar();
+  }
+
   console.log('\n  Ejecutando el agente sobre un caso limpio...');
   const r1 = await ejecutarAgente({ idSolicitud: limpia.id_solicitud, idSesion });
+
+  if (esCuotaAgotada(r1.error)) {
+    afirmar(D, 'Ejecucion real del agente', null, 'cuota diaria de OpenRouter agotada');
+    return informar();
+  }
 
   afirmar(
     D,
@@ -275,14 +390,17 @@ async function main() {
     D,
     'Se registro un dictamen',
     r1.idDictamen !== null,
-    r1.idDictamen ?? `sin dictamen: ${r1.error ?? 'sin error'}`,
+    r1.idDictamen
+      ? `${r1.idDictamen} | reparaciones=${r1.reparaciones}` +
+          (r1.degradado ? ' | DEGRADADO por el servidor' : '')
+      : `sin dictamen: ${r1.error ?? 'sin error'}`,
   );
 
   afirmar(
     D,
     'Nunca supera el tope de iteraciones',
-    r1.iteraciones <= 8,
-    `${r1.iteraciones} de 8 permitidas`,
+    r1.iteraciones <= env.AGENT_MAX_ITERATIONS,
+    `${r1.iteraciones} de ${env.AGENT_MAX_ITERATIONS} permitidas`,
   );
 
   afirmar(
@@ -354,23 +472,7 @@ async function main() {
     );
   }
 
-  // =========================================================================
-  const ancho = Math.max(...comprobaciones.map((c) => c.nombre.length));
-  let bloque = '';
-  console.log('\nVerificacion del ciclo del agente y sus herramientas (M7 y M8)');
-  for (const c of comprobaciones) {
-    if (c.bloque !== bloque) {
-      bloque = c.bloque;
-      console.log(`\n  ${bloque}`);
-    }
-    console.log(`    ${c.ok ? 'OK   ' : 'FALLA'} ${c.nombre.padEnd(ancho)}  ${c.detalle}`);
-  }
-  const fallos = comprobaciones.filter((c) => !c.ok).length;
-  console.log(
-    `\n  ${comprobaciones.length - fallos}/${comprobaciones.length} comprobaciones correctas\n`,
-  );
-  await cerrarPool();
-  if (fallos > 0) process.exit(1);
+  return informar();
 }
 
 await main();

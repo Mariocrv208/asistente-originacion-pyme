@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { dictamenSchema, type Dictamen } from '@aop/shared';
+import { dictamenSchema, ESQUEMA_JSON_DICTAMEN, type Dictamen } from '@aop/shared';
 import { pool } from '../db/pool.js';
 import { persistirDictamen } from '../domain/dictamenes/persistir.js';
 import { obtenerIndicadores } from '../domain/indicadores/repositorio.js';
@@ -197,7 +197,11 @@ const registrarDictamen: Herramienta = {
     type: 'object',
     properties: {
       id_solicitud: { type: 'string' },
-      dictamen: { type: 'object', description: 'Objeto Dictamen completo.' },
+      // El esquema completo del dictamen viaja aqui dentro. Declararlo como un
+      // "object" opaco fue un error que costo ocho iteraciones desperdiciadas:
+      // el modelo no puede producir una forma que nunca se le mostro, asi que
+      // la adivinaba y fallaba la validacion una y otra vez.
+      dictamen: ESQUEMA_JSON_DICTAMEN.schema,
       clave_idempotencia: {
         type: 'string',
         description: 'Opcional. El servidor genera la suya; este valor se ignora.',

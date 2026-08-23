@@ -51,26 +51,29 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 ### Comandos útiles
 
-| Comando                       | Qué hace                                              |
-| ----------------------------- | ----------------------------------------------------- |
-| `pnpm dev`                    | Levanta API y frontend en paralelo                    |
-| `pnpm dev:api`                | Solo la API                                           |
-| `pnpm dev:web`                | Solo el frontend                                      |
-| `pnpm typecheck`              | Comprobación de tipos en todo el monorepo             |
-| `pnpm lint`                   | ESLint                                                |
-| `pnpm format`                 | Prettier en modo escritura                            |
-| `pnpm db:up`                  | Arranca PostgreSQL                                    |
-| `pnpm db:migrate`             | Aplica las migraciones pendientes                     |
-| `pnpm db:verificar`           | Comprueba que las restricciones rechazan lo que deben |
-| `pnpm corpus:cargar`          | Carga el corpus de políticas (idempotente)            |
-| `pnpm corpus:verificar`       | Integridad del corpus y verificación de citas         |
-| `pnpm finanzas:verificar`     | Amortización, redondeo e indicadores del punto 5.3.1  |
-| `pnpm datos:generar`          | Regenera `data/dataset.json` de forma determinista    |
-| `pnpm datos:sembrar`          | Siembra el conjunto en la base de datos               |
-| `pnpm datos:verificar`        | Determinismo, exigencias del 5.2.1 y cobertura        |
-| `pnpm recuperacion:verificar` | Enrutamiento, BM25 y cierre por excepciones           |
-| `pnpm db:psql`                | Abre una sesión `psql` contra el contenedor           |
-| `pnpm db:nuke`                | Destruye el contenedor **y su volumen de datos**      |
+| Comando                           | Qué hace                                                |
+| --------------------------------- | ------------------------------------------------------- |
+| `pnpm dev`                        | Levanta API y frontend en paralelo                      |
+| `pnpm dev:api`                    | Solo la API                                             |
+| `pnpm dev:web`                    | Solo el frontend                                        |
+| `pnpm typecheck`                  | Comprobación de tipos en todo el monorepo               |
+| `pnpm lint`                       | ESLint                                                  |
+| `pnpm format`                     | Prettier en modo escritura                              |
+| `pnpm db:up`                      | Arranca PostgreSQL                                      |
+| `pnpm db:migrate`                 | Aplica las migraciones pendientes                       |
+| `pnpm db:verificar`               | Comprueba que las restricciones rechazan lo que deben   |
+| `pnpm corpus:cargar`              | Carga el corpus de políticas (idempotente)              |
+| `pnpm corpus:verificar`           | Integridad del corpus y verificación de citas           |
+| `pnpm finanzas:verificar`         | Amortización, redondeo e indicadores del punto 5.3.1    |
+| `pnpm datos:generar`              | Regenera `data/dataset.json` de forma determinista      |
+| `pnpm datos:sembrar`              | Siembra el conjunto en la base de datos                 |
+| `pnpm datos:verificar`            | Determinismo, exigencias del 5.2.1 y cobertura          |
+| `pnpm recuperacion:verificar`     | Enrutamiento, BM25 y cierre por excepciones             |
+| `pnpm agente:verificar`           | Herramientas, guardarraíles y ejecución real del agente |
+| `pnpm agente:verificar --sin-llm` | Igual, sin gastar cuota del proveedor                   |
+| `pnpm llm:modelos`                | Lista los modelos gratuitos aptos del catálogo actual   |
+| `pnpm db:psql`                    | Abre una sesión `psql` contra el contenedor             |
+| `pnpm db:nuke`                    | Destruye el contenedor **y su volumen de datos**        |
 
 ### Variables de entorno
 
@@ -426,6 +429,93 @@ descarta ninguna de las dos**. La excepción no sustituye a la regla: la relaja
 bajo condiciones que hay que comprobar contra los datos de esta solicitud
 concreta. Resolver la precedencia en la capa de recuperación, sin mirar al
 solicitante, sería inventarse el resultado.
+
+## El agente
+
+Ciclo de ejecución **escrito a mano sobre `fetch`**, sin SDK. La API de
+OpenRouter es HTTP con cuerpo JSON, y un SDK encima solo añadiría una capa entre
+la decisión y su explicación; lo que se evalúa es el control sobre el bucle, el
+contrato de las herramientas y el contenido exacto del contexto. Además M12
+necesita cancelación propagada hasta el proveedor, que con `fetch` es un
+`AbortSignal`.
+
+### Criterio de parada
+
+Cuatro salidas, y no hay una quinta: el modelo deja de pedir herramientas, el
+dictamen queda registrado, se agotan las iteraciones, o se agota el tope de
+costo o de tiempo. Los topes son la garantía de terminación, y con modelos
+gratuitos hacen falta de verdad.
+
+### Cinco herramientas, no una
+
+Una `evaluar_solicitud(id)` monolítica devolvería un veredicto ya cocinado: el
+LLM no aportaría nada —lo calcularía el código— y a la vez no habría pasos que
+auditar. Con cinco herramientas la traza muestra qué consultó, en qué orden y con
+qué argumentos, que es lo que un regulador necesita ver seis meses después. El
+contraargumento honesto: cuesta más turnos, más tokens y más latencia. Se acepta
+porque la trazabilidad es el producto.
+
+Ninguna herramienta lanza excepciones hacia el modelo. Todas devuelven el error
+como **valor**, redactado para que pueda corregir. Una excepción aborta el ciclo;
+un error como valor le da la oportunidad de arreglar «citaste una política que no
+existe».
+
+### El camino de fallo de la salida estructurada
+
+El punto 5.3.4 dice que reintentar a ciegas no es aceptable. Se comprobó por qué
+en una ejecución real **antes** de escribir la solución: el modelo produjo un
+dictamen con la forma equivocada, la validación lo rechazó, y al no decirle nada
+nuevo repitió el mismo error tres veces hasta agotar las ocho iteraciones sin
+registrar nada. El reintento a ciegas no converge porque no cambia ninguna de las
+condiciones que produjeron el fallo.
+
+Lo que se hace en su lugar, en tres escalones:
+
+1. **Reparación dirigida.** El error de validación vuelve al modelo como
+   contenido concreto —qué campo, qué se esperaba, qué llegó—. Eso sí cambia las
+   condiciones: en la ejecución siguiente, un `dictamen.id_solicitud: Required`
+   devuelto al modelo bastó para que acertara al segundo intento.
+2. **Presupuesto acotado.** Dos reparaciones. Si con el error delante no acierta
+   dos veces seguidas, no es cuestión de suerte.
+3. **Degradación construida por el servidor.** El dictamen lo arma el código:
+   escalamiento a comité, indicadores del cálculo, citas de las políticas que el
+   agente sí llegó a recuperar, motivos que dicen qué falló, y confianza 0.1 para
+   que la interfaz muestre que es una salida degradada.
+
+Una solicitud **siempre** acaba con un dictamen trazable en la bandeja del
+analista. Un fallo del modelo se convierte en trabajo humano, que es el
+comportamiento correcto en un sistema que no sustituye al analista; nunca en un
+expediente que desaparece.
+
+Si no hay ninguna política recuperada, la degradación devuelve `null` y el fallo
+se reporta tal cual: **no se fabrica una cita** para poder cumplir el formato.
+
+### Control de deriva
+
+Otra ejecución real encadenó **seis búsquedas seguidas** y agotó las iteraciones
+sin decidir nada. El tope las habría cortado igual, pero cortar no es reconducir:
+tras cuatro búsquedas se le dice **una sola vez** que ya tiene material
+suficiente y que registre. Es información nueva, no una repetición de la orden.
+
+Ese mismo caso destapó un hueco: la degradación solo se disparaba al agotar
+reparaciones, no al agotar iteraciones. Ahora cubre las dos formas de fallar.
+
+### La clave de idempotencia
+
+La genera el servidor a partir de `(solicitud, ejecución)`. La firma del enunciado
+la acepta como parámetro y el servidor **la ignora**: si la generara el modelo, un
+reintento disparado por el propio LLM produciría una clave distinta, la restricción
+de unicidad no vería colisión y se escribirían dos dictámenes — justo lo que la
+clave existe para impedir.
+
+### Límite práctico: la cuota gratuita
+
+La capa gratuita de OpenRouter permite **50 peticiones al día**. Una ejecución del
+agente consume entre 6 y 12, así que verificar un par de veces la agota. El
+verificador distingue «cuota agotada» de fallo real y lo reporta como omisión, y
+acepta `--sin-llm` para correr solo lo que no depende del proveedor.
+
+Conviene tenerlo en cuenta **antes de grabar el video**: hay que llegar con cuota.
 
 ## Documentación
 

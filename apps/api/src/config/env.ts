@@ -26,9 +26,11 @@ const esquema = z.object({
   OPENROUTER_APP_TITLE: z.string().default('Asistente de Originacion PyME'),
   OPENROUTER_APP_URL: z.string().url().default('http://localhost:5173'),
 
-  AGENT_MAX_ITERATIONS: z.coerce.number().int().positive().default(8),
+  AGENT_MAX_ITERATIONS: z.coerce.number().int().positive().default(12),
   AGENT_MAX_USD_PER_RUN: z.coerce.number().positive().default(0.05),
   AGENT_TIMEOUT_MS: z.coerce.number().int().positive().default(120_000),
+  // Intentos de reparacion dirigida antes de degradar a escalamiento.
+  AGENT_MAX_REPARACIONES: z.coerce.number().int().min(0).max(5).default(2),
 });
 
 function cargar() {

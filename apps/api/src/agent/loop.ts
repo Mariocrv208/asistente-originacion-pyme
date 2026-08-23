@@ -4,6 +4,9 @@ import { exigirModelosGratuitos } from '../config/modelos.js';
 import { obtenerIndicadores } from '../domain/indicadores/repositorio.js';
 import { RecuperadorPoliticas } from '../domain/politicas/recuperacion.js';
 import { pool } from '../db/pool.js';
+import { construirDictamenDegradado } from './degradacion.js';
+import { persistirDictamen } from '../domain/dictamenes/persistir.js';
+import type { FragmentoPolitica } from '../domain/politicas/recuperacion.js';
 import { despachar, definicionesParaProveedor } from './herramientas.js';
 import { Bitacora } from './observabilidad.js';
 import { ErrorProveedor, llamar, type Mensaje } from './proveedor.js';
@@ -30,6 +33,9 @@ import { envolverEntradaNoConfiable, PROMPT_SISTEMA, VERSION_PROMPT } from './pr
  * eso ocurre de verdad.
  */
 
+/** Busquedas tras las cuales se reconduce al modelo hacia la decision. */
+const LIMITE_BUSQUEDAS = 4;
+
 export type EstadoEjecucion = 'COMPLETADA' | 'FALLIDA' | 'CANCELADA' | 'TOPE_EXCEDIDO';
 
 export interface ResultadoEjecucion {
@@ -41,6 +47,10 @@ export interface ResultadoEjecucion {
   respuestaFinal: string | null;
   iteraciones: number;
   herramientasInvocadas: string[];
+  /** Intentos de reparacion dirigida consumidos. */
+  reparaciones: number;
+  /** true si el dictamen lo construyo el servidor tras agotar las reparaciones. */
+  degradado: boolean;
   tokensEntrada: number;
   tokensSalida: number;
   costoUsd: number;
@@ -165,9 +175,49 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
   let modelo = env.LLM_MODEL;
   let intentados: string[] = [];
   let idDictamen: string | null = null;
+  let reparaciones = 0;
+  let ultimoErrorRegistro = '';
+  const politicasVistas: FragmentoPolitica[] = [];
+  let degradado = false;
+  let busquedas = 0;
+  let avisoBusquedas = false;
   let respuestaFinal: string | null = null;
   let estado: EstadoEjecucion = 'COMPLETADA';
   let mensajeError: string | undefined;
+
+  /**
+   * Construye y persiste el dictamen degradado. Devuelve true si lo consiguio.
+   *
+   * Es el camino de fallo comun a las dos formas de fracasar: agotar las
+   * reparaciones dirigidas y agotar las iteraciones.
+   */
+  const degradar = async (motivo: string): Promise<boolean> => {
+    const propuesta = await construirDictamenDegradado(opciones.idSolicitud, politicasVistas, {
+      intentos: reparaciones,
+      ultimoError: ultimoErrorRegistro || motivo,
+    });
+    if (!propuesta) return false;
+
+    const persistido = await persistirDictamen(propuesta, bitacora.idEjecucion);
+    await bitacora.registrar({
+      tipo: 'REPARACION',
+      nombre: 'degradacion_a_escalamiento',
+      argumentos: { motivo },
+      resultado: persistido.ok ? persistido.confirmacion : undefined,
+      ...(persistido.ok ? {} : { error: persistido.error }),
+    });
+
+    if (!persistido.ok) return false;
+
+    idDictamen = persistido.confirmacion.id_dictamen;
+    degradado = true;
+    estado = 'COMPLETADA';
+    respuestaFinal =
+      'El asistente no logro producir un dictamen valido por si mismo. La solicitud se escalo ' +
+      'automaticamente a comite, con los indicadores calculados por el sistema y las politicas ' +
+      'que si llego a recuperar.';
+    return true;
+  };
 
   const cerrar = async () => {
     await bitacora.cerrar({
@@ -192,6 +242,8 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
       respuestaFinal,
       iteraciones,
       herramientasInvocadas: invocadas,
+      reparaciones,
+      degradado,
       tokensEntrada,
       tokensSalida,
       costoUsd,
@@ -249,6 +301,27 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
       mensajes.push(respuesta.mensaje);
       const llamadas = respuesta.mensaje.tool_calls ?? [];
 
+      // Control de deriva. En una ejecucion real el modelo encadeno seis
+      // busquedas seguidas y agoto las iteraciones sin decidir nada. El tope
+      // las habria cortado igual, pero cortar no es lo mismo que reconducir:
+      // aqui se le dice UNA sola vez que ya tiene material suficiente, que es
+      // informacion nueva y no una repeticion de la orden inicial.
+      if (busquedas >= LIMITE_BUSQUEDAS && !avisoBusquedas && !idDictamen) {
+        avisoBusquedas = true;
+        mensajes.push({
+          role: 'user',
+          content:
+            'Ya has consultado el corpus ' +
+            busquedas +
+            ' veces y tienes ' +
+            politicasVistas.length +
+            ' politicas recuperadas. Deja de buscar y registra el dictamen ahora con ' +
+            'registrar_dictamen, apoyandote en lo que ya tienes. Si nada de lo recuperado ' +
+            'cubre el caso, registra ESCALADO_A_COMITE citando la politica mas cercana y ' +
+            'explicando en los motivos que no hay politica aplicable.',
+        });
+      }
+
       // Criterio de parada 1: el modelo dejo de pedir herramientas.
       if (llamadas.length === 0) {
         respuestaFinal = respuesta.mensaje.content ?? null;
@@ -283,19 +356,77 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
           content: JSON.stringify(resultado.ok ? resultado.datos : { error: resultado.error }),
         });
 
-        // Criterio de parada 2: el dictamen quedo registrado.
-        if (nombre === 'registrar_dictamen' && resultado.ok) {
-          const datos = resultado.datos as { id_dictamen?: string };
-          idDictamen = datos.id_dictamen ?? null;
+        // Se guardan las politicas recuperadas: si hay que degradar, son las
+        // unicas citas legitimas disponibles, porque son texto literal del
+        // corpus y por tanto pasan G1.
+        if (nombre === 'buscar_politica') busquedas += 1;
+
+        if (nombre === 'buscar_politica' && resultado.ok) {
+          const datos = resultado.datos as { fragmentos?: FragmentoPolitica[] };
+          for (const f of datos.fragmentos ?? []) {
+            if (!politicasVistas.some((p) => p.id_politica === f.id_politica)) {
+              politicasVistas.push(f);
+            }
+          }
+        }
+
+        if (nombre === 'registrar_dictamen') {
+          if (resultado.ok) {
+            // Criterio de parada 2: el dictamen quedo registrado.
+            const datos = resultado.datos as { id_dictamen?: string };
+            idDictamen = datos.id_dictamen ?? null;
+          } else {
+            // Reparacion dirigida: el error concreto ya viajo al modelo en el
+            // mensaje de herramienta de arriba. Aqui solo se contabiliza.
+            reparaciones += 1;
+            ultimoErrorRegistro = resultado.error;
+            await bitacora.registrar({
+              tipo: 'REPARACION',
+              nombre: `intento ${reparaciones} de ${env.AGENT_MAX_REPARACIONES}`,
+              error: resultado.error,
+            });
+
+            if (reparaciones > env.AGENT_MAX_REPARACIONES) {
+              if (await degradar('Presupuesto de reparaciones agotado.')) return await cerrar();
+
+              estado = 'FALLIDA';
+              mensajeError =
+                'El modelo no produjo una salida valida tras ' +
+                reparaciones +
+                ' reparaciones y no habia politicas recuperadas con las que degradar.';
+              return await cerrar();
+            }
+          }
         }
       }
     }
 
     // Criterio de parada 3: se agotaron las iteraciones.
-    estado = idDictamen ? 'COMPLETADA' : 'TOPE_EXCEDIDO';
+    //
+    // Agotarlas sin dictamen no es una situacion distinta de agotar las
+    // reparaciones: en las dos, el analista se queda sin nada en la bandeja.
+    // Se degrada igual, para que la promesa "toda solicitud acaba con un
+    // dictamen trazable" se cumpla siempre y no solo en una de las dos formas
+    // de fallar. Este hueco aparecio en una ejecucion real.
     if (!idDictamen) {
-      mensajeError = `Se agotaron las ${env.AGENT_MAX_ITERATIONS} iteraciones sin registrar dictamen.`;
+      const aplicada = await degradar(
+        'Se agotaron las ' +
+          env.AGENT_MAX_ITERATIONS +
+          ' iteraciones sin registrar dictamen. Herramientas invocadas: ' +
+          invocadas.join(', ') +
+          '.',
+      );
+      if (aplicada) return await cerrar();
+
+      estado = 'TOPE_EXCEDIDO';
+      mensajeError =
+        'Se agotaron las ' +
+        env.AGENT_MAX_ITERATIONS +
+        ' iteraciones sin registrar dictamen y no habia politicas recuperadas con las que degradar.';
+      return await cerrar();
     }
+
+    estado = 'COMPLETADA';
     return await cerrar();
   } catch (error) {
     if (error instanceof ErrorProveedor && opciones.senal?.aborted) {
