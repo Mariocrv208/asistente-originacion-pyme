@@ -2,23 +2,67 @@
 
 Examen práctico de AI Engineer — Gerencia de Innovación.
 
-> **Estado:** en construcción. Este README se completa en el módulo M19 con las
-> decisiones técnicas exigidas por el punto 5.3.2 y 5.3.1 del enunciado.
+Asistente que preanaliza solicitudes de crédito PyME, aplica las políticas
+vigentes y emite una **recomendación** de dictamen con la política que la
+sustenta. El sistema no sustituye al analista: produce insumos verificables para
+su decisión, y ese principio está en la arquitectura, no solo aquí. Los números
+los calcula el código, las citas se verifican contra el corpus, y **ningún
+dictamen queda en firme sin confirmación humana explícita**.
+
+Puesta en marcha en [Puesta en marcha](#puesta-en-marcha).
 
 ## Stack elegido
 
-| Capa                              | Elección                                                                                             |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Backend                           | Node.js 24 + TypeScript (Fastify)                                                                    |
-| Framework de agentes              | Llamada directa al SDK del proveedor (`openai` apuntando a OpenRouter) con ciclo de ejecución propio |
-| Frontend                          | React 19 + TypeScript + Vite                                                                         |
-| Base de datos                     | PostgreSQL 16 + `pgvector` en contenedor                                                             |
-| Proveedor de LLM                  | OpenRouter (modelos gratuitos)                                                                       |
-| Decimal exacto                    | `decimal.js` + `NUMERIC(18,2)` en PostgreSQL                                                         |
-| Validación de salida estructurada | Zod                                                                                                  |
+| Capa                              | Elección                                                                          |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| Backend                           | Node.js 24 + TypeScript (Fastify)                                                 |
+| Framework de agentes              | Llamada directa al proveedor sobre `fetch`, con ciclo de ejecución escrito a mano |
+| Frontend                          | React 19 + TypeScript + Vite                                                      |
+| Base de datos                     | PostgreSQL 16 + `pgvector` en contenedor                                          |
+| Proveedor de LLM                  | OpenRouter (modelos gratuitos)                                                    |
+| Decimal exacto                    | `decimal.js` + `NUMERIC(18,2)` en PostgreSQL                                      |
+| Validación de salida estructurada | Zod                                                                               |
 
-La justificación de cada elección —en particular por qué se escribe el ciclo del
-agente a mano en vez de usar Mastra— está en [`docs/DECISIONES.md`](docs/DECISIONES.md).
+Este README **es** el documento de decisiones que pide el punto 4 de los
+entregables. Cada sección explica una decisión y por qué se tomó, no solo qué se
+hizo. Índice rápido de las que más se van a preguntar:
+
+| Decisión                                                            | Dónde                                                                                          |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Por qué el ciclo del agente se escribe a mano y no con un framework | [El agente](#el-agente)                                                                        |
+| Estrategia de acceso al corpus y qué cambiaría con 500 políticas    | [Acceso al corpus de políticas](#acceso-al-corpus-de-políticas)                                |
+| Estrategia de precálculo de indicadores y su invalidación           | [Esquema de base de datos](#esquema-de-base-de-datos)                                          |
+| Dónde redondear, cómo repartir el residuo y qué regla usar          | [Núcleo financiero](#núcleo-financiero)                                                        |
+| Por qué G3 y G4 viven en la base de datos y no en la aplicación     | [Esquema de base de datos](#esquema-de-base-de-datos)                                          |
+| Camino explícito de fallo de la salida estructurada                 | [El agente](#el-agente)                                                                        |
+| SSE frente a WebSockets, y por qué no `EventSource`                 | [API](#api)                                                                                    |
+| Propuesta reversible frente a efecto confirmado                     | [Chat, actividad del agente y dictamen en vivo](#chat-actividad-del-agente-y-dictamen-en-vivo) |
+| Criterio de aprobación de los casos de evaluación                   | [Banco de evaluación](#banco-de-evaluación)                                                    |
+
+## Cómo se usó IA para resolver la prueba
+
+El enunciado permite usar herramientas de IA y pide documentar cómo. Se usó un
+asistente de programación de forma intensiva: para escribir código, para
+explorar alternativas de diseño y para redactar documentación.
+
+La regla que gobernó ese uso, y que aparece en el código y en los verificadores:
+**nada que viniera de un modelo se dio por bueno sin convertirlo en una
+comprobación ejecutable.** Los ejemplos concretos están en el repositorio.
+
+- La fórmula de la cuota nivelada se contrastó contra una implementación
+  independiente escrita en Python con su módulo `decimal`, para que la prueba no
+  comparara el código consigo mismo.
+- La afirmación de que «mitad al par no sesga» se midió sobre 100 000 empates. La
+  primera medición **falló** y reveló que la muestra estaba mal construida.
+- La afirmación de que «sin el cierre por excepciones la excepción se pierde» se
+  midió antes de escribirla y resultó **falsa** en el caso que se iba a usar.
+- Los modelos gratuitos se verificaron contra el catálogo de OpenRouter por API,
+  no contra una lista recordada: los tres elegidos al planificar ya no lo eran.
+
+Los seis verificadores del repositorio (`pnpm db:verificar`, `corpus:verificar`,
+`finanzas:verificar`, `datos:verificar`, `recuperacion:verificar`,
+`agente:verificar`, `api:verificar`) existen por esa razón: son el mecanismo con
+el que se comprobó lo que el asistente proponía.
 
 ## Puesta en marcha
 
@@ -735,6 +779,7 @@ cuál. Lo que no se admite es aprobar.
 ## Documentación
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.
+- [`docs/BITACORA.md`](docs/BITACORA.md) — bitácora de aprendizaje (entregable 7).
 - [`docs/GITFLOW.md`](docs/GITFLOW.md) — modelo de ramas y convención de commits.
 - [`docs/PLAN.md`](docs/PLAN.md) — plan de desarrollo por módulos.
 
@@ -743,7 +788,8 @@ cuál. Lo que no se admite es aprobar.
 1. Repositorio (este).
 2. Video de demostración.
 3. Cuestionario técnico contestado — `docs/CUESTIONARIO.md`.
-4. README de decisiones — `docs/DECISIONES.md`.
-5. JSON de políticas extendido — `data/politicas.json`.
-6. Script y resultados de los 10 casos de evaluación — `apps/api/src/eval/`.
-7. Bitácora de aprendizaje — `docs/BITACORA.md`.
+4. README de decisiones — **este archivo**.
+5. JSON de políticas extendido — `data/politicas.json` (32 políticas).
+6. Script y resultados de los 10 casos de evaluación — `apps/api/src/eval/` y
+   `eval-results/ultima.json`.
+7. Bitácora de aprendizaje — [`docs/BITACORA.md`](docs/BITACORA.md).
