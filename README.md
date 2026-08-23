@@ -51,25 +51,26 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 ### Comandos útiles
 
-| Comando                   | Qué hace                                              |
-| ------------------------- | ----------------------------------------------------- |
-| `pnpm dev`                | Levanta API y frontend en paralelo                    |
-| `pnpm dev:api`            | Solo la API                                           |
-| `pnpm dev:web`            | Solo el frontend                                      |
-| `pnpm typecheck`          | Comprobación de tipos en todo el monorepo             |
-| `pnpm lint`               | ESLint                                                |
-| `pnpm format`             | Prettier en modo escritura                            |
-| `pnpm db:up`              | Arranca PostgreSQL                                    |
-| `pnpm db:migrate`         | Aplica las migraciones pendientes                     |
-| `pnpm db:verificar`       | Comprueba que las restricciones rechazan lo que deben |
-| `pnpm corpus:cargar`      | Carga el corpus de políticas (idempotente)            |
-| `pnpm corpus:verificar`   | Integridad del corpus y verificación de citas         |
-| `pnpm finanzas:verificar` | Amortización, redondeo e indicadores del punto 5.3.1  |
-| `pnpm datos:generar`      | Regenera `data/dataset.json` de forma determinista    |
-| `pnpm datos:sembrar`      | Siembra el conjunto en la base de datos               |
-| `pnpm datos:verificar`    | Determinismo, exigencias del 5.2.1 y cobertura        |
-| `pnpm db:psql`            | Abre una sesión `psql` contra el contenedor           |
-| `pnpm db:nuke`            | Destruye el contenedor **y su volumen de datos**      |
+| Comando                       | Qué hace                                              |
+| ----------------------------- | ----------------------------------------------------- |
+| `pnpm dev`                    | Levanta API y frontend en paralelo                    |
+| `pnpm dev:api`                | Solo la API                                           |
+| `pnpm dev:web`                | Solo el frontend                                      |
+| `pnpm typecheck`              | Comprobación de tipos en todo el monorepo             |
+| `pnpm lint`                   | ESLint                                                |
+| `pnpm format`                 | Prettier en modo escritura                            |
+| `pnpm db:up`                  | Arranca PostgreSQL                                    |
+| `pnpm db:migrate`             | Aplica las migraciones pendientes                     |
+| `pnpm db:verificar`           | Comprueba que las restricciones rechazan lo que deben |
+| `pnpm corpus:cargar`          | Carga el corpus de políticas (idempotente)            |
+| `pnpm corpus:verificar`       | Integridad del corpus y verificación de citas         |
+| `pnpm finanzas:verificar`     | Amortización, redondeo e indicadores del punto 5.3.1  |
+| `pnpm datos:generar`          | Regenera `data/dataset.json` de forma determinista    |
+| `pnpm datos:sembrar`          | Siembra el conjunto en la base de datos               |
+| `pnpm datos:verificar`        | Determinismo, exigencias del 5.2.1 y cobertura        |
+| `pnpm recuperacion:verificar` | Enrutamiento, BM25 y cierre por excepciones           |
+| `pnpm db:psql`                | Abre una sesión `psql` contra el contenedor           |
+| `pnpm db:nuke`                | Destruye el contenedor **y su volumen de datos**      |
 
 ### Variables de entorno
 
@@ -343,6 +344,88 @@ dictamen que ya salió de `PENDIENTE_AUTORIZACION`, así que insertarlo
 directamente como `EN_FIRME` haría imposible citarlo. Que la siembra tenga que
 respetar el ciclo es una confirmación de que la máquina de estados de G4 funciona
 también contra datos realistas, y no solo contra el script de M2.
+
+## Acceso al corpus de políticas
+
+El punto 5.3.2 deja la estrategia libre pero exige justificarla y decir qué
+cambiaría con 500 políticas o con un corpus que cambia cada semana.
+
+**Elegido: índice léxico BM25 en memoria, con enrutamiento por categoría y
+cierre por excepciones.**
+
+### Por qué no búsqueda vectorial
+
+El corpus tiene 32 políticas. Recorrer 32 documentos cortos cuesta
+microsegundos, da recall perfecto y no aproxima nada. Montar embeddings y un
+índice ANN encima sería más lento —una inferencia de CPU o una llamada de red
+por consulta—, menos exacto y bastante más difícil de auditar, a cambio de nada.
+
+Es un cambio respecto a lo que anuncié en el documento inicial, donde había
+previsto embeddings locales. La evidencia que me hizo cambiar fue el tamaño real
+del corpus una vez construido: a esta escala, la parte vectorial resolvía un
+problema que no existe.
+
+### Las tres etapas
+
+**1. Enrutamiento por categoría, como sesgo y nunca como filtro.** Esto importa
+más de lo que parece. Las excepciones viven en la categoría `excepcion`, no en
+la de la regla que modifican. Una consulta sobre endeudamiento filtrada
+duramente a `capacidad_pago` **nunca** recuperaría POL-7.3, que es justo la
+política que permite superar el límite: el sistema citaría la regla general y
+aplicaría un rechazo que la excepción desmiente. Es un error sistemático y de
+los que no se notan hasta que lo encuentra un auditor.
+
+**2. Ordenación BM25** sobre términos exactos. Los números se conservan enteros
+—`0.65`, `1.25`, `250,000` son términos con significado propio— y las negaciones
+(`no`, `sin`, `salvo`) **no** se tratan como palabras vacías, porque en un texto
+normativo distinguen una regla de su contraria.
+
+**3. Cierre por excepciones**, en ambos sentidos: si entra una regla general
+entran sus excepciones, y si entra una excepción entra la regla que modifica. El
+fallo es simétrico — recuperar POL-2.3 sin POL-7.3 rechaza a quien la excepción
+ampara, y recuperar POL-7.3 sin POL-2.3 deja al modelo aplicando una excepción
+sin conocer la regla que relaja.
+
+### Dónde se demuestra que el cierre hace falta
+
+Midiéndolo, no afirmándolo. Con consultas que casi citan la norma —«la razón de
+endeudamiento excede 0.65»— BM25 ya trae la excepción por su cuenta y el cierre
+no aporta nada. El caso realista es otro: el agente formula la consulta desde la
+**situación del solicitante**, no copiando el texto de la política. Con la
+paráfrasis «el flujo no alcanza para pagar la cuota», el ranking devuelve POL-2.7
+y **pierde POL-7.7**; solo el cierre la recupera. Esa es la comprobación que
+está en el banco de pruebas.
+
+### Limitación conocida
+
+Una paráfrasis sin vocabulario compartido no recupera nada: BM25 no relaciona
+«empresa recién constituida» con «24 meses continuos de operación». Está
+declarado como comprobación explícita en `pnpm recuperacion:verificar` en vez de
+escondido, porque es exactamente el hueco que cubriría una estrategia vectorial.
+
+### Qué haría con 500 políticas o con cambios semanales
+
+- **500 políticas:** el índice deja de caber cómodamente por proceso y la
+  recuperación pasa a PostgreSQL. El esquema ya está preparado: la tabla
+  `politica_fragmentos` con su columna `vector(384)` y las extensiones
+  `pgvector` y `pg_trgm` están instaladas desde M1. La estrategia pasaría a
+  híbrida —léxica más vectorial con fusión de rankings— y el cierre por
+  excepciones se vuelve **más** importante, no menos: con más documentos, la
+  regla general y su excepción se separan más fácilmente en el ranking.
+- **Cambios semanales:** el corpus ya está versionado (`version` en el JSON, y
+  `version_corpus` en cada fila de `politicas`), y los dictámenes congelan el
+  texto citado. Añadiría vigencia temporal efectiva a la consulta —las columnas
+  `vigente_desde` y `vigente_hasta` ya existen— para que un dictamen de hace seis
+  meses se pueda releer contra el corpus que estaba vigente entonces, no contra
+  el de hoy.
+
+### Precedencia entre regla y excepción
+
+`agruparPorPrecedencia()` devuelve la regla con sus excepciones colgando y **no
+descarta ninguna de las dos**. La excepción no sustituye a la regla: la relaja
+bajo condiciones que hay que comprobar contra los datos de esta solicitud
+concreta. Resolver la precedencia en la capa de recuperación, sin mirar al
+solicitante, sería inventarse el resultado.
 
 ## Documentación
 
