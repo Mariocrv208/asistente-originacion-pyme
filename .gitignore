@@ -22,8 +22,10 @@ Thumbs.db
 # Artefactos de ejecución
 apps/api/.cache/
 apps/api/models/
-eval-results/*.json
-!eval-results/.gitkeep
+# Los resultados de la evaluacion son un entregable del punto 5.3.6, asi que
+# SI se versionan. Solo se ignoran los informes con marca de tiempo, para no
+# acumular decenas: se conserva ultima.json, que es el que se entrega.
+eval-results/evaluacion-*.json
 
 # Volúmenes locales de Postgres
 .docker-data/
