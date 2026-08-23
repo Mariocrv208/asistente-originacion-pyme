@@ -18,6 +18,10 @@ El avance se dispara con el comando **`continua`**.
 
 **M6 — Recuperación de políticas y verificación de citas — COMPLETADO.**
 
+**M7 y M8 — Ciclo del agente y sus cinco herramientas — COMPLETADO.**
+
+**M9 — Salida estructurada y camino de fallo — COMPLETADO** (se adelantó al resolver el fallo real detectado en M7).
+
 ---
 
 ## Bloque A · Cimientos
