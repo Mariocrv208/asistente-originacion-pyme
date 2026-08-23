@@ -28,7 +28,8 @@
     "datos:generar": "pnpm --filter @aop/api datos:generar",
     "datos:sembrar": "pnpm --filter @aop/api datos:sembrar",
     "datos:verificar": "pnpm --filter @aop/api datos:verificar",
-    "recuperacion:verificar": "pnpm --filter @aop/api recuperacion:verificar"
+    "recuperacion:verificar": "pnpm --filter @aop/api recuperacion:verificar",
+    "llm:modelos": "node scripts/listar-modelos-gratuitos.mjs .env"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
