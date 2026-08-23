@@ -21,6 +21,20 @@ import { CASOS, DECISIONES_ADMITIDAS, type CasoEvaluacion } from './casos.js';
 
 const DIRECTORIO = join(import.meta.dirname, '../../../../eval-results');
 
+/**
+ * Cuota diaria agotada.
+ *
+ * La capa gratuita de OpenRouter permite 50 peticiones al dia y una ejecucion
+ * del agente consume entre 6 y 12, asi que los diez casos NO caben en un solo
+ * dia sin credito. Distinguirlo de un fallo del agente es importante por dos
+ * razones: seguir ejecutando los diez casos sabiendo que ninguno va a poder
+ * correr solo gasta tiempo, y un informe de 0/10 sin explicacion parece un
+ * fracaso del sistema cuando es un limite de la cuenta.
+ */
+const esCuotaAgotada = (mensaje?: string) =>
+  mensaje !== undefined &&
+  (mensaje.includes('free-models-per-day') || mensaje.includes('Rate limit exceeded'));
+
 interface Condicion {
   nombre: string;
   ok: boolean;
@@ -180,14 +194,38 @@ async function main() {
 
   console.log(`\nBanco de evaluación · ${casos.length} casos · modelo ${env.LLM_MODEL}\n`);
 
+  let cuotaAgotada = false;
+
   for (const caso of casos) {
     process.stdout.write(`  ${caso.id} ${caso.titulo.slice(0, 52).padEnd(54)}`);
     const r = await evaluar(caso, idSesion);
+
+    if (esCuotaAgotada(r.error)) {
+      console.log('SIN CUOTA');
+      cuotaAgotada = true;
+      break;
+    }
+
     resultados.push(r);
     console.log(r.paso ? 'PASA' : 'FALLA');
     for (const c of r.condiciones.filter((x) => !x.ok)) {
-      console.log(`       ${c.nombre}: ${c.detalle}`);
+      // El detalle se recorta: los errores del proveedor traen cientos de
+      // caracteres de JSON que no aportan nada en la consola.
+      console.log(`       ${c.nombre}: ${c.detalle.slice(0, 150)}`);
     }
+  }
+
+  if (cuotaAgotada) {
+    console.log(
+      '\n  Se agoto la cuota diaria gratuita de OpenRouter (50 peticiones/dia).\n' +
+        '  Se reinicia a medianoche UTC. No se escribe informe: no habria nada que informar.\n' +
+        `\n  Casos completados antes de agotarla: ${resultados.length} de ${casos.length}.\n` +
+        '  Cada ejecucion del agente consume entre 6 y 12 peticiones, asi que los diez\n' +
+        '  casos no caben en un solo dia sin credito. Se pueden correr por tandas con\n' +
+        '  "pnpm eval --caso A1".\n',
+    );
+    await cerrarPool();
+    process.exit(2);
   }
 
   const pasan = resultados.filter((r) => r.paso).length;
