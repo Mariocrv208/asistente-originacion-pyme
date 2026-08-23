@@ -16,6 +16,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M5 — Generación de datos sintéticos — COMPLETADO.**
 
+**M6 — Recuperación de políticas y verificación de citas — COMPLETADO.**
+
 ---
 
 ## Bloque A · Cimientos
