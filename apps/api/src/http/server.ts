@@ -3,10 +3,50 @@ import cors from '@fastify/cors';
 import sensible from '@fastify/sensible';
 import { saludSchema, type Salud } from '@aop/shared';
 import { env, hayClaveLlm, modelosLlm } from '../config/env.js';
+import { verificarModelos } from '../config/modelos.js';
 import { comprobarBaseDatos, extensionesInstaladas } from '../db/pool.js';
 
 const VERSION = '0.1.0';
 const arrancadoEn = Date.now();
+
+/**
+ * Estado del proveedor de LLM, incluida la comprobacion de gratuidad.
+ *
+ * Si el catalogo no responde, se informa en vez de tumbar el diagnostico: la
+ * salud de la API no depende de que OpenRouter este disponible.
+ */
+async function diagnosticoLlm() {
+  if (!hayClaveLlm()) {
+    return {
+      configurado: false,
+      modelos: modelosLlm,
+      nota: 'Sin OPENROUTER_API_KEY. Se necesita a partir del modulo M7.',
+    };
+  }
+
+  try {
+    const veredictos = await verificarModelos();
+    const dePago = veredictos.filter((v) => v.existe && !v.gratuito).map((v) => v.id);
+    const inexistentes = veredictos.filter((v) => !v.existe).map((v) => v.id);
+
+    return {
+      configurado: true,
+      modelos: veredictos,
+      nota:
+        dePago.length > 0
+          ? `ATENCION: ${dePago.join(', ')} NO son gratuitos y consumirian saldo.`
+          : inexistentes.length > 0
+            ? `${inexistentes.join(', ')} ya no existen en el catalogo. Ejecuta pnpm llm:modelos.`
+            : 'Todos los modelos configurados son gratuitos y admiten herramientas.',
+    };
+  } catch (error) {
+    return {
+      configurado: true,
+      modelos: modelosLlm,
+      nota: `No se pudo verificar el catalogo: ${error instanceof Error ? error.message : String(error)}`,
+    };
+  }
+}
 
 export async function construirServidor(): Promise<FastifyInstance> {
   // La propiedad se omite en lugar de ponerla en undefined: con
@@ -64,13 +104,7 @@ export async function construirServidor(): Promise<FastifyInstance> {
     return {
       baseDatos: bd,
       extensiones: bd.ok ? await extensionesInstaladas() : [],
-      llm: {
-        configurado: hayClaveLlm(),
-        modelos: modelosLlm,
-        nota: hayClaveLlm()
-          ? 'Clave presente.'
-          : 'Sin OPENROUTER_API_KEY. Se necesita a partir del modulo M7.',
-      },
+      llm: await diagnosticoLlm(),
       topesAgente: {
         maxIteraciones: env.AGENT_MAX_ITERATIONS,
         maxUsdPorEjecucion: env.AGENT_MAX_USD_PER_RUN,
