@@ -31,7 +31,8 @@
     "recuperacion:verificar": "pnpm --filter @aop/api recuperacion:verificar",
     "llm:modelos": "node scripts/listar-modelos-gratuitos.mjs .env",
     "agente:verificar": "pnpm --filter @aop/api agente:verificar",
-    "api:verificar": "pnpm --filter @aop/api api:verificar"
+    "api:verificar": "pnpm --filter @aop/api api:verificar",
+    "eval": "pnpm --filter @aop/api eval"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

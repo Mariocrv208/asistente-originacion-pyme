@@ -32,6 +32,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M15 — Panel de dictamen en vivo y confirmación G4 — COMPLETADO.**
 
+**M18 — Banco de evaluación — CONSTRUIDO.** Pendiente de ejecutar contra el proveedor: la cuota diaria gratuita de OpenRouter está agotada y se reinicia a medianoche UTC.
+
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).
