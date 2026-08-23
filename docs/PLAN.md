@@ -38,6 +38,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M21 — Cuestionario, secciones 1 a 3 — COMPLETADO.**
 
+**M22 — Cuestionario, sección 4 y tres de 4.F — COMPLETADO.** Las 30 respuestas están contestadas.
+
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).
