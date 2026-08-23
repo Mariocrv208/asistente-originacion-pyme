@@ -574,6 +574,54 @@ Se comprueba con un caso que lo demuestra: tras confirmar un dictamen, el
 verificador intenta devolverlo a pendiente **por SQL directo** y el trigger lo
 impide.
 
+## Frontend
+
+React 19 + Vite + Tailwind CSS v4, con TanStack Query para el estado del
+servidor. Tema oscuro único —no un tema claro invertido— porque el analista pasa
+horas leyendo expedientes y el blanco sostenido cansa.
+
+### Tres reglas que gobiernan la paleta
+
+1. **El acento (cian) señala actividad del sistema**: el agente trabajando,
+   fuentes consultadas, progreso. Nunca decora.
+2. **Los colores semánticos pertenecen a las decisiones de crédito y a nada más.**
+   Verde es `APROBADO`, no «correcto»; ámbar es `ESCALADO`, no «aviso».
+   Reutilizarlos haría ilegible la bandeja de un vistazo.
+3. **Todo lo que sea dinero usa cifras tabulares.** Una columna de importes que no
+   alinea es una columna que no se puede comparar.
+
+El vocabulario del dominio vive en un módulo aparte de las primitivas. No es
+diseño genérico: es la traducción de las decisiones a color y palabra, y tiene
+que ser idéntica en la bandeja, en el detalle y en las métricas. Un
+`ESCALADO_A_COMITE` que fuera ámbar en una pantalla y gris en otra obligaría al
+analista a releer en vez de reconocer.
+
+### Adaptable, sin duplicar lógica
+
+La misma lista de navegación se pinta como barra lateral desde 768 px y como
+barra inferior por debajo — al alcance del pulgar, que es donde tiene que estar
+en una herramienta que se consulta de pie. En la bandeja, la tabla se convierte
+en tarjetas: una fila de siete columnas en 375 px no se lee, se adivina.
+
+Verificado a 375 px: tabla oculta, tarjetas visibles, navegación inferior
+presente y **sin desbordamiento horizontal**.
+
+El punto 5.6 deja el diseño adaptable avanzado fuera de alcance. Esto no lo es:
+son dos disposiciones de la misma lista, sin lógica duplicada.
+
+### Los números llevan su lectura al lado
+
+El enunciado avisa de que la interfaz no debe parecer un tablero de inteligencia
+de negocios. Por eso la vista de métricas no muestra «21,1 %» a secas sino
+«aproximadamente una de cada cinco solicitudes necesita comité». Un número sin
+interpretación obliga a interpretarlo cada vez.
+
+### Dónde se convierte el decimal a número
+
+En un solo sitio: la función de formato, en el último paso antes de pintar. En
+todo el trayecto anterior —base de datos, API, cliente— el importe viaja como
+cadena exacta.
+
 ## Documentación
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.

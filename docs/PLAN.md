@@ -26,6 +26,12 @@ El avance se dispara con el comando **`continua`**.
 
 **M12 — API HTTP y streaming — COMPLETADO.**
 
+**M13 — Sistema de diseño y shell responsive — COMPLETADO.**
+
+**M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
+
+**M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).
+
 ---
 
 ## Bloque A · Cimientos
