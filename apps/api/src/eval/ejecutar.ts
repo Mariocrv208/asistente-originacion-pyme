@@ -132,11 +132,12 @@ async function evaluar(caso: CasoEvaluacion, idSesion: string): Promise<Resultad
     detalle: `obtenida ${d.decision}, esperada ${admitidas.join(' o ')}`,
   });
 
-  // 2. La política esperada está entre las citadas.
+  // 2. Alguna de las políticas aceptables está entre las citadas.
+  const aceptables = caso.politicasAceptadas ?? [caso.politicaEsperada];
   condiciones.push({
     nombre: 'Cita la política esperada',
-    ok: d.citas.includes(caso.politicaEsperada),
-    detalle: `esperaba ${caso.politicaEsperada}, citó ${d.citas.join(', ') || 'nada'}`,
+    ok: aceptables.some((p) => d.citas.includes(p)),
+    detalle: `esperaba ${aceptables.join(' o ')}, citó ${d.citas.join(', ') || 'nada'}`,
   });
 
   // 3. Coherencia numérica, sin tolerancia.

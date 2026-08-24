@@ -22,19 +22,38 @@ import { envolverEntradaNoConfiable, PROMPT_SISTEMA, VERSION_PROMPT } from './pr
  *
  * CRITERIO DE PARADA (pregunta 4.3)
  *
- * El bucle termina por una de estas cuatro razones, y no hay una quinta:
- *   1. el modelo responde sin pedir herramientas -> terminado;
- *   2. registrar_dictamen confirma la escritura -> terminado, hay resultado;
- *   3. se agota el tope de iteraciones -> TOPE_EXCEDIDO;
- *   4. se agota el tope de costo o de tiempo -> TOPE_EXCEDIDO.
+ * El bucle termina por una de estas razones, y no hay otra:
+ *   1. registrar_dictamen confirma la escritura -> terminado, hay resultado;
+ *   2. el modelo deja de pedir herramientas Y ya hay dictamen -> terminado;
+ *   3. se agotan las iteraciones, el costo o el tiempo -> se degrada;
+ *   4. se agota el presupuesto de reparaciones -> se degrada.
  *
- * Los topes son la garantia de terminacion. Sin ellos, un modelo que insiste en
- * llamar a la misma herramienta gira indefinidamente, y con modelos gratuitos
- * eso ocurre de verdad.
+ * EL CRITERIO ESTA ATADO AL OBJETIVO, NO A LA VOLUNTAD DEL MODELO.
+ *
+ * La primera version aceptaba "el modelo dejo de pedir herramientas" como
+ * terminacion valida sin mas. Al ejecutar el banco de evaluacion real se vio
+ * que era un error caro: en 7 de 9 casos el modelo consulto las politicas y
+ * despues respondio con prosa —un resumen para el analista— sin llamar nunca a
+ * registrar_dictamen. El ciclo lo daba por COMPLETADA, sin error y sin
+ * dictamen. Un agente que analiza y no registra no ha hecho su trabajo, y el
+ * expediente se quedaba vacio.
+ *
+ * Ahora, si el modelo para sin dictamen, se le devuelve una instruccion
+ * concreta y se sigue. Es el mismo principio que la reparacion dirigida: no
+ * repetir la orden, sino darle informacion nueva sobre lo que falta. Con
+ * presupuesto acotado, porque insistir indefinidamente es girar.
  */
 
 /** Busquedas tras las cuales se reconduce al modelo hacia la decision. */
 const LIMITE_BUSQUEDAS = 4;
+
+/**
+ * Veces que se le puede pedir al modelo que registre antes de degradar.
+ *
+ * Dos. Si con la instruccion delante no registra dos veces seguidas, no va a
+ * registrar a la tercera: el problema no es que no se haya enterado.
+ */
+const LIMITE_INSISTENCIAS = 2;
 
 export type EstadoEjecucion = 'COMPLETADA' | 'FALLIDA' | 'CANCELADA' | 'TOPE_EXCEDIDO';
 
@@ -49,6 +68,8 @@ export interface ResultadoEjecucion {
   herramientasInvocadas: string[];
   /** Intentos de reparacion dirigida consumidos. */
   reparaciones: number;
+  /** Veces que hubo que pedirle al modelo que registrara. */
+  insistencias: number;
   /** true si el dictamen lo construyo el servidor tras agotar las reparaciones. */
   degradado: boolean;
   tokensEntrada: number;
@@ -194,6 +215,7 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
   let degradado = false;
   let busquedas = 0;
   let avisoBusquedas = false;
+  let insistencias = 0;
   let respuestaFinal: string | null = null;
   let estado: EstadoEjecucion = 'COMPLETADA';
   let mensajeError: string | undefined;
@@ -256,6 +278,7 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
       iteraciones,
       herramientasInvocadas: invocadas,
       reparaciones,
+      insistencias,
       degradado,
       tokensEntrada,
       tokensSalida,
@@ -335,9 +358,51 @@ export async function ejecutarAgente(opciones: OpcionesEjecucion): Promise<Resul
         });
       }
 
-      // Criterio de parada 1: el modelo dejo de pedir herramientas.
+      // El modelo dejo de pedir herramientas.
       if (llamadas.length === 0) {
+        // Con dictamen registrado, terminar aqui es correcto: el resumen final
+        // es justamente lo que el analista lee.
+        if (idDictamen !== null) {
+          respuestaFinal = respuesta.mensaje.content ?? null;
+          return await cerrar();
+        }
+
+        // Sin dictamen, parar seria dar por bueno un analisis que no produjo
+        // nada. Se le dice exactamente que falta y se sigue.
+        if (insistencias < LIMITE_INSISTENCIAS) {
+          insistencias += 1;
+          await bitacora.registrar({
+            tipo: 'REPARACION',
+            nombre: `insistencia ${insistencias} de ${LIMITE_INSISTENCIAS}`,
+            error: 'el modelo termino su turno sin registrar el dictamen',
+          });
+
+          mensajes.push({
+            role: 'user',
+            content:
+              'Tu analisis no ha quedado registrado: no has llamado a ' +
+              'registrar_dictamen, asi que el expediente sigue vacio y el analista no ' +
+              'vera nada. Un resumen en texto no sustituye al registro.\n\n' +
+              'Llama AHORA a registrar_dictamen con el objeto dictamen completo, usando ' +
+              'las ' +
+              politicasVistas.length +
+              ' politicas que ya recuperaste y los indicadores que recibiste al ' +
+              'principio, copiados tal cual. No busques mas politicas.',
+          });
+          continue;
+        }
+
+        // Agotada la insistencia, el servidor arma el dictamen.
+        if (await degradar('El modelo termino sin registrar dictamen tras insistir.')) {
+          return await cerrar();
+        }
+
         respuestaFinal = respuesta.mensaje.content ?? null;
+        estado = 'FALLIDA';
+        mensajeError =
+          'El modelo no registro dictamen tras ' +
+          insistencias +
+          ' insistencias y no habia politicas recuperadas con las que degradar.';
         return await cerrar();
       }
 

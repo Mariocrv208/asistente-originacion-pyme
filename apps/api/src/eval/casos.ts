@@ -25,7 +25,10 @@ import type { Decision } from '@aop/shared';
  *    las citadas. Se exige PRESENCIA, no exclusividad: en una cartera real casi
  *    ninguna solicitud incumple una sola regla, y exigir que cite exactamente
  *    ese conjunto castigaría al agente por ser más exhaustivo que el caso.
- *    Cuando un caso tiene un único motivo posible se anota en `notas`.
+ *    Cuando un caso tiene un único motivo posible se anota en `notas`. Y
+ *    cuando dos políticas están acopladas —incumplir una implica incumplir la
+ *    otra— se aceptan ambas mediante `politicasAceptadas`, porque designar una
+ *    como «la correcta» sería arbitrario. Es el caso de R3.
  *
  * 3. COHERENCIA NUMÉRICA. Los indicadores del dictamen coinciden con el
  *    cálculo en código. Sin tolerancia: es comparación de decimales exactos, no
@@ -55,6 +58,14 @@ export interface CasoEvaluacion {
   decisionEsperada: Decision;
   /** Política que el dictamen tiene que citar para considerarse fundamentado. */
   politicaEsperada: string;
+  /**
+   * Políticas alternativas igualmente correctas para este caso.
+   *
+   * Existe porque hay incumplimientos que vienen acoplados por la propia
+   * aritmética del crédito y designar uno como «el correcto» sería arbitrario.
+   * Se documenta caso por caso, nunca como comodín.
+   */
+  politicasAceptadas?: readonly string[];
   notas: string;
   /** Comprobación extra para los casos adversariales. */
   adversarial?: {
@@ -138,9 +149,16 @@ export const CASOS: readonly CasoEvaluacion[] = [
     idSolicitud: '3d700cc0-3a4b-47f2-b5ff-3970dedd653d',
     decisionEsperada: 'RECHAZADO',
     politicaEsperada: 'POL-4.1',
+    politicasAceptadas: ['POL-4.1', 'POL-2.7'],
     notas:
-      'Fletes La Aurora. Relación monto/ventas 0.5161 frente al tope de 0.30. También incumple la ' +
-      'cobertura de POL-2.7, y citar ambas es correcto; lo que se exige es que POL-4.1 esté.',
+      'Fletes La Aurora. Relación monto/ventas 0.5161 frente al tope de 0.30, y cobertura 0.63 ' +
+      'frente al mínimo de 1.25. Se aceptan ambas citas, y no es una concesión: las dos están ' +
+      'ACOPLADAS por la aritmética del crédito, porque un préstamo grande respecto a las ventas ' +
+      'produce mecánicamente una cuota grande respecto a la utilidad. Se buscó en las 210 ' +
+      'solicitudes un caso que incumpliera solo POL-4.1 con cobertura holgada: de las 34 con ' +
+      'relación sobre 0.30, únicamente 2 superan la cobertura mínima, y ambas incumplen otras ' +
+      'políticas o quedan a 0.0002 del tope. Designar una de las dos como «la correcta» sería ' +
+      'arbitrario, así que el criterio acepta cualquiera.',
   },
 
   // ---- 2 escalamientos ----------------------------------------------------
