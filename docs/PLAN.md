@@ -34,6 +34,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M18 — Banco de evaluación — CONSTRUIDO.** Pendiente de ejecutar contra el proveedor: la cuota diaria gratuita de OpenRouter está agotada y se reinicia a medianoche UTC.
 
+**M19 — Punto extra 5.4: reranking con evidencia medida — COMPLETADO.**
+
 **M20 — README de decisiones y bitácora — COMPLETADO.**
 
 **M21 — Cuestionario, secciones 1 a 3 — COMPLETADO.**
@@ -198,9 +200,10 @@ y reporte. Criterio de aprobación documentado.
 
 ### M19 — Punto extra 5.4: reranking con evidencia medida
 
-Reordenamiento de los fragmentos recuperados y comparación A/B contra la línea
-base de M6, con métricas de precisión de citas. Cubre también los puntos extra
-del 5.3.2 por medir dos estrategias de acceso al corpus.
+Reordenamiento conceptual de los fragmentos que BM25 ya recuperó (segunda
+etapa, local, sin costo de proveedor), comparado A/B contra la línea base de M6
+sobre tres paráfrasis sin vocabulario compartido. Detalle en el README, sección
+«Punto extra (5.4)».
 
 ---
 

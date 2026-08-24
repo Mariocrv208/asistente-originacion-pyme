@@ -136,16 +136,20 @@ async function main() {
     `con cierre: ${parafraseoCon.join(', ')}`,
   );
 
-  // Limitacion conocida, declarada en vez de escondida. Es el argumento a favor
-  // de anadir recuperacion vectorial si el corpus creciera o si las consultas
-  // se alejaran mas del vocabulario normativo.
-  const sinVocabulario = ids(recuperador.buscar('empresa recien constituida quiere credito'));
+  // Limitacion conocida de BM25 puro, declarada en vez de escondida: sin
+  // vocabulario compartido, no hay nada que recuperar. El punto extra M19
+  // (mas abajo, bloque F) ataca exactamente esta limitacion con una segunda
+  // etapa de reordenamiento; aqui se deja constancia del punto de partida SIN
+  // esa etapa, para que la mejora del bloque F sea una comparacion real y no
+  // una afirmacion sin numero de referencia.
+  const sinVocabulario = ids(
+    recuperador.buscar('empresa recien constituida quiere credito', { rerankear: false }),
+  );
   afirmar(
     C,
-    'LIMITACION: una parafrasis sin vocabulario compartido no recupera la regla',
+    'Sin reranking, una parafrasis sin vocabulario compartido no recupera la regla',
     !sinVocabulario.includes('POL-1.2'),
-    'BM25 no relaciona "recien constituida" con "24 meses continuos de operacion". ' +
-      'Es lo que resolveria una estrategia vectorial (ver README).',
+    'BM25 puro no relaciona "recien constituida" con "24 meses continuos de operacion".',
   );
 
   // El enrutamiento no debe ser un filtro: la excepcion vive en otra categoria.
@@ -242,6 +246,88 @@ async function main() {
     'El corpus completo sigue disponible para la estrategia de comparacion',
     recuperador.todas().length === recuperador.tamanoCorpus,
     `${recuperador.tamanoCorpus} politicas en el indice`,
+  );
+
+  // =========================================================================
+  // Punto extra 5.4: reordenamiento (reranking) sobre los fragmentos
+  // recuperados, con evidencia medida de que mejora la precision de las citas.
+  //
+  // Los tres casos son parafrasis que un solicitante real escribiria, sin
+  // vocabulario compartido con el texto de la politica que deberian activar.
+  // Cada uno se mide dos veces, con la MISMA consulta: sin reordenamiento
+  // (linea base BM25 pura) y con el (rerankear por defecto). La comparacion,
+  // no la afirmacion, es la evidencia que pide el enunciado.
+  const F = 'F. Reordenamiento conceptual (M19, punto extra 5.4)';
+
+  const casosRerank: Array<[string, string, string]> = [
+    [
+      'empresa recien constituida quiere credito',
+      'POL-1.2',
+      'antiguedad del negocio (24 meses continuos)',
+    ],
+    [
+      'el negocio no tiene nada que ofrecer como respaldo del prestamo',
+      'POL-3.9',
+      'operaciones sin garantia alguna',
+    ],
+    [
+      'el rubro al que se dedica el negocio esta prohibido',
+      'POL-5.1',
+      'sectores restringidos',
+    ],
+  ];
+
+  for (const [consulta, esperada, descripcion] of casosRerank) {
+    const sinRerank = ids(recuperador.buscar(consulta, { rerankear: false }));
+    const conRerank = ids(recuperador.buscar(consulta, { rerankear: true }));
+    const ausenteSinRerank = !sinRerank.includes(esperada);
+    const presenteConRerank = conRerank.includes(esperada);
+
+    afirmar(
+      F,
+      `SIN rerank, "${consulta.slice(0, 38)}..." no recupera ${esperada} (${descripcion})`,
+      ausenteSinRerank,
+      `BM25 puro: ${sinRerank.join(', ') || '(vacio)'}`,
+    );
+    afirmar(
+      F,
+      `CON rerank, la misma consulta SI recupera ${esperada}`,
+      presenteConRerank,
+      `posicion ${conRerank.indexOf(esperada) + 1} de ${conRerank.length}: ${conRerank.join(', ')}`,
+    );
+  }
+
+  // El reordenamiento no debe alterar el texto de los fragmentos: sigue
+  // teniendo que pasar G1 igual que la recuperacion base.
+  const todosConRerank = casosRerank.flatMap(([consulta]) => recuperador.buscar(consulta));
+  const veredictoRerank = verificarCitas(
+    todosConRerank.map((f) => ({
+      id_politica: f.id_politica,
+      seccion: f.seccion,
+      texto_literal: f.texto_literal,
+    })),
+    corpus,
+  );
+  afirmar(
+    F,
+    'Los fragmentos reordenados siguen pasando la verificacion de G1',
+    veredictoRerank.todasVerificadas,
+    `${todosConRerank.length} fragmentos verificados literalmente contra el corpus`,
+  );
+
+  // El reordenamiento no debe degradar lo que BM25 ya resolvia bien: sobre
+  // consultas que citan casi literalmente la politica, el resultado con y sin
+  // rerank debe coincidir en el primer puesto.
+  let establesSinRegresion = 0;
+  for (const [consulta, esperada] of casosBusqueda) {
+    const con = recuperador.buscar(consulta, { rerankear: true });
+    if (con[0]?.id_politica === esperada) establesSinRegresion += 1;
+  }
+  afirmar(
+    F,
+    'El reordenamiento no degrada los casos que BM25 ya resolvia en primer puesto',
+    establesSinRegresion === casosBusqueda.length,
+    `${establesSinRegresion}/${casosBusqueda.length} casos del bloque B mantienen su politica en la posicion 1`,
   );
 
   // =========================================================================
