@@ -40,6 +40,8 @@ El avance se dispara con el comando **`continua`**.
 
 **M22 — Cuestionario, sección 4 y tres de 4.F — COMPLETADO.** Las 30 respuestas están contestadas.
 
+**M23 — Cierre, guía de pruebas y guion del video — COMPLETADO.**
+
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).
