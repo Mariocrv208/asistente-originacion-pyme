@@ -70,10 +70,16 @@ Requisitos: Node.js 22 o superior, pnpm 11 y Docker Desktop en ejecución.
 
 ```bash
 pnpm install
-cp .env.example .env
-pnpm db:up
+cp .env.example .env      # y añade tu clave de OpenRouter
+pnpm preparar             # base de datos, esquema, corpus y datos, en orden
 pnpm dev
 ```
+
+`pnpm preparar` existe porque arrancar a mano son cinco comandos en un orden
+concreto, y equivocarse produce errores que no explican nada: migrar sin base de
+datos da `ECONNREFUSED`, sembrar sin corpus da una violación de clave foránea.
+Comprueba Docker y el `.env` antes de empezar, y avisa si la clave no tiene la
+longitud correcta.
 
 Eso deja tres cosas corriendo: PostgreSQL en el contenedor `aop-db`, la API en
 `http://localhost:4000` y el frontend en `http://localhost:5173`. La pantalla de
@@ -97,6 +103,7 @@ inicio verifica la cadena completa y muestra el estado de cada pieza.
 
 | Comando                           | Qué hace                                                  |
 | --------------------------------- | --------------------------------------------------------- |
+| `pnpm preparar`                   | Puesta en marcha completa desde un clon limpio            |
 | `pnpm dev`                        | Levanta API y frontend en paralelo                        |
 | `pnpm dev:api`                    | Solo la API                                               |
 | `pnpm dev:web`                    | Solo el frontend                                          |

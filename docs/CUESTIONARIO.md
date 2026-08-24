@@ -1,6 +1,7 @@
 # Cuestionario técnico
 
-**Nombre del aspirante:** _______________________ **Teléfono:** _______________________
+**Nombre del aspirante:** Mario José Rodríguez Vásquez  
+**Teléfono:** 4164 7994
 
 > Las referencias a archivos apuntan a la implementación de este mismo
 > repositorio, donde la decisión está tomada y verificada.

@@ -8,6 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "preparar": "node scripts/preparar.mjs",
     "dev": "pnpm --parallel --filter \"./apps/*\" dev",
     "dev:api": "pnpm --filter @aop/api dev",
     "dev:web": "pnpm --filter @aop/web dev",
