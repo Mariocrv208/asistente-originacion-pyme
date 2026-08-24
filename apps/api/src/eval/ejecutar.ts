@@ -3,8 +3,8 @@
  *
  *   pnpm eval                  ejecuta los casos que falten
  *   pnpm eval --todos          reejecuta los diez, incluidos los ya hechos
- *   pnpm eval --caso R2        ejecuta uno solo
- *   pnpm eval --caso A1,A2,A3  ejecuta varios
+ *   pnpm eval --caso R2          ejecuta uno solo
+ *   pnpm eval --caso "A1,A2,A3"  ejecuta varios (comillas en PowerShell)
  *
  * Cada caso lanza el agente de verdad contra su solicitud. El informe se
  * ACUMULA en eval-results/ultima.json: la capa gratuita de OpenRouter no da

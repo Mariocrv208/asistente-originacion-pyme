@@ -736,7 +736,7 @@ del entregable único que pide el punto 5.3.6.
 
 ```bash
 pnpm eval                  # ejecuta solo los casos que falten
-pnpm eval --caso A1,A2,A3  # ejecuta varios concretos
+pnpm eval --caso "A1,A2,A3" # varios concretos (las comillas hacen falta en PowerShell)
 pnpm eval --todos          # reejecuta los diez
 ```
 
