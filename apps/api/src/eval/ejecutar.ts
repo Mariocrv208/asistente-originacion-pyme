@@ -185,8 +185,11 @@ async function main() {
 
   let ids: string[];
   if (seleccion !== undefined) {
+    // Se acepta coma o espacio como separador. En PowerShell, A1,R2,E2 sin
+    // comillas se interpreta como un array y llega separado por espacios;
+    // exigir un separador concreto solo produce un error confuso.
     ids = seleccion
-      .split(',')
+      .split(/[\s,]+/)
       .map((x) => x.trim())
       .filter(Boolean);
   } else if (argv.includes('--todos')) {
