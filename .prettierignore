@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+dist/
+node_modules/
+eval-results/
+
+# Artefactos generados: los produce un script con formato canonico propio.
+# Si Prettier los reformatea, dejan de coincidir con lo que genera el generador
+# y la comprobacion de reproducibilidad de M5 falla.
+data/dataset.json

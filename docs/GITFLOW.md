@@ -5,18 +5,18 @@ El desarrollo avanza **un módulo a la vez**. Cada módulo del plan
 
 ## Ramas permanentes
 
-| Rama | Propósito | Quién escribe en ella |
-| --- | --- | --- |
-| `main` | Estado entregable. Solo recibe merges desde `release/*` o `hotfix/*`, siempre etiquetados. | Nadie directamente. |
-| `develop` | Integración continua de módulos terminados. Es la rama base de todo `feature/*`. | Solo merges `--no-ff`. |
+| Rama      | Propósito                                                                                  | Quién escribe en ella  |
+| --------- | ------------------------------------------------------------------------------------------ | ---------------------- |
+| `main`    | Estado entregable. Solo recibe merges desde `release/*` o `hotfix/*`, siempre etiquetados. | Nadie directamente.    |
+| `develop` | Integración continua de módulos terminados. Es la rama base de todo `feature/*`.           | Solo merges `--no-ff`. |
 
 ## Ramas temporales
 
-| Patrón | Nace de | Muere en | Ejemplo |
-| --- | --- | --- | --- |
-| `feature/M<n>-<slug>` | `develop` | `develop` | `feature/M04-nucleo-financiero-decimal` |
-| `release/<version>` | `develop` | `main` + `develop` | `release/1.0.0` |
-| `hotfix/<slug>` | `main` | `main` + `develop` | `hotfix/g3-check-constraint` |
+| Patrón                | Nace de   | Muere en           | Ejemplo                                 |
+| --------------------- | --------- | ------------------ | --------------------------------------- |
+| `feature/M<n>-<slug>` | `develop` | `develop`          | `feature/M04-nucleo-financiero-decimal` |
+| `release/<version>`   | `develop` | `main` + `develop` | `release/1.0.0`                         |
+| `hotfix/<slug>`       | `main`    | `main` + `develop` | `hotfix/g3-check-constraint`            |
 
 ## Ciclo por módulo
 

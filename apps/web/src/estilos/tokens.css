@@ -1,0 +1,137 @@
+/**
+ * Sistema de diseño: consola de originación crediticia.
+ *
+ * Tema oscuro único, no un tema claro invertido. La diferencia importa: en un
+ * puesto de trabajo donde el analista pasa horas leyendo expedientes, el fondo
+ * oscuro con superficies elevadas reduce el contraste agresivo del blanco
+ * sostenido, y el acento se reserva para lo que exige atención.
+ *
+ * Tres reglas que gobiernan la paleta:
+ *
+ * 1. El acento (cian) señala actividad del sistema: el agente trabajando,
+ *    fuentes consultadas, progreso. Nunca decora.
+ * 2. Los colores semánticos pertenecen a las decisiones de crédito y a nada
+ *    más. Verde es APROBADO, no "correcto"; ámbar es ESCALADO, no "aviso".
+ *    Reutilizarlos para otra cosa haría ilegible la bandeja de un vistazo.
+ * 3. Todo lo que sea dinero usa cifras tabulares. Una columna de importes que
+ *    no alinea es una columna que no se puede comparar.
+ */
+
+@theme {
+  /* --- Superficies. Cada nivel se "eleva" sobre el anterior. ------------- */
+  --color-fondo: #0a0d12;
+  --color-superficie: #11161e;
+  --color-superficie-alta: #171e28;
+  --color-superficie-elevada: #1e2733;
+  --color-borde: #232d3a;
+  --color-borde-suave: #1a222c;
+  --color-borde-fuerte: #35455a;
+
+  /* --- Texto ------------------------------------------------------------ */
+  --color-texto: #e8eef6;
+  --color-texto-suave: #9fb0c4;
+  --color-texto-tenue: #6b7d93;
+
+  /* --- Acento: actividad del sistema ------------------------------------ */
+  --color-acento: #2dd4bf;
+  --color-acento-fuerte: #5eead4;
+  --color-acento-tenue: #134e4a;
+  --color-acento-vidrio: #2dd4bf1a;
+
+  /* --- Semántica de decisión. Solo para dictámenes. ---------------------- */
+  --color-aprobado: #34d399;
+  --color-aprobado-fondo: #064e3b66;
+  --color-rechazado: #fb7185;
+  --color-rechazado-fondo: #4c112166;
+  --color-escalado: #fbbf24;
+  --color-escalado-fondo: #4a330766;
+
+  /* --- Estado del expediente -------------------------------------------- */
+  --color-pendiente: #f59e0b;
+  --color-firme: #38bdf8;
+  --color-anulado: #64748b;
+
+  /* --- Riesgo ------------------------------------------------------------ */
+  --color-riesgo-bajo: #34d399;
+  --color-riesgo-medio: #fbbf24;
+  --color-riesgo-alto: #fb7185;
+
+  /* --- Tipografía -------------------------------------------------------- */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+
+  /* --- Elevación --------------------------------------------------------- */
+  --shadow-panel: 0 1px 2px #00000040, 0 8px 24px -12px #00000080;
+  --shadow-flotante: 0 12px 40px -8px #000000cc;
+
+  /* --- Ritmo ------------------------------------------------------------- */
+  --radius-caja: 10px;
+  --radius-pastilla: 999px;
+}
+
+/* --------------------------------------------------------------------------
+ * Utilidades propias. Son pocas a propósito: cada una existe porque se repite
+ * en varias pantallas y porque nombrarla comunica intención.
+ * ------------------------------------------------------------------------ */
+@utility cifra {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+@utility panel {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-caja);
+}
+
+/** Franja de actividad: comunica que el sistema está trabajando ahora. */
+@utility pulso-actividad {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-acento-vidrio) 40%,
+    var(--color-acento-vidrio) 60%,
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: barrido 1.8s ease-in-out infinite;
+}
+
+@keyframes barrido {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility aparece {
+  animation: aparecer 0.22s ease-out;
+}
+
+/**
+ * Respeta la preferencia del sistema. Una interfaz que anuncia progreso con
+ * movimiento constante es justo la que peor sienta a quien pidió reducirlo.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
