@@ -52,6 +52,11 @@ const SECCIONES: Seccion[] = [
     etiqueta: 'Métricas',
     icono: <Icono d="M21 21H4a1 1 0 0 1-1-1V3M7 15l3.5-4 3 2.5L20 7" />,
   },
+  {
+    ruta: '/evaluacion',
+    etiqueta: 'Evaluación',
+    icono: <Icono d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />,
+  },
 ];
 
 function Marca() {
