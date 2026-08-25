@@ -131,6 +131,51 @@ export interface Metricas {
   por_sector: Array<{ sector: string; total: number; escalados: number }>;
 }
 
+export interface CasoEvaluacion {
+  id: string;
+  titulo: string;
+  categoria: string;
+  idSolicitud: string;
+  paso: boolean;
+  condiciones: Array<{ nombre: string; ok: boolean; detalle: string }>;
+  decisionObtenida: Decision | null;
+  decisionEsperada: Decision;
+  citas: string[];
+  idDictamen: string | null;
+  idEjecucion: string;
+  degradado: boolean;
+  iteraciones: number;
+  latenciaMs: number;
+  modelo: string;
+  error?: string;
+  ejecutado_en: string;
+}
+
+export interface TandaEvaluacion {
+  ejecutado_en: string;
+  modelo_configurado: string;
+  version_prompt: string;
+  id_sesion: string;
+  casos: string[];
+  duracion_ms: number;
+  interrumpida_por_cuota: boolean;
+}
+
+export interface InformeEvaluacion {
+  actualizado_en: string;
+  estado: 'completo' | 'parcial';
+  casos_con_resultado: number;
+  casos_totales: number;
+  pendientes: string[];
+  resumen: {
+    pasan: number;
+    fallan: number;
+    por_categoria: Record<string, string>;
+  };
+  tandas: TandaEvaluacion[];
+  casos: Record<string, CasoEvaluacion>;
+}
+
 export interface PasoTraza {
   indice: number;
   tipo: 'LLM' | 'HERRAMIENTA' | 'GUARDARRAIL' | 'REPARACION';
@@ -175,4 +220,6 @@ export const api = {
 
   ejecucion: (id: string) =>
     pedir<{ ejecucion: Record<string, unknown>; pasos: PasoTraza[] }>(`/api/ejecuciones/${id}`),
+
+  evaluacion: () => pedir<InformeEvaluacion>('/api/evaluacion'),
 };

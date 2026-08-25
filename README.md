@@ -459,6 +459,9 @@ Una paráfrasis sin vocabulario compartido no recupera nada: BM25 no relaciona
 «empresa recién constituida» con «24 meses continuos de operación». Está
 declarado como comprobación explícita en `pnpm recuperacion:verificar` en vez de
 escondido, porque es exactamente el hueco que cubriría una estrategia vectorial.
+El punto extra de reordenamiento (más abajo) cierra tres casos concretos de este
+hueco sin necesitar embeddings; sigue siendo una limitación real para cualquier
+paráfrasis que no toque uno de los conceptos curados.
 
 ### Qué haría con 500 políticas o con cambios semanales
 
@@ -483,6 +486,89 @@ descarta ninguna de las dos**. La excepción no sustituye a la regla: la relaja
 bajo condiciones que hay que comprobar contra los datos de esta solicitud
 concreta. Resolver la precedencia en la capa de recuperación, sin mirar al
 solicitante, sería inventarse el resultado.
+
+## Punto extra (5.4): reordenamiento sobre los fragmentos recuperados
+
+El enunciado pide elegir **uno solo** de los cinco puntos extra. Se eligió
+reordenamiento (reranking) sobre los fragmentos que BM25 ya recupera, en
+`apps/api/src/domain/politicas/reranking.ts`, con evidencia medida en
+`pnpm recuperacion:verificar` (bloque F).
+
+### Por qué este y no los otros cuatro
+
+Se descartaron los otros cuatro por una razón compartida: para cuando llegó el
+momento de implementar el punto extra, la cuota diaria gratuita de OpenRouter ya
+era el recurso más escaso del proyecto —es la que bloqueaba terminar el banco de
+evaluación del punto 5.3.6—. MCP, multimodal, memoria persistente y
+LLM-as-judge no consumen esa cuota por diseño propio, pero **memoria
+persistente** y **LLM-as-judge** sí añaden llamadas al modelo en el camino
+normal de uso, y **multimodal** necesitaría su propio modelo con visión. El
+reordenamiento es el único de los cinco que se puede construir, medir y defender
+sin gastar ni una sola petición más al proveedor.
+
+### Por qué local y no un cross-encoder neuronal
+
+La alternativa estándar de producción es un cross-encoder o embeddings locales.
+Se intentó: `@xenova/transformers` con un modelo cuantizado
+(`paraphrase-multilingual-MiniLM-L12-v2`). Se descartó en la misma sesión al
+comprobar que arrastra `sharp` como dependencia nativa, y `sharp` no compila en
+este entorno Windows sin pasos de instalación adicionales que no están en
+`pnpm preparar` —exactamente el tipo de fragilidad que un evaluador no debería
+encontrar el día de la defensa. Es el mismo argumento, aplicado por segunda vez,
+que ya está documentado arriba para no usar embeddings en la recuperación base:
+en un dominio regulado, una segunda etapa opaca y con una dependencia que puede
+romperse vale menos que una determinista que siempre se puede explicar
+fragmento por fragmento.
+
+### Cómo funciona
+
+Una segunda etapa sobre lo que BM25 ya puntuó, no un sustituto:
+
+1. **Clusters de conceptos**, curados a mano igual que `LEXICO_CATEGORIAS` pero
+   con otro propósito: no enrutar, sino reordenar. Por ejemplo,
+   `antiguedad_negocio` agrupa `meses`, `continuos`, `operacion` (vocabulario de
+   la política) con `recien`, `constituida`, `nueva` (vocabulario real de un
+   solicitante).
+2. Por cada fragmento candidato se calcula qué fracción de los clusters que
+   toca la consulta también toca el fragmento.
+3. **Puntaje final = 0.65 × BM25 normalizado + 0.35 × puntaje conceptual.** El
+   peso mayor se queda en lo léxico a propósito: la coincidencia literal sigue
+   siendo la que después verifica G1, y lo conceptual solo debe **rescatar**
+   candidatos que el léxico no puede ver, no dominar el orden.
+4. Si la consulta no toca ningún cluster conocido, el puntaje conceptual es 0
+   para todos y el orden léxico queda intacto — esta etapa nunca inventa
+   relevancia donde no hay ninguna señal.
+
+Los clusters están limitados a los tres casos que el módulo mide. Añadir un
+cluster sin un caso que lo ejercite habría repetido el error que ya quedó
+registrado una vez en la bitácora de este proyecto: afirmar una mejora sin
+haberla medido.
+
+### Evidencia medida
+
+Tres paráfrasis reales, sin vocabulario compartido con la política que deberían
+activar, medidas con la **misma consulta** con y sin reordenamiento:
+
+| Consulta (paráfrasis del solicitante) | Política esperada | Sin rerank | Con rerank |
+|---|---|---|---|
+| «empresa recién constituida quiere crédito» | POL-1.2 (antigüedad, 24 meses) | ausente | posición 3 de 8 |
+| «el negocio no tiene nada que ofrecer como respaldo del préstamo» | POL-3.9 (sin garantía alguna) | ausente | posición 6 de 7 |
+| «el rubro al que se dedica el negocio está prohibido» | POL-5.1 (sectores restringidos) | ausente | posición 4 de 7 |
+
+Y dos comprobaciones de que el reordenamiento no rompe nada de lo que ya
+funcionaba: los fragmentos reordenados siguen pasando la verificación literal de
+G1, y los ocho casos del bloque B (donde BM25 puro ya acertaba en la posición 1)
+siguen acertando en la posición 1 con el reordenamiento activo.
+
+### Límite honesto
+
+Esto no es recuperación semántica general. Una paráfrasis que no toque ninguno
+de los tres clusters curados sigue sin recuperar nada, igual que antes —es la
+misma limitación declarada arriba, solo que ahora con tres excepciones medidas
+en vez de cero. Cerrarla de verdad sigue siendo el argumento a favor de
+embeddings si el corpus creciera; con 32 políticas y sin poder gastar cuota del
+proveedor, curar los conceptos que de verdad aparecen en el corpus fue la
+decisión que cupo en el tiempo disponible.
 
 ## El agente
 
@@ -760,6 +846,17 @@ la única parte que no se puede permitir que falle: si una tanda borrara la
 anterior, el fallo aparecería el último día, con la cuota ya gastada y sin margen
 para repetir.
 
+### Ver el informe sin abrir una terminal
+
+`GET /api/evaluacion` expone `eval-results/ultima.json` tal cual, y la pantalla
+`/evaluacion` del frontend lo muestra: estado del informe, las tandas corridas
+(modelo, versión de prompt, si se agotó la cuota) y una tarjeta por caso con la
+decisión obtenida contra la esperada y cada condición del criterio de
+aprobación, no solo el veredicto final. Es de solo lectura a propósito —
+ejecutar `pnpm eval` sigue siendo cosa de la terminal, porque necesita Docker,
+la base de datos y la clave de OpenRouter del servidor— pero deja ver el
+progreso de la evaluación sin tener que leer el JSON a mano.
+
 ### Cómo se eligieron los casos
 
 Los diez apuntan a solicitudes **reales** del conjunto sintético. No se
@@ -812,7 +909,6 @@ cuál. Lo que no se admite es aprobar.
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.
 - [`docs/GUIA-DE-PRUEBAS.pdf`](docs/GUIA-DE-PRUEBAS.pdf) — cómo levantar y probar cada módulo, paso a paso.
-- [`docs/GUION-VIDEO.md`](docs/GUION-VIDEO.md) — guion del video de demostración.
 - [`docs/CUESTIONARIO.md`](docs/CUESTIONARIO.md) — cuestionario técnico contestado (entregable 3).
 - [`docs/BITACORA.md`](docs/BITACORA.md) — bitácora de aprendizaje (entregable 7).
 - [`docs/GITFLOW.md`](docs/GITFLOW.md) — modelo de ramas y convención de commits.

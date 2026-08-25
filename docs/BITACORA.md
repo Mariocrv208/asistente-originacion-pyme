@@ -61,8 +61,11 @@ afirmación falsa en la documentación por no haberla comprobado.
 
 **Recuperación vectorial**, no por completitud sino por la limitación que dejé
 declarada como comprobación explícita: BM25 no relaciona «empresa recién
-constituida» con «24 meses continuos de operación». Y el reranking con evidencia
-medida, que es el punto extra que quedó fuera.
+constituida» con «24 meses continuos de operación». El reranking conceptual que
+sí construí (M19) cierra tres casos concretos de esa limitación, pero sigue sin
+resolverla en general — una paráfrasis fuera de los conceptos curados sigue sin
+recuperar nada, y eso es exactamente lo que la recuperación vectorial sí
+resolvería de raíz.
 
 **Evaluar más de una vez por caso.** Con modelos no deterministas, un solo intento
 mide poco: durante el desarrollo vi la misma solicitud terminar en dictamen

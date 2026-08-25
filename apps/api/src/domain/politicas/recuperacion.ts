@@ -1,6 +1,7 @@
 import type { Politica } from '@aop/shared';
 import { indexar, leerCorpus } from './corpus.js';
 import { IndiceLexico, tokenizar } from './indice.js';
+import { rerankear } from './reranking.js';
 
 /**
  * Recuperacion de politicas.
@@ -129,6 +130,8 @@ export interface OpcionesBusqueda {
   categorias?: readonly string[];
   /** Permite desactivar el cierre por excepciones para poder medirlo (M19). */
   expandirExcepciones?: boolean;
+  /** Permite desactivar el reordenamiento conceptual para poder medirlo (M19). */
+  rerankear?: boolean;
 }
 
 const TOP_K_POR_DEFECTO = 6;
@@ -225,17 +228,24 @@ export class RecuperadorPoliticas {
   buscar(consulta: string, opciones: OpcionesBusqueda = {}): FragmentoPolitica[] {
     const topK = opciones.topK ?? TOP_K_POR_DEFECTO;
     const expandir = opciones.expandirExcepciones ?? true;
+    const conRerank = opciones.rerankear ?? true;
     const categorias = new Set(opciones.categorias ?? enrutarCategorias(consulta));
 
-    const puntuadas = this.indice.puntuar(consulta).map((p) => ({
+    const conBonificacion = this.indice.puntuar(consulta).map((p) => ({
       ...p,
       puntaje: p.puntaje + (categorias.has(p.politica.categoria) ? BONIFICACION_CATEGORIA : 0),
     }));
 
-    // Reordenar tras la bonificacion, manteniendo el desempate estable.
-    puntuadas.sort((a, b) =>
-      b.puntaje === a.puntaje ? a.politica.id.localeCompare(b.politica.id) : b.puntaje - a.puntaje,
-    );
+    // El reordenamiento conceptual (M19, punto extra 5.4) es una segunda etapa
+    // sobre lo que BM25 ya recupero: puede promover un fragmento que el lexico
+    // puntuo en 0, pero nunca inventa candidatos que BM25 no haya visto.
+    const puntuadas = conRerank
+      ? rerankear(conBonificacion, consulta)
+      : [...conBonificacion].sort((a, b) =>
+          b.puntaje === a.puntaje
+            ? a.politica.id.localeCompare(b.politica.id)
+            : b.puntaje - a.puntaje,
+        );
 
     // Umbral relativo al mejor resultado. Sin el, el top-k se rellena con
     // politicas que apenas comparten una palabra vacia con la consulta, y esas

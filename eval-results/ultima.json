@@ -1,5 +1,5 @@
 {
-  "actualizado_en": "2026-08-24T00:23:38.919Z",
+  "actualizado_en": "2026-08-25T00:28:54.072Z",
   "estado": "parcial",
   "casos_con_resultado": 9,
   "casos_totales": 10,
@@ -35,6 +35,53 @@
       ],
       "duracion_ms": 373306,
       "interrumpida_por_cuota": true
+    },
+    {
+      "ejecutado_en": "2026-08-25T00:13:20.838Z",
+      "modelo_configurado": "nvidia/nemotron-3-super-120b-a12b:free",
+      "version_prompt": "1.0.0",
+      "id_sesion": "f4fd63e9-af2b-470c-b086-3e7e22277376",
+      "casos": [
+        "A1"
+      ],
+      "duracion_ms": 54311,
+      "interrumpida_por_cuota": false
+    },
+    {
+      "ejecutado_en": "2026-08-25T00:16:24.606Z",
+      "modelo_configurado": "z-ai/glm-5.2:free",
+      "version_prompt": "1.0.0",
+      "id_sesion": "c8ebc5a9-9f3f-4a7d-ac70-adb79fdc533d",
+      "casos": [
+        "A1"
+      ],
+      "duracion_ms": 63081,
+      "interrumpida_por_cuota": false
+    },
+    {
+      "ejecutado_en": "2026-08-25T00:23:55.658Z",
+      "modelo_configurado": "nvidia/nemotron-3-super-120b-a12b:free",
+      "version_prompt": "1.1.0",
+      "id_sesion": "f68364eb-3141-41a9-9419-ef0ffba79aa8",
+      "casos": [
+        "A1"
+      ],
+      "duracion_ms": 39896,
+      "interrumpida_por_cuota": false
+    },
+    {
+      "ejecutado_en": "2026-08-25T00:28:54.071Z",
+      "modelo_configurado": "nvidia/nemotron-3-super-120b-a12b:free",
+      "version_prompt": "1.1.0",
+      "id_sesion": "ff611d3f-132a-43b8-a28f-554322395d5a",
+      "casos": [
+        "A1",
+        "A2",
+        "A3",
+        "R1"
+      ],
+      "duracion_ms": 260780,
+      "interrumpida_por_cuota": true
     }
   ],
   "casos": {
@@ -44,23 +91,42 @@
       "categoria": "aprobacion",
       "idSolicitud": "a901e677-ba3c-4ae2-848f-51909ffb4931",
       "decisionEsperada": "APROBADO",
-      "idEjecucion": "b500a408-1e42-41fc-a020-5da68c328fca",
-      "degradado": false,
-      "iteraciones": 6,
-      "latenciaMs": 57988,
+      "idEjecucion": "ad6d37df-49ae-43a5-9f88-f16fec13787d",
+      "degradado": true,
+      "iteraciones": 8,
+      "latenciaMs": 47861,
       "modelo": "nvidia/nemotron-3-super-120b-a12b:free",
       "paso": false,
-      "decisionObtenida": null,
-      "citas": [],
-      "idDictamen": null,
+      "decisionObtenida": "ESCALADO_A_COMITE",
+      "citas": [
+        "POL-2.12",
+        "POL-2.3",
+        "POL-7.3"
+      ],
+      "idDictamen": "d2dc36ab-0132-40fe-abb8-ac52eab0d73a",
       "condiciones": [
         {
-          "nombre": "Se registró un dictamen",
+          "nombre": "Decisión",
           "ok": false,
-          "detalle": "la ejecución terminó sin dictamen"
+          "detalle": "obtenida ESCALADO_A_COMITE, esperada APROBADO"
+        },
+        {
+          "nombre": "Cita la política esperada",
+          "ok": false,
+          "detalle": "esperaba POL-4.1, citó POL-2.12, POL-2.3, POL-7.3"
+        },
+        {
+          "nombre": "Indicadores coinciden con el cálculo (G2)",
+          "ok": true,
+          "detalle": "idénticos, sin tolerancia"
+        },
+        {
+          "nombre": "Queda pendiente de confirmación (G4)",
+          "ok": true,
+          "detalle": "estado PENDIENTE_AUTORIZACION"
         }
       ],
-      "ejecutado_en": "2026-08-24T00:18:23.922Z"
+      "ejecutado_en": "2026-08-25T00:25:21.442Z"
     },
     "A2": {
       "id": "A2",
@@ -68,23 +134,42 @@
       "categoria": "aprobacion",
       "idSolicitud": "7949972b-df76-42d8-aa85-c97b2a86c22e",
       "decisionEsperada": "APROBADO",
-      "idEjecucion": "71b830c6-43f1-4488-b4e5-7e43f6398c36",
-      "degradado": false,
-      "iteraciones": 6,
-      "latenciaMs": 25402,
+      "idEjecucion": "66621802-3c26-481e-aae3-7d8e69e7fd8f",
+      "degradado": true,
+      "iteraciones": 8,
+      "latenciaMs": 73636,
       "modelo": "nvidia/nemotron-3-super-120b-a12b:free",
       "paso": false,
-      "decisionObtenida": null,
-      "citas": [],
-      "idDictamen": null,
+      "decisionObtenida": "ESCALADO_A_COMITE",
+      "citas": [
+        "POL-2.12",
+        "POL-2.3",
+        "POL-7.3"
+      ],
+      "idDictamen": "42822c52-13b3-4a5a-85e0-4a30db054746",
       "condiciones": [
         {
-          "nombre": "Se registró un dictamen",
+          "nombre": "Decisión",
           "ok": false,
-          "detalle": "la ejecución terminó sin dictamen"
+          "detalle": "obtenida ESCALADO_A_COMITE, esperada APROBADO"
+        },
+        {
+          "nombre": "Cita la política esperada",
+          "ok": false,
+          "detalle": "esperaba POL-4.1, citó POL-2.12, POL-2.3, POL-7.3"
+        },
+        {
+          "nombre": "Indicadores coinciden con el cálculo (G2)",
+          "ok": true,
+          "detalle": "idénticos, sin tolerancia"
+        },
+        {
+          "nombre": "Queda pendiente de confirmación (G4)",
+          "ok": true,
+          "detalle": "estado PENDIENTE_AUTORIZACION"
         }
       ],
-      "ejecutado_en": "2026-08-24T00:18:49.330Z"
+      "ejecutado_en": "2026-08-25T00:26:35.086Z"
     },
     "A3": {
       "id": "A3",
@@ -92,23 +177,42 @@
       "categoria": "aprobacion",
       "idSolicitud": "442376cb-1496-49bf-9b05-8a4c9c194cda",
       "decisionEsperada": "APROBADO",
-      "idEjecucion": "4872567a-1542-4284-b8f4-208130f0baa3",
-      "degradado": false,
-      "iteraciones": 6,
-      "latenciaMs": 49944,
+      "idEjecucion": "84ee3981-aa95-4b2a-808d-ceb5021c8546",
+      "degradado": true,
+      "iteraciones": 8,
+      "latenciaMs": 67163,
       "modelo": "nvidia/nemotron-3-super-120b-a12b:free",
       "paso": false,
-      "decisionObtenida": null,
-      "citas": [],
-      "idDictamen": null,
+      "decisionObtenida": "ESCALADO_A_COMITE",
+      "citas": [
+        "POL-2.12",
+        "POL-2.3",
+        "POL-7.3"
+      ],
+      "idDictamen": "bdbcfab3-6009-4ed2-8429-873a45c1c0e2",
       "condiciones": [
         {
-          "nombre": "Se registró un dictamen",
+          "nombre": "Decisión",
           "ok": false,
-          "detalle": "la ejecución terminó sin dictamen"
+          "detalle": "obtenida ESCALADO_A_COMITE, esperada APROBADO"
+        },
+        {
+          "nombre": "Cita la política esperada",
+          "ok": false,
+          "detalle": "esperaba POL-4.1, citó POL-2.12, POL-2.3, POL-7.3"
+        },
+        {
+          "nombre": "Indicadores coinciden con el cálculo (G2)",
+          "ok": true,
+          "detalle": "idénticos, sin tolerancia"
+        },
+        {
+          "nombre": "Queda pendiente de confirmación (G4)",
+          "ok": true,
+          "detalle": "estado PENDIENTE_AUTORIZACION"
         }
       ],
-      "ejecutado_en": "2026-08-24T00:19:39.279Z"
+      "ejecutado_en": "2026-08-25T00:27:42.255Z"
     },
     "R1": {
       "id": "R1",
@@ -116,10 +220,10 @@
       "categoria": "rechazo",
       "idSolicitud": "0c9722cd-0ea8-4c58-a51d-4a0cec66b4a7",
       "decisionEsperada": "RECHAZADO",
-      "idEjecucion": "7557464d-56a7-4543-a84a-577c2248b464",
+      "idEjecucion": "04b09693-f0c4-4286-94cc-e8baff09f042",
       "degradado": false,
-      "iteraciones": 7,
-      "latenciaMs": 39415,
+      "iteraciones": 9,
+      "latenciaMs": 54184,
       "modelo": "nvidia/nemotron-3-super-120b-a12b:free",
       "paso": true,
       "decisionObtenida": "RECHAZADO",
@@ -127,7 +231,7 @@
         "POL-1.2",
         "POL-2.7"
       ],
-      "idDictamen": "75bfc85b-8542-4fcf-a6df-7bf2cffffc11",
+      "idDictamen": "feda6662-3ef1-4c8f-97c7-5c32476fd548",
       "condiciones": [
         {
           "nombre": "Decisión",
@@ -150,7 +254,7 @@
           "detalle": "estado PENDIENTE_AUTORIZACION"
         }
       ],
-      "ejecutado_en": "2026-08-24T00:20:18.703Z"
+      "ejecutado_en": "2026-08-25T00:28:36.445Z"
     },
     "R2": {
       "id": "R2",

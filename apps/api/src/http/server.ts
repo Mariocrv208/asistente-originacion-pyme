@@ -7,6 +7,7 @@ import { verificarModelos } from '../config/modelos.js';
 import { comprobarBaseDatos, extensionesInstaladas } from '../db/pool.js';
 import { rutasAnalizar } from './rutas/analizar.js';
 import { rutasDictamenes } from './rutas/dictamenes.js';
+import { rutasEvaluacion } from './rutas/evaluacion.js';
 import { rutasLectura } from './rutas/lectura.js';
 
 const VERSION = '0.1.0';
@@ -143,6 +144,7 @@ export async function construirServidor(): Promise<FastifyInstance> {
   await app.register(rutasLectura);
   await app.register(rutasDictamenes);
   await app.register(rutasAnalizar);
+  await app.register(rutasEvaluacion);
 
   return app;
 }
