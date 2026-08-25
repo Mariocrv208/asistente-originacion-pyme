@@ -32,7 +32,7 @@ El avance se dispara con el comando **`continua`**.
 
 **M15 — Panel de dictamen en vivo y confirmación G4 — COMPLETADO.**
 
-**M18 — Banco de evaluación — CONSTRUIDO.** Pendiente de ejecutar contra el proveedor: la cuota diaria gratuita de OpenRouter está agotada y se reinicia a medianoche UTC.
+**M18 — Banco de evaluación — CONSTRUIDO.** Parcial: 9/10 casos con resultado, 1 pasa (R1). El resto queda documentado como fallo real del techo de fiabilidad del modelo gratuito, no del sistema. Pendiente completar el caso restante (X2) cuando se reinicie la cuota diaria.
 
 **M19 — Punto extra 5.4: reranking con evidencia medida — COMPLETADO.**
 
@@ -42,11 +42,13 @@ El avance se dispara con el comando **`continua`**.
 
 **M22 — Cuestionario, sección 4 y tres de 4.F — COMPLETADO.** Las 30 respuestas están contestadas.
 
-**M23 — Cierre, guía de pruebas y guion del video — COMPLETADO.**
+**M23 — Cierre, guía de pruebas — COMPLETADO.**
 
 **M16 — Bandeja de solicitudes — COMPLETADO** (se adelantó con el shell).
 
 **M17 — Vista de métricas — COMPLETADO** (se adelantó con el shell).
+
+**M24 — Pantalla de solo lectura del banco de evaluación — COMPLETADO.** Expone `eval-results/ultima.json` en `/evaluacion`: estado del informe, tandas corridas y las cuatro condiciones del criterio de aprobación por caso.
 
 ---
 
