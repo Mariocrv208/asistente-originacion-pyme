@@ -909,7 +909,6 @@ cuál. Lo que no se admite es aprobar.
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.
 - [`docs/GUIA-DE-PRUEBAS.pdf`](docs/GUIA-DE-PRUEBAS.pdf) — cómo levantar y probar cada módulo, paso a paso.
-- [`docs/GUION-VIDEO.md`](docs/GUION-VIDEO.md) — guion del video de demostración.
 - [`docs/CUESTIONARIO.md`](docs/CUESTIONARIO.md) — cuestionario técnico contestado (entregable 3).
 - [`docs/BITACORA.md`](docs/BITACORA.md) — bitácora de aprendizaje (entregable 7).
 - [`docs/GITFLOW.md`](docs/GITFLOW.md) — modelo de ramas y convención de commits.
