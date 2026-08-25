@@ -50,7 +50,10 @@ Tipos: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `chore`, `build`.
 
 ## Etiquetas
 
-Una etiqueta anotada por entrega:
+El plan original contemplaba una etiqueta anotada por cada bloque de módulos
+cerrado en `develop` (`v0.1.0` … `v0.9.0`), pero en la práctica el ritmo de
+desarrollo no dejó espacio para pararse a etiquetar cada bloque. La única
+etiqueta que existe de verdad es la que importa para la entrega:
 
-- `v0.1.0` … `v0.9.0` — cierre de cada bloque de módulos en `develop`.
-- `v1.0.0` — entrega final en `main`.
+- `v1.0.0` — release final en `main`, con todo el trabajo hasta el punto de
+  entrega del examen.
