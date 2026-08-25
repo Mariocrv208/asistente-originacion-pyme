@@ -846,6 +846,17 @@ la única parte que no se puede permitir que falle: si una tanda borrara la
 anterior, el fallo aparecería el último día, con la cuota ya gastada y sin margen
 para repetir.
 
+### Ver el informe sin abrir una terminal
+
+`GET /api/evaluacion` expone `eval-results/ultima.json` tal cual, y la pantalla
+`/evaluacion` del frontend lo muestra: estado del informe, las tandas corridas
+(modelo, versión de prompt, si se agotó la cuota) y una tarjeta por caso con la
+decisión obtenida contra la esperada y cada condición del criterio de
+aprobación, no solo el veredicto final. Es de solo lectura a propósito —
+ejecutar `pnpm eval` sigue siendo cosa de la terminal, porque necesita Docker,
+la base de datos y la clave de OpenRouter del servidor— pero deja ver el
+progreso de la evaluación sin tener que leer el JSON a mano.
+
 ### Cómo se eligieron los casos
 
 Los diez apuntan a solicitudes **reales** del conjunto sintético. No se
