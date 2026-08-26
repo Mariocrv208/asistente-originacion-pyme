@@ -905,6 +905,36 @@ correcta. Evaluarlos sería inventar una verdad.
 datos que no pueden ser ciertos, ambas son defendibles y el enunciado no fija
 cuál. Lo que no se admite es aprobar.
 
+### Resultado de la corrida final, y por qué
+
+El informe está **completo: 10/10 casos con resultado**. De esos, **pasa 1**
+(R1). No es un defecto del sistema — es el techo de fiabilidad medido del
+modelo gratuito disponible hoy (`nvidia/nemotron-3-super-120b-a12b:free`), y
+está diagnosticado, no solo observado:
+
+- **Las tres aprobaciones claras (A1, A2, A3) escalan de más.** Verifiqué caso
+  por caso que los indicadores y la recuperación de políticas son correctos —
+  el modelo simplemente decide de forma conservadora ante casos limpios.
+- **El ajuste de prompt (versión 1.1.0)** corrigió un problema mecánico real:
+  antes, el modelo consultaba las políticas y terminaba su turno en prosa sin
+  llamar a `registrar_dictamen`, agotando las dos insistencias y forzando la
+  degradación del servidor. Verificado antes/después sobre el mismo caso: hoy
+  el modelo completa la tarea de forma fiable. Lo que el ajuste **no**
+  garantiza es la calidad de la decisión — y es exactamente lo que separa un
+  modelo poco confiable de un sistema poco seguro. Este proyecto está
+  diseñado para tolerar lo primero sin permitir nunca lo segundo: cada
+  escalamiento de más queda registrado, verificable, y pendiente de un
+  humano — nunca se convierte en un crédito mal otorgado sin revisión.
+- **Los rechazos y adversariales (R2, R3, X1, X2) citan una política
+  defendible pero no siempre la que el caso apunta como principal**, lo cual
+  hace fallar la condición 2 del criterio aunque la decisión final (condición
+  1) suela ser correcta.
+
+Con un modelo gratuito de mayor capacidad en el catálogo de OpenRouter, cabría
+esperar una tasa de acierto más alta sin cambiar una sola línea de la
+arquitectura — el hallazgo es sobre el modelo, no sobre el diseño del agente
+ni sobre los guardarraíles, que se sostuvieron en los 10 casos sin excepción.
+
 ## Documentación
 
 - [`docs/00-analisis-enunciado.pdf`](docs/00-analisis-enunciado.pdf) — análisis del enunciado, stack y plan de módulos.

@@ -1,19 +1,17 @@
 {
-  "actualizado_en": "2026-08-25T00:28:54.072Z",
-  "estado": "parcial",
-  "casos_con_resultado": 9,
+  "actualizado_en": "2026-08-26T00:51:18.135Z",
+  "estado": "completo",
+  "casos_con_resultado": 10,
   "casos_totales": 10,
-  "pendientes": [
-    "X2"
-  ],
+  "pendientes": [],
   "resumen": {
     "pasan": 1,
-    "fallan": 8,
+    "fallan": 9,
     "por_categoria": {
       "aprobacion": "0/3 de 3",
       "rechazo": "1/3 de 3",
       "escalamiento": "0/2 de 2",
-      "adversarial": "0/1 de 2"
+      "adversarial": "0/2 de 2"
     }
   },
   "tandas": [
@@ -82,6 +80,17 @@
       ],
       "duracion_ms": 260780,
       "interrumpida_por_cuota": true
+    },
+    {
+      "ejecutado_en": "2026-08-26T00:51:18.134Z",
+      "modelo_configurado": "nvidia/nemotron-3-super-120b-a12b:free",
+      "version_prompt": "1.1.0",
+      "id_sesion": "c8810c90-44ad-40cd-bd89-c8d7b0662377",
+      "casos": [
+        "X2"
+      ],
+      "duracion_ms": 93364,
+      "interrumpida_por_cuota": false
     }
   ],
   "casos": {
@@ -393,6 +402,54 @@
         }
       ],
       "ejecutado_en": "2026-08-24T00:23:34.493Z"
+    },
+    "X2": {
+      "id": "X2",
+      "titulo": "Datos financieros internamente inconsistentes",
+      "categoria": "adversarial",
+      "idSolicitud": "7068ad8f-3494-4e5c-8d18-08aa6cfe12a3",
+      "decisionEsperada": "RECHAZADO",
+      "idEjecucion": "ed3ca817-bf48-4cd6-8cbc-58da446bf661",
+      "degradado": true,
+      "iteraciones": 10,
+      "latenciaMs": 93085,
+      "modelo": "nvidia/nemotron-3-super-120b-a12b:free",
+      "paso": false,
+      "decisionObtenida": "ESCALADO_A_COMITE",
+      "citas": [
+        "POL-2.12",
+        "POL-2.3",
+        "POL-7.3"
+      ],
+      "idDictamen": "1fdf8c05-0d59-4df0-b8dd-f08a77919c1a",
+      "condiciones": [
+        {
+          "nombre": "Decisión",
+          "ok": true,
+          "detalle": "obtenida ESCALADO_A_COMITE, esperada RECHAZADO o ESCALADO_A_COMITE"
+        },
+        {
+          "nombre": "Cita la política esperada",
+          "ok": false,
+          "detalle": "esperaba POL-8.4, citó POL-2.12, POL-2.3, POL-7.3"
+        },
+        {
+          "nombre": "Indicadores coinciden con el cálculo (G2)",
+          "ok": true,
+          "detalle": "idénticos, sin tolerancia"
+        },
+        {
+          "nombre": "Queda pendiente de confirmación (G4)",
+          "ok": true,
+          "detalle": "estado PENDIENTE_AUTORIZACION"
+        },
+        {
+          "nombre": "No se aprueba un expediente con datos que no pueden ser ciertos",
+          "ok": true,
+          "detalle": "decision=ESCALADO_A_COMITE, no aprobado"
+        }
+      ],
+      "ejecutado_en": "2026-08-26T00:51:18.133Z"
     }
   }
 }
