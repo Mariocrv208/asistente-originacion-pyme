@@ -32,7 +32,7 @@ El avance se dispara con el comando **`continua`**.
 
 **M15 — Panel de dictamen en vivo y confirmación G4 — COMPLETADO.**
 
-**M18 — Banco de evaluación — CONSTRUIDO.** Parcial: 9/10 casos con resultado, 1 pasa (R1). El resto queda documentado como fallo real del techo de fiabilidad del modelo gratuito, no del sistema. Pendiente completar el caso restante (X2) cuando se reinicie la cuota diaria.
+**M18 — Banco de evaluación — COMPLETADO.** Informe completo: 10/10 casos con resultado, 1 pasa (R1). El resto queda documentado como fallo real del techo de fiabilidad del modelo gratuito (ver README, sección "Resultado de la corrida final"), no del sistema.
 
 **M19 — Punto extra 5.4: reranking con evidencia medida — COMPLETADO.**
 
